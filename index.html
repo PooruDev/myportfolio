@@ -340,6 +340,26 @@
           overflow: hidden;
         }
 
+        #galleryCard {
+          order: 1;
+        }
+
+        #identityCard {
+          order: 2;
+        }
+
+        #projectCard {
+          order: 3;
+        }
+
+        #compCard {
+          order: 4;
+        }
+
+        #techCard {
+          order: 5;
+        }
+
         #projectCard,
         #techCard,
         #compCard,
@@ -407,7 +427,8 @@
         }
 
         #galleryCard {
-          min-height: 200px;
+          min-height: 240px;
+          aspect-ratio: 4 / 3;
         }
 
         #devName {
@@ -430,19 +451,42 @@
           padding: 12px;
         }
 
-        .achievement-item {
-          padding: 10px;
-          font-size: 11px;
+        #compCard {
+          min-height: clamp(300px, 42vh, 360px);
+          max-height: none;
         }
 
-        .achievement-name {
+        #compCard .achievement-nested-container {
+          flex: 1;
+          min-height: 0;
+          overflow: hidden;
+          padding: 12px;
+        }
+
+        #compCard .achievement-scroll-track {
+          gap: 10px;
+        }
+
+        #compCard .achievement-item {
+          padding: 12px;
+          align-items: flex-start;
+        }
+
+        #compCard .achievement-name {
           font-size: 13px;
           white-space: normal;
+          overflow: visible;
+          text-overflow: clip;
         }
 
-        .achievement-result {
+        #compCard .achievement-result {
           font-size: 11px;
           flex-wrap: wrap;
+          line-height: 1.4;
+        }
+
+        #socialIcons {
+          display: none !important;
         }
 
         .expand-content {
@@ -463,7 +507,7 @@
         }
 
         #galleryCard {
-          min-height: 180px;
+          min-height: 220px;
         }
 
         #identityCard {
@@ -501,12 +545,16 @@
           padding: 4px 8px;
         }
 
-        .achievement-item {
-          padding: 8px;
+        #compCard .achievement-nested-container {
+          max-height: 290px;
+        }
+
+        #compCard .achievement-item {
+          padding: 10px;
           gap: 10px;
         }
 
-        .achievement-icon {
+        #compCard .achievement-icon {
           width: 32px;
           height: 32px;
         }
@@ -532,7 +580,11 @@
         }
 
         #galleryCard {
-          min-height: 160px;
+          min-height: 200px;
+        }
+
+        #compCard .achievement-nested-container {
+          max-height: 260px;
         }
 
         .marquee-item {
@@ -1243,7 +1295,6 @@
           )
           .join("");
 
-        // Duplicate for seamless vertical scrolling loop - same logic as project marquee
         scrollTrack.innerHTML = achievementItems + achievementItems;
       }
 
@@ -1254,60 +1305,20 @@
         const nested = track.closest(".achievement-nested-container");
         if (!nested) return;
 
-        let paused = false;
-        let offsetY = 0;
-        let halfHeight = 0;
-        let rafId = 0;
-        let lastTs = 0;
+        track.style.animationPlayState = "running";
 
-        const speedPxPerSecond = 5;
-
-        const recalc = () => {
-          // Since we duplicated the content, the seam is exactly at half the scroll height.
-          halfHeight = track.scrollHeight / 2;
-          offsetY = 0;
-          track.style.transform = "translate3d(0, 0, 0)";
+        const pause = () => {
+          track.style.animationPlayState = "paused";
         };
 
-        const onMouseEnter = () => {
-          paused = true;
-        };
-        const onMouseLeave = () => {
-          paused = false;
+        const resume = () => {
+          track.style.animationPlayState = "running";
         };
 
-        // Avoid stacking listeners if this function is called multiple times.
-        nested.removeEventListener("mouseenter", onMouseEnter);
-        nested.removeEventListener("mouseleave", onMouseLeave);
-        nested.addEventListener("mouseenter", onMouseEnter);
-        nested.addEventListener("mouseleave", onMouseLeave);
-
-        const tick = (ts) => {
-          if (!lastTs) lastTs = ts;
-          const dt = ts - lastTs;
-          lastTs = ts;
-
-          if (!paused && halfHeight > 0) {
-            offsetY -= (speedPxPerSecond * dt) / 1000;
-
-            if (offsetY <= -halfHeight) {
-              // Jump by exactly one duplicated "page" to keep the loop seamless.
-              offsetY += halfHeight;
-            }
-
-            track.style.transform = `translate3d(0, ${offsetY}px, 0)`;
-          }
-
-          rafId = window.requestAnimationFrame(tick);
-        };
-
-        recalc();
-        window.addEventListener("resize", recalc);
-
-        rafId = window.requestAnimationFrame(tick);
-
-        // Expose for debugging (optional)
-        window.__achievementMarquee = { recalc, pause: () => (paused = true) };
+        nested.addEventListener("mouseenter", pause);
+        nested.addEventListener("mouseleave", resume);
+        nested.addEventListener("focusin", pause);
+        nested.addEventListener("focusout", resume);
       }
 
       // Expand system
