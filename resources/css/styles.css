@@ -145,124 +145,9 @@ body {
   word-break: break-word;
 }
 
-@media (max-width: 1024px) {
-  .page-shell {
-    align-items: flex-start;
-    justify-content: flex-start;
-    padding: 1rem;
-  }
+/* Tablet layout intentionally left unchanged; mobile-specific overrides live below. */
 
-  .portfolio-card {
-    height: auto;
-    min-height: auto;
-    gap: 1rem;
-    padding: 1rem;
-  }
-
-  #topRow,
-  #bottomRow,
-  #leftColumn {
-    display: contents;
-  }
-
-  #galleryCard,
-  #identityCard,
-  #projectCard,
-  #compCard,
-  #techCard {
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-    height: auto !important;
-    min-height: auto !important;
-    flex: 0 0 auto !important;
-    overflow: visible;
-  }
-
-  #galleryCard {
-    aspect-ratio: 16 / 10;
-    min-height: 220px !important;
-    overflow: hidden;
-  }
-
-  #projectCard,
-  #techCard,
-  #compCard,
-  #identityCard {
-    display: flex;
-    flex-direction: column;
-  }
-
-  #projectCard > div:last-child,
-  #techCard > div:last-child,
-  #compCard > div:last-child,
-  #identityCard > div:first-child {
-    min-height: 0;
-  }
-
-  #galleryCard {
-    order: 1;
-  }
-
-  #identityCard {
-    order: 2;
-    flex-direction: column;
-    padding: 1.25rem;
-  }
-
-  #projectCard {
-    order: 3;
-  }
-
-  #compCard {
-    order: 4;
-  }
-
-  #techCard {
-    order: 5;
-  }
-
-  #socialIcons {
-    flex-direction: row !important;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-  }
-
-  .glass-card.rounded-xl.p-5.flex.items-stretch > div {
-    margin-right: 0;
-  }
-
-  .glass-card.rounded-xl.p-5.flex.items-stretch > div:first-child {
-    margin-bottom: 1rem;
-  }
-
-  .marquee-item {
-    min-width: 200px;
-    width: 200px;
-    height: auto;
-    min-height: 180px;
-    padding: 14px;
-  }
-
-  .tech-item {
-    font-size: 11px;
-    padding: 6px 12px;
-  }
-
-  .social-btn {
-    width: 44px;
-    height: 44px;
-  }
-
-  .expand-content {
-    padding: 20px;
-    max-width: 92%;
-    width: min(92vw, 700px);
-    max-height: 85dvh;
-  }
-}
-
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .portfolio-card {
     gap: 0.9rem;
     padding: 0.9rem;
@@ -640,47 +525,42 @@ body {
   border-radius: 2px;
 }
 
-/* ==================== ACHIEVEMENT CARDS (VERTICAL SCROLL) ==================== */
+/* ==================== ACHIEVEMENT CARDS (VERTICAL MARQUEE) ==================== */
 
-/* Main container for the achievement scroll */
-.achievement-scroll-container {
+.achievement-nested-container {
   position: relative;
   width: 100%;
-  height: 100%;
+  min-height: 0;
+  flex: 1;
   overflow: hidden;
-
-  /* Match Projects nested container spacing */
-  background: rgba(255, 255, 255, 0.02);
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-start;
+  background: rgba(255, 255, 255, 0.025);
   border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 8px;
-  padding: 12px;
+  border-radius: 10px;
+  padding: 10px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
-/* Track that holds all achievement cards - moves vertically */
+.achievement-nested-container::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
 .achievement-scroll-track {
   display: flex;
   flex-direction: column;
   gap: 12px;
   width: 100%;
-  padding: 0;
-  margin: 0;
-
-  /* Only the items move; the parent viewport should not. */
+  min-height: 0;
   will-change: transform;
-  animation: none;
+  animation: achievementVerticalMarquee 18s linear infinite;
 }
 
-.achievement-scroll-track.paused {
-  animation-play-state: paused;
-}
-
-/* Pause animation on hover (nested card is now the viewport) */
-.achievement-nested-container:hover .achievement-scroll-track {
-  animation-play-state: paused;
-}
-
-/* Vertical scrolling animation - continuous vertical movement */
-@keyframes verticalScroll {
+@keyframes achievementVerticalMarquee {
   0% {
     transform: translate3d(0, 0, 0);
   }
@@ -689,64 +569,25 @@ body {
   }
 }
 
-/* Static nested card container (viewport). Only the inner track scrolls. */
-.achievement-nested-container {
-  position: relative;
-  background: rgba(255, 255, 255, 0.025);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 10px;
-  padding: 10px;
-
-  /* Make it behave like the fixed viewport within the parent card */
-  overflow: hidden;
-  flex: 1;
-  min-height: 0;
-  width: 100%;
-
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
-
-/* Individual achievement item - inside the vertical scroll track */
 .achievement-item {
   background: rgba(255, 255, 255, 0.035);
   border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: 8px;
   padding: 14px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
   transition: all 0.3s ease;
   cursor: pointer;
+  min-width: 0;
 }
 
 .achievement-item:hover {
   background: rgba(255, 255, 255, 0.055);
   border-color: rgba(255, 255, 255, 0.12);
-  transform: translateX(4px);
+  transform: translateY(-1px);
 }
 
-/* Individual achievement card - inside the nested container */
-.achievement-item-card {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 8px;
-  padding: 12px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-.achievement-item-card:hover {
-  background: rgba(255, 255, 255, 0.055);
-  border-color: rgba(255, 255, 255, 0.1);
-  transform: translateX(3px);
-}
-
-/* Achievement icon/badge */
 .achievement-icon {
   width: 36px;
   height: 36px;
@@ -760,20 +601,22 @@ body {
   flex-shrink: 0;
 }
 
-/* Achievement text content */
-.achievement-content {
+.achievement-details {
   flex: 1;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .achievement-name {
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(255, 255, 255, 0.88);
   font-size: 13px;
   font-weight: 600;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-bottom: 3px;
+  line-height: 1.35;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
 }
 
 .achievement-result {
@@ -783,108 +626,14 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-wrap: wrap;
+  line-height: 1.4;
 }
 
 .achievement-year {
   color: rgba(255, 255, 255, 0.25);
   font-size: 10px;
-}
-
-/* Individual Achievement Card */
-.achievement-card {
-  background: rgba(255, 255, 255, 0.035);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 10px;
-  padding: 16px;
-  flex-shrink: 0;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.achievement-card:hover {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.14);
-  transform: translateX(4px);
-}
-
-.achievement-card-rank {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 8px;
-  color: rgba(255, 255, 255, 0.7);
-  font-family: "JetBrains Mono", monospace;
-  font-size: 13px;
-  font-weight: 600;
-  flex-shrink: 0;
-}
-
-.achievement-card-content {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  min-width: 0;
-}
-
-/* Nested Achievement Card */
-.achievement-card-nested {
-  background: rgba(255, 255, 255, 0.025);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 8px;
-  padding: 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.achievement-card-nested-title {
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 14px;
-  font-weight: 600;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.achievement-card-nested-subtitle {
-  color: rgba(255, 255, 255, 0.5);
-  font-family: "JetBrains Mono", monospace;
-  font-size: 11px;
-}
-
-.achievement-card-nested-date {
-  color: rgba(255, 255, 255, 0.25);
-  font-size: 10px;
-}
-
-.achievement-card-name {
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 14px;
-  font-weight: 600;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.achievement-card-result {
-  color: rgba(255, 255, 255, 0.5);
-  font-family: "JetBrains Mono", monospace;
-  font-size: 11px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.achievement-card-year {
-  color: rgba(255, 255, 255, 0.25);
-  font-size: 10px;
 }
 
 /* Rounded Corners */
