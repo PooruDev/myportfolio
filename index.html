@@ -7,15 +7,9 @@
     <link rel="icon" href="resources/photo/pclogo.svg" type="image/svg+xml" />
     <!-- Local CSS with Tailwind utilities and custom styles -->
     <link rel="stylesheet" href="resources/css/styles.css" />
-    <!-- Lucide Icons from unpkg - pinned version for stability -->
-    <!-- Using 0.454.0 which has all required icons (github, linkedin, twitter, mail, x) -->
-    <script src="https://unpkg.com/lucide@0.454.0/dist/umd/lucide.min.js"></script>
+    <!-- Lucide icons are hydrated locally to avoid CDN tracking/storage warnings -->
     <!-- SDK scripts - local files -->
     <script src="resources/js/element_sdk.js"></script>
-    <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,300&amp;family=JetBrains+Mono:wght@300;400;500&amp;display=swap"
-      rel="stylesheet"
-    />
     <style>
       * {
         box-sizing: border-box;
@@ -1055,6 +1049,33 @@
       </div>
     </div>
     <script>
+      function hydrateIcons(root) {
+        const icons = {
+          github:
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-6a4.9 4.9 0 0 0-1.1-3.2 4.4 4.4 0 0 0-.1-3.2s-1-.3-3.3 1.3a11.3 11.3 0 0 0-6 0C7.2 1.3 6.2 1.6 6.2 1.6a4.4 4.4 0 0 0-.1 3.2A4.9 4.9 0 0 0 5 8c0 4 3 6 6 6a4.8 4.8 0 0 0-1 3.5v4"/><path d="M9 18c-4.5 2-5-2-7-2"/></svg>',
+          linkedin:
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6Z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>',
+          twitter:
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 4s-1.5 1-3 1.5c0 0-1.2-2.5-4.5-2.5-2.5 0-4.5 2-4.5 4.5 0 .5 0 1 .2 1.4C6.7 9.6 4 8 2 5.5c0 0-2 7 5 10.5-1.4 1-3 1.5-5 1.5 7 4 15 0 17-6 .7-2.2.8-4.5.3-6.5.7-.5 1.7-1.5 2.7-3Z"/></svg>',
+          mail: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>',
+          x: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>',
+          trophy:
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M17 4H7v3a5 5 0 0 0 10 0V4Z"/><path d="M5 6H3a2 2 0 0 0 2 2"/><path d="M19 6h2a2 2 0 0 1-2 2"/></svg>',
+        };
+
+        const scope = root || document;
+        const elements = scope.querySelectorAll("[data-lucide]");
+        elements.forEach((el) => {
+          const name = el.getAttribute("data-lucide");
+          const markup = icons[name];
+          if (!markup) return;
+          const wrapper = document.createElement("span");
+          wrapper.innerHTML = markup;
+          const svg = wrapper.firstElementChild;
+          if (svg) el.replaceWith(svg);
+        });
+      }
+
       // Data
       const projects = [
         {
@@ -1339,7 +1360,7 @@
           expandOverlay.classList.add("active");
         }
 
-        lucide.createIcons();
+        hydrateIcons();
       }
 
       function closeExpand(e) {
@@ -1505,7 +1526,7 @@
       renderMarquee();
       renderTech();
       renderComps();
-      lucide.createIcons();
+      hydrateIcons();
       startAchievementMarquee();
 
       // Ensure background video starts (some browsers are picky even when muted)
