@@ -1,0 +1,1619 @@
+<!doctype html>
+<html lang="en" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Paul Calang Portfolio</title>
+    <link rel="icon" href="resources/photo/pclogo.svg" type="image/svg+xml" />
+    <!-- Local CSS with Tailwind utilities and custom styles -->
+    <link rel="stylesheet" href="resources/css/styles.css" />
+    <!-- Lucide Icons from unpkg - pinned version for stability -->
+    <!-- Using 0.454.0 which has all required icons (github, linkedin, twitter, mail, x) -->
+    <script src="https://unpkg.com/lucide@0.454.0/dist/umd/lucide.min.js"></script>
+    <!-- SDK scripts - local files -->
+    <script src="resources/js/element_sdk.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,300&amp;family=JetBrains+Mono:wght@300;400;500&amp;display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        overflow-y: auto;
+        font-family: "DM Sans", sans-serif;
+      }
+
+      .glass-parent {
+        background: rgba(18, 18, 18, 0.42);
+        backdrop-filter: blur(40px);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        box-shadow:
+          0 0 80px rgba(0, 0, 0, 0.35),
+          inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      }
+
+      .glass-card {
+        background: rgba(255, 255, 255, 0.015);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.035);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.03),
+          0 4px 24px rgba(0, 0, 0, 0.15);
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .glass-card:hover {
+        background: rgba(255, 255, 255, 0.028);
+        border-color: rgba(255, 255, 255, 0.06);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.045),
+          0 8px 32px rgba(0, 0, 0, 0.22);
+        transform: translateY(-1px);
+      }
+
+      .glass-card.rounded-xl.p-5.flex.items-stretch {
+        min-width: 0;
+        overflow: hidden;
+      }
+      .glass-card.rounded-xl.p-5.flex.items-stretch > div {
+        min-width: 0;
+      }
+      .glass-card.rounded-xl.p-5.flex.items-stretch > div:first-child {
+        flex: 1 1 auto;
+      }
+      .glass-card.rounded-xl.p-5.flex.items-stretch > div:last-child {
+        flex: 0 0 auto;
+      }
+      .glass-card.rounded-xl.p-5.flex.items-stretch h1,
+      .glass-card.rounded-xl.p-5.flex.items-stretch p,
+      .glass-card.rounded-xl.p-5.flex.items-stretch .tag {
+        overflow-wrap: anywhere;
+        word-break: break-word;
+        white-space: normal;
+      }
+
+      .tag {
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: rgba(255, 255, 255, 0.6);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        padding: 4px 10px;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+      }
+      .tag:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: rgba(255, 255, 255, 0.85);
+      }
+
+      .gallery-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 10px;
+        transition:
+          transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+          filter 0.6s ease;
+      }
+      .gallery-container:hover .gallery-img {
+        transform: scale(1.04);
+      }
+      .gallery-overlay {
+        position: absolute;
+        inset: 0;
+        border-radius: 10px;
+        background: linear-gradient(
+          180deg,
+          transparent 50%,
+          rgba(0, 0, 0, 0.6) 100%
+        );
+        opacity: 0;
+        transition: opacity 0.4s ease;
+      }
+      .gallery-container:hover .gallery-overlay {
+        opacity: 1;
+      }
+
+      .carousel-track {
+        display: flex;
+        gap: 14px;
+        transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .project-card {
+        min-width: 100%;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 10px;
+        padding: 20px;
+        transition: all 0.4s ease;
+      }
+      .project-card.active {
+        background: rgba(255, 255, 255, 0.07);
+        border-color: rgba(255, 255, 255, 0.14);
+      }
+
+      .marquee-track {
+        animation: marquee 45s linear infinite;
+      }
+      @keyframes marquee {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-50%);
+        }
+      }
+      .marquee-item {
+        min-width: 240px;
+        width: 240px;
+        height: 210px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 10px;
+        padding: 18px;
+        flex-shrink: 0;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+      }
+      .marquee-item:hover {
+        background: rgba(255, 255, 255, 0.06);
+        border-color: rgba(255, 255, 255, 0.12);
+      }
+
+      .tech-marquee-track {
+        display: flex;
+        flex-wrap: nowrap !important;
+        align-items: center;
+        gap: 8px;
+        width: max-content;
+        white-space: nowrap;
+        animation: techMarquee 40s linear infinite;
+      }
+      @keyframes techMarquee {
+        0% {
+          transform: translate3d(0, 0, 0);
+        }
+        100% {
+          transform: translate3d(-50%, 0, 0);
+        }
+      }
+      .tech-item {
+        min-width: fit-content;
+        padding: 8px 14px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 6px;
+        color: rgba(255, 255, 255, 0.85);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px;
+        white-space: nowrap;
+        flex-shrink: 0;
+        display: inline-flex;
+        align-items: center;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        font-weight: 500;
+      }
+      .tech-item:hover {
+        background: rgba(255, 255, 255, 0.15);
+        color: rgba(255, 255, 255, 0.95);
+        border-color: rgba(255, 255, 255, 0.25);
+      }
+
+      .social-btn {
+        width: 56px;
+        height: 56px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: rgba(255, 255, 255, 0.7);
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+      .social-btn:hover {
+        background: rgba(255, 255, 255, 0.14);
+        color: rgba(255, 255, 255, 0.95);
+      }
+
+      .expand-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0);
+        backdrop-filter: blur(0px);
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .expand-overlay.active {
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(12px);
+        opacity: 1;
+        pointer-events: all;
+      }
+      .expand-content {
+        background: rgba(22, 22, 22, 0.95);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 40px;
+        max-width: 700px;
+        width: 90%;
+        max-height: 80%;
+        overflow-y: auto;
+        transform: scale(0.92);
+        opacity: 0;
+        transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .expand-overlay.active .expand-content {
+        transform: scale(1);
+        opacity: 1;
+      }
+
+      .comp-entry {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        padding: 10px 0;
+      }
+      .comp-entry:last-child {
+        border-bottom: none;
+      }
+
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .fade-up {
+        animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        opacity: 0;
+      }
+
+      ::-webkit-scrollbar {
+        width: 4px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 2px;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 1024px) {
+        .glass-parent {
+          padding: 3rem 1.5rem;
+        }
+        .marquee-item {
+          min-width: 200px;
+          width: 200px;
+          height: 180px;
+          padding: 14px;
+        }
+        .marquee-item h4 {
+          font-size: 14px !important;
+        }
+        .marquee-item p {
+          font-size: 11px !important;
+        }
+        .tech-item {
+          font-size: 11px;
+          padding: 6px 12px;
+        }
+        .social-btn {
+          width: 48px;
+          height: 48px;
+        }
+        .social-btn i {
+          width: 18px;
+          height: 18px;
+        }
+        .expand-content {
+          padding: 20px;
+          max-width: 90%;
+        }
+        .expand-content h2 {
+          font-size: 20px;
+        }
+        .expand-content p {
+          font-size: 13px;
+        }
+        .comp-entry span:first-child {
+          font-size: 14px;
+        }
+        .comp-entry span:last-child {
+          font-size: 11px;
+        }
+        .achievement-item {
+          padding: 12px;
+          font-size: 12px;
+        }
+        .achievement-icon i {
+          width: 16px !important;
+          height: 16px !important;
+        }
+        .glass-card.rounded-xl.p-5.flex.items-stretch > div {
+          margin-right: 15px;
+        }
+        /* Stack sections vertically on tablet */
+        .flex.gap-4 {
+          flex-direction: column;
+          gap: 1rem;
+        }
+        .glass-parent {
+          min-height: 100vh;
+        }
+        /* Flatten row wrappers and reorder sections for tablet */
+        #topRow,
+        #bottomRow,
+        #leftColumn {
+          display: contents;
+        }
+        #galleryCard,
+        #identityCard,
+        #projectCard,
+        #compCard,
+        #techCard {
+          width: 100%;
+          max-width: 100%;
+        }
+        #galleryCard {
+          order: 1;
+          flex: 22 1 0;
+          min-height: 0;
+          overflow: hidden;
+        }
+        #identityCard {
+          order: 2;
+          flex: 38 1 0;
+          min-height: 0;
+          overflow: hidden;
+        }
+        #projectCard {
+          order: 3;
+          flex: 28 1 0;
+          min-height: 0;
+          overflow: hidden;
+        }
+        #compCard {
+          order: 4;
+          flex: 6 1 0;
+          min-height: 0;
+          overflow: hidden;
+        }
+        #techCard {
+          order: 5;
+          flex: 6 1 0;
+          min-height: 0;
+          overflow: hidden;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .glass-parent {
+          padding: 2rem 1rem;
+        }
+        /* Stack rows vertically on mobile */
+        .flex.gap-4 {
+          flex-direction: column;
+          gap: 1rem;
+        }
+        /* Adjust flex ratios for mobile */
+        .flex.gap-4 > div:first-child {
+          flex: 1 !important;
+        }
+        .flex.gap-4 > div:last-child {
+          flex: 1 !important;
+        }
+        /* Stack left column vertically */
+        .flex.flex-col.gap-4 {
+          flex-direction: column;
+          gap: 1rem;
+        }
+        .flex.flex-col.gap-4 > div {
+          flex: 1 !important;
+        }
+        /* Adjust gallery and projects */
+        .gallery-container {
+          flex: 1 !important;
+        }
+        .glass-card.p-4.flex.flex-col {
+          flex: 1 !important;
+        }
+        /* Adjust about section */
+        .glass-card.rounded-xl.p-5.flex.items-stretch {
+          flex-direction: column;
+          padding: 1.5rem;
+        }
+        .glass-card.rounded-xl.p-5.flex.items-stretch > div {
+          margin-right: 0;
+          margin-bottom: 1.5rem;
+        }
+        /* Reposition social icons */
+        #socialIcons {
+          flex-direction: row !important;
+          justify-content: center;
+          gap: 0.5rem;
+        }
+        .social-btn {
+          width: 44px !important;
+          height: 44px !important;
+        }
+        .social-btn i {
+          width: 16px !important;
+          height: 16px !important;
+        }
+        /* Adjust font sizes */
+        #devName {
+          font-size: 28px !important;
+        }
+        #devBio {
+          font-size: 14px !important;
+        }
+        .marquee-item {
+          min-width: 180px;
+          width: 180px;
+          height: 160px;
+          padding: 12px;
+        }
+        .marquee-item h4 {
+          font-size: 14px !important;
+        }
+        .marquee-item p {
+          font-size: 11px !important;
+        }
+        .tech-item {
+          font-size: 10px;
+          padding: 5px 10px;
+        }
+        .achievement-item {
+          padding: 10px;
+          font-size: 11px;
+        }
+        .achievement-icon i {
+          width: 14px !important;
+          height: 14px !important;
+        }
+        .achievement-name {
+          font-size: 13px;
+        }
+        .achievement-result {
+          font-size: 11px;
+        }
+        .expand-content {
+          padding: 20px;
+          max-width: 95%;
+        }
+        .expand-content h2 {
+          font-size: 18px;
+        }
+        .expand-content p {
+          font-size: 12px;
+        }
+        .expand-content .tag {
+          font-size: 11px;
+          padding: 4px 8px;
+        }
+        .comp-entry {
+          padding: 10px 0;
+        }
+        .comp-entry span:first-child {
+          font-size: 13px;
+        }
+        .comp-entry span:last-child {
+          font-size: 10px;
+        }
+        /* Gallery grid for mobile */
+        .expand-content > div:last-child {
+          grid-template-columns: 1fr;
+        }
+        /* Flatten row wrappers and reorder sections for mobile */
+        #topRow,
+        #bottomRow,
+        #leftColumn {
+          display: contents;
+        }
+        #galleryCard {
+          order: 1;
+          flex: 22 1 0;
+          min-height: 0;
+          overflow: hidden;
+        }
+        #identityCard {
+          order: 2;
+          flex: 38 1 0;
+          min-height: 0;
+          overflow: hidden;
+        }
+        #projectCard {
+          order: 3;
+          flex: 28 1 0;
+          min-height: 0;
+          overflow: hidden;
+        }
+        #compCard {
+          order: 4;
+          flex: 6 1 0;
+          min-height: 0;
+          overflow: hidden;
+        }
+        #techCard {
+          order: 5;
+          flex: 6 1 0;
+          min-height: 0;
+          overflow: hidden;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .glass-parent {
+          padding: 1rem 0.5rem;
+        }
+        #devName {
+          font-size: 24px !important;
+        }
+        #devRole {
+          font-size: 12px !important;
+        }
+        #devBio {
+          font-size: 13px !important;
+        }
+        .marquee-item {
+          min-width: 160px;
+          width: 160px;
+          height: 140px;
+          padding: 10px;
+        }
+        .marquee-item h4 {
+          font-size: 13px !important;
+        }
+        .marquee-item p {
+          font-size: 10px !important;
+        }
+        .marquee-item .tag {
+          font-size: 9px;
+          padding: 3px 6px;
+        }
+        .tech-item {
+          font-size: 9px;
+          padding: 4px 8px;
+        }
+        .achievement-item {
+          padding: 8px;
+          font-size: 10px;
+        }
+        .achievement-icon i {
+          width: 12px !important;
+          height: 12px !important;
+        }
+        .achievement-name {
+          font-size: 12px;
+        }
+        .achievement-result {
+          font-size: 10px;
+        }
+        .social-btn {
+          width: 40px !important;
+          height: 40px !important;
+        }
+        .social-btn i {
+          width: 14px !important;
+          height: 14px !important;
+        }
+        .expand-content {
+          padding: 15px;
+        }
+        .expand-content h2 {
+          font-size: 16px;
+        }
+        .expand-content p {
+          font-size: 11px;
+        }
+        .expand-content .tag {
+          font-size: 10px;
+          padding: 3px 6px;
+        }
+        .comp-entry span:first-child {
+          font-size: 12px;
+        }
+        .comp-entry span:last-child {
+          font-size: 9px;
+        }
+      }
+    </style>
+    <style>
+      body {
+        box-sizing: border-box;
+      }
+    </style>
+  </head>
+  <body class="h-full" style="background-color: #0a0a0a">
+    <!-- Main background video + subtle texture overlays -->
+    <div
+      style="
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        overflow: hidden;
+      "
+    >
+      <video
+        id="bgVideo"
+        autoplay
+        loop
+        muted
+        playsinline
+        preload="auto"
+        style="
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          filter: saturate(1.05) contrast(1.05) brightness(0.75);
+        "
+      >
+        <source src="resources/photo/live-background.mp4" type="video/mp4" />
+      </video>
+
+      <div
+        style="
+          position: absolute;
+          inset: 0;
+          background:
+            radial-gradient(
+              ellipse at 30% 20%,
+              rgba(40, 40, 40, 0.45) 0%,
+              transparent 60%
+            ),
+            radial-gradient(
+              ellipse at 80% 80%,
+              rgba(30, 30, 30, 0.35) 0%,
+              transparent 50%
+            );
+        "
+      ></div>
+    </div>
+    <!-- Parent Container -->
+    <div
+      class="h-full w-full flex items-center justify-center p-4 md:p-8"
+      style="position: relative; z-index: 1"
+    >
+      <div
+        class="glass-parent w-full h-full max-w-[1340px] rounded-2xl p-4 md:p-5 flex flex-col gap-4"
+        style="min-height: 100%"
+      >
+        <!-- Row 1: Gallery + Projects -->
+        <div
+          id="topRow"
+          class="flex gap-4 fade-up"
+          style="flex: 1.1; min-height: 0; animation-delay: 0.1s"
+        >
+          <!-- Gallery Sub-Card -->
+          <div
+            id="galleryCard"
+            class="glass-card rounded-xl overflow-hidden cursor-pointer gallery-container"
+            style="flex: 1.6; position: relative"
+            onclick="openExpand('gallery')"
+          >
+            <div
+              style="
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                padding: 12px 16px;
+                z-index: 10;
+                pointer-events: none;
+              "
+            >
+              <span
+                style="
+                  color: rgba(255, 255, 255, 0.3);
+                  font-family: &quot;JetBrains Mono&quot;, monospace;
+                  font-size: 10px;
+                  letter-spacing: 2px;
+                "
+                >GALLERY</span
+              >
+            </div>
+            <svg
+              class="gallery-img"
+              viewbox="0 0 800 500"
+              xmlns="http://www.w3.org/2000/svg"
+              preserveaspectratio="xMidYMid slice"
+            >
+              <defs>
+                <lineargradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#1a1a1a" />
+                  <stop offset="50%" stop-color="#2a2a2a" />
+                  <stop offset="100%" stop-color="#111" />
+                </lineargradient>
+                <pattern
+                  id="grid"
+                  width="40"
+                  height="40"
+                  patternunits="userSpaceOnUse"
+                >
+                  <path
+                    d="M 40 0 L 0 0 0 40"
+                    fill="none"
+                    stroke="rgba(255,255,255,0.03)"
+                    stroke-width="0.5"
+                  />
+                </pattern>
+              </defs>
+              <rect fill="url(#g1)" width="800" height="500" />
+              <rect fill="url(#grid)" width="800" height="500" />
+              <circle
+                cx="200"
+                cy="180"
+                r="120"
+                fill="rgba(255,255,255,0.02)"
+                stroke="rgba(255,255,255,0.06)"
+                stroke-width="0.5"
+              />
+              <circle
+                cx="550"
+                cy="300"
+                r="80"
+                fill="rgba(255,255,255,0.015)"
+                stroke="rgba(255,255,255,0.04)"
+                stroke-width="0.5"
+              />
+              <line
+                x1="100"
+                y1="350"
+                x2="700"
+                y2="150"
+                stroke="rgba(255,255,255,0.03)"
+                stroke-width="0.5"
+              />
+              <rect
+                x="300"
+                y="120"
+                width="200"
+                height="260"
+                rx="8"
+                fill="none"
+                stroke="rgba(255,255,255,0.06)"
+                stroke-width="0.5"
+              />
+              <text
+                x="400"
+                y="260"
+                text-anchor="middle"
+                fill="rgba(255,255,255,0.12)"
+                font-family="JetBrains Mono"
+                font-size="14"
+              >
+                PORTFOLIO.SYS
+              </text>
+            </svg>
+            <div
+              style="
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                padding: 12px 16px;
+                z-index: 10;
+                pointer-events: none;
+              "
+            >
+              <span
+                style="
+                  color: rgba(255, 255, 255, 0.3);
+                  font-family: &quot;JetBrains Mono&quot;, monospace;
+                  font-size: 10px;
+                  letter-spacing: 2px;
+                "
+                >Click to view all photos</span
+              >
+            </div>
+          </div>
+          <!-- Projects Sub-Card (Carousel) -->
+          <div
+            id="projectCard"
+            class="glass-card rounded-xl p-4 flex flex-col"
+            style="flex: 1; min-width: 0"
+          >
+            <div style="margin-bottom: 14px">
+              <div
+                style="
+                  color: rgba(255, 255, 255, 0.3);
+                  font-family: &quot;JetBrains Mono&quot;, monospace;
+                  font-size: 10px;
+                  letter-spacing: 2px;
+                  margin-bottom: 8px;
+                "
+              >
+                PROJECTS
+              </div>
+              <h3
+                style="
+                  color: rgba(255, 255, 255, 0.85);
+                  font-size: 16px;
+                  font-weight: 600;
+                  margin: 0 0 4px 0;
+                  line-height: 1.3;
+                "
+              >
+                Systems, products, &amp; creative builds.
+              </h3>
+              <p
+                style="
+                  color: rgba(255, 255, 255, 0.25);
+                  font-size: 11px;
+                  margin: 0;
+                "
+              >
+                Click to expand
+              </p>
+            </div>
+            <div
+              style="
+                flex: 1;
+                overflow: hidden;
+                min-height: 0;
+                background: rgba(255, 255, 255, 0.02);
+                border: 1px solid rgba(255, 255, 255, 0.05);
+                border-radius: 8px;
+                padding: 12px;
+              "
+            >
+              <div
+                id="marqueeTrack"
+                class="marquee-track"
+                style="
+                  display: flex;
+                  gap: 16px;
+                  animation: marquee 10s linear infinite;
+                "
+              >
+                <!-- Project cards inserted by JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Row 2: Left stacked + Right about -->
+        <div
+          id="bottomRow"
+          class="flex gap-4 fade-up"
+          style="flex: 1; min-height: 0; animation-delay: 0.25s"
+        >
+          <!-- Left column: Tech Stack + Competitions stacked -->
+          <div
+            id="leftColumn"
+            class="flex flex-col gap-4"
+            style="flex: 0 0 40%; min-height: 0; min-width: 0"
+          >
+            <!-- Tech Stack -->
+            <div
+              id="techCard"
+              class="glass-card rounded-xl p-4 cursor-pointer"
+              style="
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                overflow: hidden;
+              "
+              onclick="openExpand('tech')"
+            >
+              <span
+                style="
+                  color: rgba(255, 255, 255, 0.3);
+                  font-family: &quot;JetBrains Mono&quot;, monospace;
+                  font-size: 10px;
+                  letter-spacing: 2px;
+                  display: block;
+                  margin-bottom: 8px;
+                "
+                >TECH STACK</span
+              >
+              <p
+                style="
+                  color: rgba(255, 255, 255, 0.25);
+                  font-size: 11px;
+                  margin: 0 0 14px 0;
+                "
+              >
+                Click to expand
+              </p>
+              <div
+                class="tech-nested-container"
+                style="
+                  flex: 1;
+                  overflow: hidden;
+                  min-height: 0;
+                  display: flex;
+                  align-items: center;
+                  background: rgba(255, 255, 255, 0.025);
+                  border: 1px solid rgba(255, 255, 255, 0.05);
+                  border-radius: 10px;
+                  padding: 10px;
+                "
+              >
+                <div id="techMarqueeTrack" class="tech-marquee-track"></div>
+              </div>
+            </div>
+            <!-- Competitions -->
+            <div
+              id="compCard"
+              class="glass-card rounded-xl p-4 cursor-pointer"
+              style="
+                flex: 1;
+                min-height: 0;
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+              "
+              onclick="openExpand('competitions')"
+            >
+              <span
+                style="
+                  color: rgba(255, 255, 255, 0.3);
+                  font-family: &quot;JetBrains Mono&quot;, monospace;
+                  font-size: 10px;
+                  letter-spacing: 2px;
+                  display: block;
+                  margin-bottom: 8px;
+                "
+                >ACHIEVEMENTS</span
+              >
+              <p
+                style="
+                  color: rgba(255, 255, 255, 0.25);
+                  font-size: 11px;
+                  margin: 0 0 12px 0;
+                "
+              >
+                Click to expand
+              </p>
+
+              <!-- Nested card (static container). Only the inner track scrolls. -->
+              <div class="achievement-nested-container">
+                <div
+                  id="achievementScrollTrack"
+                  class="achievement-scroll-track"
+                ></div>
+              </div>
+            </div>
+          </div>
+          <!-- About / Portfolio Sub-Card (right, full height) -->
+          <div
+            id="identityCard"
+            class="glass-card rounded-xl p-5 flex items-stretch"
+            style="
+              flex: 1 1 60%;
+              min-height: 0;
+              position: relative;
+              min-width: 0;
+            "
+          >
+            <div style="flex: 1; margin-right: 20px">
+              <div
+                style="
+                  color: rgba(255, 255, 255, 0.3);
+                  font-family: &quot;JetBrains Mono&quot;, monospace;
+                  font-size: 10px;
+                  letter-spacing: 2px;
+                  margin-bottom: 16px;
+                "
+              >
+                IDENTITY
+              </div>
+              <h1
+                id="devName"
+                style="
+                  color: rgba(255, 255, 255, 0.92);
+                  font-size: 36px;
+                  font-weight: 700;
+                  line-height: 1.1;
+                  margin: 0 0 8px 0;
+                  overflow-wrap: break-word;
+                "
+              >
+                Paul Calang
+              </h1>
+              <p
+                id="devRole"
+                style="
+                  color: rgba(255, 255, 255, 0.4);
+                  font-family: &quot;JetBrains Mono&quot;, monospace;
+                  font-size: 13px;
+                  margin: 0 0 20px 0;
+                  overflow-wrap: break-word;
+                "
+              >
+                Full-Stack Web Developer &amp; QA Tester
+              </p>
+              <p
+                id="devBio"
+                style="
+                  color: rgba(255, 255, 255, 0.45);
+                  font-size: 15px;
+                  line-height: 1.7;
+                  margin: 0 0 20px 0;
+                  overflow-wrap: break-word;
+                "
+              >
+                A detail-oriented developer focused on building reliable,
+                user-friendly web applications with an emphasis on quality
+                assurance and clean, maintainable code. Passionate about
+                improving system performance, debugging complex issues, and
+                delivering smooth user experiences from front-end to back-end.
+              </p>
+              <div class="flex flex-wrap gap-2">
+                <span class="tag">Mainit, SDN</span>
+                <span class="tag">BSIT 2026–2027</span>
+                <span class="tag">GWA 1.21</span>
+              </div>
+            </div>
+            <!-- Social Icons: inside the card -->
+            <div
+              class="flex flex-col gap-2"
+              id="socialIcons"
+              style="
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 8px;
+                justify-content: center;
+              "
+            >
+              <a
+                class="social-btn"
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                style="width: 44px; height: 44px"
+                ><i data-lucide="github" style="width: 20px; height: 20px"></i
+              ></a>
+              <a
+                class="social-btn"
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                style="width: 44px; height: 44px"
+                ><i data-lucide="linkedin" style="width: 20px; height: 20px"></i
+              ></a>
+              <a
+                class="social-btn"
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                style="width: 44px; height: 44px"
+                ><i data-lucide="twitter" style="width: 20px; height: 20px"></i
+              ></a>
+              <a
+                class="social-btn"
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                style="width: 44px; height: 44px"
+                ><i data-lucide="mail" style="width: 20px; height: 20px"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Expand Overlay -->
+    <div id="expandOverlay" class="expand-overlay" onclick="closeExpand(event)">
+      <div
+        class="expand-content"
+        id="expandContent"
+        onclick="event.stopPropagation()"
+      >
+        <button
+          onclick="closeExpand()"
+          style="
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+          "
+        >
+          <i data-lucide="x" style="width: 20px; height: 20px"></i>
+        </button>
+        <div id="expandBody"></div>
+      </div>
+    </div>
+    <script>
+      // Data
+      const projects = [
+        {
+          title: "Nexus Engine",
+          role: "Lead Architect",
+          desc: "High-throughput event processing pipeline handling 2M+ events/sec with sub-millisecond latency.",
+          tags: ["Rust", "Kafka", "gRPC"],
+        },
+        {
+          title: "Spectra UI",
+          role: "Creator & Maintainer",
+          desc: "Design system and component library adopted by 40+ internal teams for consistent interfaces.",
+          tags: ["React", "TypeScript", "Storybook"],
+        },
+        {
+          title: "Vaultline",
+          role: "Backend Engineer",
+          desc: "Zero-knowledge encrypted storage service with end-to-end client-side encryption architecture.",
+          tags: ["Go", "PostgreSQL", "WebCrypto"],
+        },
+      ];
+
+      const techStack = [
+        "TypeScript",
+        "Rust",
+        "Go",
+        "React",
+        "Node.js",
+        "PostgreSQL",
+        "Redis",
+        "Docker",
+        "K8s",
+        "gRPC",
+        "GraphQL",
+        "AWS",
+      ];
+
+      const competitions = [
+        { name: "ICPC Regionals", result: "Gold Medal", year: "2022" },
+        { name: "HackMIT", result: "1st Place", year: "2023" },
+        { name: "Google Code Jam", result: "Round 3", year: "2023" },
+      ];
+
+      let currentSlide = 0;
+
+      // Render marquee
+      function renderMarquee() {
+        const track = document.getElementById("marqueeTrack");
+
+        // Safely handle missing element
+        if (!track) {
+          console.log(
+            "Marquee track element not found - skipping renderMarquee",
+          );
+          return;
+        }
+
+        const projectsHTML = projects
+          .map(
+            (p, i) => `
+      <div class="marquee-item" onclick="openExpand('project', ${i})">
+        <div style="color:rgba(255,255,255,0.25);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;margin-bottom:6px;text-transform:uppercase;flex-shrink:0;">${p.role.toUpperCase()}</div>
+        <h4 style="color:rgba(255,255,255,0.85);font-size:16px;font-weight:600;margin:0 0 6px 0;line-height:1.2;flex-shrink:0;">${p.title}</h4>
+        <p style="color:rgba(255,255,255,0.35);font-size:12px;line-height:1.45;margin:0 0 6px 0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;flex-grow:1;">${p.desc}</p>
+        <div class="flex flex-wrap gap-2">${p.tags.map((t) => `<span class="tag" style="font-size:10px;padding:4px 9px;">${t}</span>`).join("")}</div>
+      </div>
+    `,
+          )
+          .join("");
+
+        // Duplicate for seamless loop
+        track.innerHTML = projectsHTML + projectsHTML;
+      }
+
+      // Render projects carousel
+      function renderProjects() {
+        const track = document.getElementById("carouselTrack");
+        const dots = document.getElementById("carouselDots");
+
+        // Safely handle case where carousel elements don't exist in DOM
+        if (!track || !dots) {
+          console.log("Carousel elements not found - skipping renderProjects");
+          return;
+        }
+
+        track.innerHTML = projects
+          .map(
+            (p, i) => `
+      <div class="project-card ${i === currentSlide ? "active" : ""}" onclick="openExpand('project', ${i})">
+        <div style="color:rgba(255,255,255,0.25);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;margin-bottom:10px;">${p.role.toUpperCase()}</div>
+        <h3 style="color:rgba(255,255,255,0.88);font-size:18px;font-weight:600;margin:0 0 8px 0;">${p.title}</h3>
+        <p style="color:rgba(255,255,255,0.4);font-size:12px;line-height:1.6;margin:0 0 12px 0;">${p.desc}</p>
+        <div class="flex flex-wrap gap-1">${p.tags.map((t) => `<span class="tag">${t}</span>`).join("")}</div>
+      </div>
+    `,
+          )
+          .join("");
+        dots.innerHTML = projects
+          .map(
+            (_, i) =>
+              `<div style="width:${i === currentSlide ? "18px" : "5px"};height:5px;border-radius:3px;background:rgba(255,255,255,${i === currentSlide ? "0.5" : "0.15"});transition:all 0.3s ease;cursor:pointer;" onclick="goToSlide(${i})"></div>`,
+          )
+          .join("");
+        track.style.transform = `translateX(-${currentSlide * (100 + 4.5)}%)`;
+      }
+
+      function moveCarousel(dir) {
+        currentSlide = Math.max(
+          0,
+          Math.min(projects.length - 1, currentSlide + dir),
+        );
+        renderProjects();
+      }
+      function goToSlide(i) {
+        currentSlide = i;
+        renderProjects();
+      }
+
+      // Render tech marquee
+      function renderTech() {
+        const track = document.getElementById("techMarqueeTrack");
+
+        // Safely handle missing element
+        if (!track) {
+          console.log("Tech marquee element not found - skipping renderTech");
+          return;
+        }
+
+        const techHTML = techStack
+          .map((t) => `<span class="tech-item">${t}</span>`)
+          .join("");
+        // Duplicate for seamless loop
+        track.innerHTML = techHTML + techHTML;
+      }
+
+      // Render achievements with same logic as project marquee - vertical scroll
+      function renderComps() {
+        const scrollTrack = document.getElementById("achievementScrollTrack");
+
+        // Safely handle missing element
+        if (!scrollTrack) {
+          console.log(
+            "Achievement scroll track not found - skipping renderComps",
+          );
+          return;
+        }
+
+        // Generate achievement items - same structure as project marquee items
+        const achievementItems = competitions
+          .map(
+            (c, i) => `
+      <div class="achievement-item" onclick="openExpand('competitions')">
+        <div class="achievement-icon">
+          <i data-lucide="trophy" style="width: 18px; height: 18px"></i>
+        </div>
+        <div class="achievement-details">
+          <div class="achievement-name">${c.name}</div>
+          <div class="achievement-result">
+            <span>${c.result}</span>
+            <span class="achievement-year">${c.year}</span>
+          </div>
+        </div>
+      </div>
+    `,
+          )
+          .join("");
+
+        // Duplicate for seamless vertical scrolling loop - same logic as project marquee
+        scrollTrack.innerHTML = achievementItems + achievementItems;
+      }
+
+      function startAchievementMarquee() {
+        const track = document.getElementById("achievementScrollTrack");
+        if (!track) return;
+
+        const nested = track.closest(".achievement-nested-container");
+        if (!nested) return;
+
+        let paused = false;
+        let offsetY = 0;
+        let halfHeight = 0;
+        let rafId = 0;
+        let lastTs = 0;
+
+        const speedPxPerSecond = 5;
+
+        const recalc = () => {
+          // Since we duplicated the content, the seam is exactly at half the scroll height.
+          halfHeight = track.scrollHeight / 2;
+          offsetY = 0;
+          track.style.transform = "translate3d(0, 0, 0)";
+        };
+
+        const onMouseEnter = () => {
+          paused = true;
+        };
+        const onMouseLeave = () => {
+          paused = false;
+        };
+
+        // Avoid stacking listeners if this function is called multiple times.
+        nested.removeEventListener("mouseenter", onMouseEnter);
+        nested.removeEventListener("mouseleave", onMouseLeave);
+        nested.addEventListener("mouseenter", onMouseEnter);
+        nested.addEventListener("mouseleave", onMouseLeave);
+
+        const tick = (ts) => {
+          if (!lastTs) lastTs = ts;
+          const dt = ts - lastTs;
+          lastTs = ts;
+
+          if (!paused && halfHeight > 0) {
+            offsetY -= (speedPxPerSecond * dt) / 1000;
+
+            if (offsetY <= -halfHeight) {
+              // Jump by exactly one duplicated "page" to keep the loop seamless.
+              offsetY += halfHeight;
+            }
+
+            track.style.transform = `translate3d(0, ${offsetY}px, 0)`;
+          }
+
+          rafId = window.requestAnimationFrame(tick);
+        };
+
+        recalc();
+        window.addEventListener("resize", recalc);
+
+        rafId = window.requestAnimationFrame(tick);
+
+        // Expose for debugging (optional)
+        window.__achievementMarquee = { recalc, pause: () => (paused = true) };
+      }
+
+      // Expand system
+      function openExpand(type, idx) {
+        const body = document.getElementById("expandBody");
+        let html = "";
+        if (type === "gallery") {
+          html = `<div style="color:rgba(255,255,255,0.3);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;margin-bottom:20px;">GALLERY</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          ${[1, 2, 3, 4]
+            .map(
+              (
+                i,
+              ) => `<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:10px;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;">
+            <svg viewBox="0 0 200 150" style="width:80%;opacity:0.3;"><rect width="200" height="150" fill="rgba(255,255,255,0.02)"/><text x="100" y="80" text-anchor="middle" fill="rgba(255,255,255,0.2)" font-family="JetBrains Mono" font-size="10">IMG_0${i}</text></svg>
+          </div>`,
+            )
+            .join("")}
+        </div>`;
+        } else if (type === "project") {
+          const p = projects[idx];
+          html = `<div style="color:rgba(255,255,255,0.25);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;margin-bottom:8px;">${p.role.toUpperCase()}</div>
+        <h2 style="color:rgba(255,255,255,0.9);font-size:24px;font-weight:700;margin:0 0 12px 0;">${p.title}</h2>
+        <p style="color:rgba(255,255,255,0.5);font-size:14px;line-height:1.7;margin:0 0 20px 0;">${p.desc}</p>
+        <div class="flex flex-wrap gap-1.5">${p.tags.map((t) => `<span class="tag">${t}</span>`).join("")}</div>`;
+        } else if (type === "tech") {
+          html = `<div style="color:rgba(255,255,255,0.3);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;margin-bottom:20px;">FULL TECH STACK</div>
+        <div class="flex flex-wrap gap-2">${techStack.map((t) => `<span class="tag" style="font-size:13px;padding:6px 14px;">${t}</span>`).join("")}</div>`;
+        } else if (type === "competitions") {
+          html = `<div style="color:rgba(255,255,255,0.3);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;margin-bottom:20px;">ALL ACHIEVEMENTS</div>
+        ${competitions
+          .map(
+            (
+              c,
+            ) => `<div class="comp-entry flex items-center justify-between" style="padding:14px 0;">
+          <div><span style="color:rgba(255,255,255,0.8);font-size:15px;font-weight:500;">${c.name}</span><span style="color:rgba(255,255,255,0.25);font-size:12px;margin-left:10px;">${c.year}</span></div>
+          <span style="color:rgba(255,255,255,0.55);font-family:'JetBrains Mono',monospace;font-size:12px;">${c.result}</span>
+        </div>`,
+          )
+          .join("")}`;
+        }
+
+        // Safely update expand body
+        if (body) {
+          body.innerHTML = html;
+        }
+
+        const expandOverlay = document.getElementById("expandOverlay");
+        if (expandOverlay) {
+          expandOverlay.classList.add("active");
+        }
+
+        lucide.createIcons();
+      }
+
+      function closeExpand(e) {
+        const expandOverlay = document.getElementById("expandOverlay");
+        if (e && expandOverlay && e.target !== expandOverlay) return;
+        if (expandOverlay) {
+          expandOverlay.classList.remove("active");
+        }
+      }
+
+      // Default config
+      const defaultConfig = {
+        background_color: "#0a0a0a",
+        surface_color: "#121212",
+        text_color: "#ebebeb",
+        primary_action_color: "#ffffff",
+        secondary_action_color: "#666666",
+        font_family: "DM Sans",
+        font_size: 14,
+        developer_name: "Paul Calang",
+        developer_role: "Full-Stack Web Developer & QA Tester",
+        developer_bio:
+          "A detail-oriented developer focused on building reliable, user-friendly web applications with an emphasis on quality assurance and clean, maintainable code. Passionate about improving system performance, debugging complex issues, and delivering smooth user experiences from front-end to back-end.",
+        project_1_title: "Nexus Engine",
+        project_2_title: "Spectra UI",
+        project_3_title: "Vaultline",
+      };
+
+      function applyConfig(config) {
+        const c = { ...defaultConfig, ...config };
+
+        // Safely update DOM elements with null checks
+        const bodyElement = document.body;
+        if (bodyElement) {
+          // Keep the background image; only update the fallback color.
+          bodyElement.style.backgroundColor = c.background_color;
+        }
+
+        const devNameEl = document.getElementById("devName");
+        const devRoleEl = document.getElementById("devRole");
+        const devBioEl = document.getElementById("devBio");
+
+        if (devNameEl) {
+          devNameEl.textContent = c.developer_name;
+          devNameEl.style.color = c.text_color;
+          devNameEl.style.fontFamily = `${c.font_family}, DM Sans, sans-serif`;
+        }
+
+        if (devRoleEl) {
+          devRoleEl.textContent = c.developer_role;
+          devRoleEl.style.fontFamily = `JetBrains Mono, monospace`;
+        }
+
+        if (devBioEl) {
+          devBioEl.textContent = c.developer_bio;
+          devBioEl.style.fontFamily = `${c.font_family}, DM Sans, sans-serif`;
+          devBioEl.style.fontSize = `${c.font_size}px`;
+        }
+
+        if (c.project_1_title) projects[0].title = c.project_1_title;
+        if (c.project_2_title) projects[1].title = c.project_2_title;
+        if (c.project_3_title) projects[2].title = c.project_3_title;
+
+        // Re-render marquee with updated project titles
+        renderMarquee();
+      }
+
+      // Element SDK
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange: async (config) => {
+          applyConfig(config);
+        },
+        mapToCapabilities: (config) => ({
+          recolorables: [
+            {
+              get: () =>
+                config.background_color || defaultConfig.background_color,
+              set: (v) => {
+                config.background_color = v;
+                window.elementSdk.setConfig({ background_color: v });
+              },
+            },
+            {
+              get: () => config.surface_color || defaultConfig.surface_color,
+              set: (v) => {
+                config.surface_color = v;
+                window.elementSdk.setConfig({ surface_color: v });
+              },
+            },
+            {
+              get: () => config.text_color || defaultConfig.text_color,
+              set: (v) => {
+                config.text_color = v;
+                window.elementSdk.setConfig({ text_color: v });
+              },
+            },
+            {
+              get: () =>
+                config.primary_action_color ||
+                defaultConfig.primary_action_color,
+              set: (v) => {
+                config.primary_action_color = v;
+                window.elementSdk.setConfig({ primary_action_color: v });
+              },
+            },
+            {
+              get: () =>
+                config.secondary_action_color ||
+                defaultConfig.secondary_action_color,
+              set: (v) => {
+                config.secondary_action_color = v;
+                window.elementSdk.setConfig({ secondary_action_color: v });
+              },
+            },
+          ],
+          borderables: [],
+          fontEditable: {
+            get: () => config.font_family || defaultConfig.font_family,
+            set: (v) => {
+              config.font_family = v;
+              window.elementSdk.setConfig({ font_family: v });
+            },
+          },
+          fontSizeable: {
+            get: () => config.font_size || defaultConfig.font_size,
+            set: (v) => {
+              config.font_size = v;
+              window.elementSdk.setConfig({ font_size: v });
+            },
+          },
+        }),
+        mapToEditPanelValues: (config) =>
+          new Map([
+            [
+              "developer_name",
+              config.developer_name || defaultConfig.developer_name,
+            ],
+            [
+              "developer_role",
+              config.developer_role || defaultConfig.developer_role,
+            ],
+            [
+              "developer_bio",
+              config.developer_bio || defaultConfig.developer_bio,
+            ],
+            [
+              "project_1_title",
+              config.project_1_title || defaultConfig.project_1_title,
+            ],
+            [
+              "project_2_title",
+              config.project_2_title || defaultConfig.project_2_title,
+            ],
+            [
+              "project_3_title",
+              config.project_3_title || defaultConfig.project_3_title,
+            ],
+          ]),
+      });
+
+      // Initial render
+      renderMarquee();
+      renderTech();
+      renderComps();
+      lucide.createIcons();
+      startAchievementMarquee();
+
+      // Ensure background video starts (some browsers are picky even when muted)
+      const bgVideo = document.getElementById("bgVideo");
+      if (bgVideo) {
+        const tryPlay = async () => {
+          try {
+            await bgVideo.play();
+          } catch (e) {
+            console.log("Background video play() was blocked:", e);
+          }
+        };
+        setTimeout(tryPlay, 50);
+      }
+
+      // Keyboard close
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape")
+          document.getElementById("expandOverlay").classList.remove("active");
+      });
+    </script>
+  </body>
+</html>
