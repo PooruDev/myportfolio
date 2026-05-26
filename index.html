@@ -291,6 +291,636 @@
         border-radius: 2px;
       }
 
+      /* Identity overlay panel */
+      .identity-panel-backdrop {
+        position: fixed;
+        inset: 0;
+        z-index: 120;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        background: rgba(0, 0, 0, 0);
+        backdrop-filter: blur(0px);
+        opacity: 0;
+        pointer-events: none;
+        transition:
+          opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+          background 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+          backdrop-filter 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .identity-panel-backdrop.active {
+        background: rgba(0, 0, 0, 0.72);
+        backdrop-filter: blur(16px);
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .identity-panel-shell {
+        width: min(1120px, calc(100vw - 24px));
+        max-height: calc(100dvh - 24px);
+        overflow: hidden;
+        border-radius: 24px;
+        border: 1px solid rgba(255, 255, 255, 0.09);
+        background: rgba(17, 17, 17, 0.72);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+        backdrop-filter: blur(26px);
+        transform: translateY(16px) scale(0.98);
+        opacity: 0;
+        transition:
+          transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+          opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .identity-panel-backdrop.active .identity-panel-shell {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+      .identity-panel-scroll {
+        max-height: calc(100dvh - 24px);
+        overflow-y: auto;
+        overflow-x: hidden;
+      }
+      .identity-panel-header,
+      .identity-panel-section {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      .identity-panel-label {
+        color: rgba(255, 255, 255, 0.34);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 2.4px;
+        text-transform: uppercase;
+      }
+      .identity-panel-note {
+        color: rgba(255, 255, 255, 0.42);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+      .identity-close-btn,
+      .identity-chip-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.04);
+        color: rgba(255, 255, 255, 0.76);
+        backdrop-filter: blur(16px);
+        transition:
+          transform 0.2s ease,
+          background 0.2s ease,
+          border-color 0.2s ease,
+          color 0.2s ease;
+      }
+      .identity-close-btn:hover,
+      .identity-chip-btn:hover {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 255, 255, 0.14);
+        color: rgba(255, 255, 255, 0.94);
+        transform: translateY(-1px);
+      }
+      .identity-close-btn {
+        width: 38px;
+        height: 38px;
+        border-radius: 999px;
+        flex: 0 0 auto;
+      }
+      .identity-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+        gap: 24px;
+        align-items: center;
+      }
+      .identity-headline {
+        color: rgba(255, 255, 255, 0.94);
+        font-size: clamp(30px, 4vw, 54px);
+        line-height: 0.98;
+        font-weight: 700;
+        letter-spacing: -0.04em;
+        margin: 0;
+      }
+      .identity-body-copy {
+        color: rgba(255, 255, 255, 0.56);
+        font-size: 14px;
+        line-height: 1.8;
+        margin: 0;
+        max-width: 56ch;
+      }
+      .identity-profile-image {
+        width: min(100%, 360px);
+        aspect-ratio: 1 / 1;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background:
+          radial-gradient(
+            circle at 35% 30%,
+            rgba(255, 255, 255, 0.13),
+            transparent 55%
+          ),
+          rgba(255, 255, 255, 0.03);
+        overflow: hidden;
+        margin-left: auto;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+      }
+      .identity-profile-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .identity-section-title {
+        color: rgba(255, 255, 255, 0.82);
+        font-size: 16px;
+        font-weight: 600;
+        margin: 0 0 16px 0;
+        letter-spacing: -0.02em;
+      }
+      .identity-card-shell {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 18px;
+        backdrop-filter: blur(18px);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+      }
+      .identity-profile-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+      .identity-profile-card {
+        min-height: 84px;
+        padding: 16px;
+        border-radius: 18px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .identity-platform-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 999px;
+        flex: 0 0 auto;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        color: rgba(255, 255, 255, 0.8);
+      }
+      .identity-card-meta {
+        min-width: 0;
+        flex: 1 1 auto;
+      }
+      .identity-card-name {
+        color: rgba(255, 255, 255, 0.92);
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.2;
+        margin: 0 0 4px 0;
+      }
+      .identity-card-id {
+        color: rgba(255, 255, 255, 0.42);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        line-height: 1.3;
+        margin: 0;
+        overflow-wrap: anywhere;
+      }
+      .identity-action-btn {
+        flex: 0 0 auto;
+        min-width: 70px;
+        height: 34px;
+        padding: 0 14px;
+        border-radius: 999px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        cursor: pointer;
+      }
+      .identity-list-card {
+        padding: 18px 18px 8px;
+      }
+      .identity-row-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+      .identity-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 16px;
+        align-items: start;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      .identity-row:last-child {
+        border-bottom: 0;
+      }
+      .identity-row-title {
+        color: rgba(255, 255, 255, 0.88);
+        font-size: 14px;
+        line-height: 1.35;
+        margin: 0;
+      }
+      .identity-row-date {
+        color: rgba(255, 255, 255, 0.42);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        line-height: 1.35;
+        white-space: nowrap;
+      }
+      .identity-pill-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .identity-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 42px;
+        padding: 10px 14px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        background: rgba(255, 255, 255, 0.035);
+        color: rgba(255, 255, 255, 0.86);
+      }
+      .identity-pill strong {
+        font-size: 13px;
+        font-weight: 600;
+      }
+      .identity-pill span {
+        color: rgba(255, 255, 255, 0.48);
+        font-size: 12px;
+      }
+      .identity-banner {
+        width: 100%;
+        aspect-ratio: 16 / 4;
+        border-radius: 20px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        background: rgba(255, 255, 255, 0.03);
+      }
+      .identity-banner img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .identity-expanded-view {
+        display: none;
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow: hidden;
+      }
+      .portfolio-card.identity-expanded #topRow,
+      .portfolio-card.identity-expanded #bottomRow {
+        display: none !important;
+      }
+      .portfolio-card.identity-expanded .identity-expanded-view {
+        display: flex;
+      }
+      .identity-expanded-shell {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 auto;
+        min-height: 0;
+        height: 100%;
+        overflow: hidden;
+        border-radius: 24px;
+        border: 1px solid rgba(255, 255, 255, 0.09);
+        background: rgba(17, 17, 17, 0.42);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+        backdrop-filter: blur(26px);
+      }
+      .identity-expanded-scroll {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
+        scrollbar-gutter: stable;
+      }
+
+      .portfolio-card.identity-expanded {
+        height: calc(100dvh - 24px);
+        max-height: calc(100dvh - 24px);
+      }
+
+      .portfolio-card.identity-expanded .identity-expanded-view {
+        display: flex;
+      }
+
+      .page-shell > .identity-expanded-view {
+        display: none !important;
+      }
+
+      .identity-expanded-view {
+        display: none;
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow: hidden;
+      }
+
+      .identity-expanded-shell {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 auto;
+        min-height: 0;
+        height: 100%;
+        overflow: hidden;
+        border-radius: 24px;
+        border: 1px solid rgba(255, 255, 255, 0.09);
+        background: rgba(17, 17, 17, 0.42);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+        backdrop-filter: blur(26px);
+      }
+
+      .identity-panel-header {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        background: linear-gradient(
+          180deg,
+          rgba(17, 17, 17, 0.92) 0%,
+          rgba(17, 17, 17, 0.82) 100%
+        );
+        backdrop-filter: blur(18px);
+      }
+
+      .identity-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+        gap: 24px;
+        align-items: center;
+      }
+
+      .identity-profile-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .identity-banner {
+        width: 100%;
+        aspect-ratio: 16 / 4;
+        border-radius: 20px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      .page-shell {
+        min-height: 100dvh;
+      }
+
+      .portfolio-card {
+        min-width: 0;
+      }
+
+      @media (max-width: 1024px) {
+        .identity-panel-backdrop {
+          padding: 12px;
+        }
+
+        .identity-panel-shell {
+          width: min(1120px, calc(100vw - 16px));
+          max-height: calc(100dvh - 16px);
+          border-radius: 20px;
+        }
+
+        .identity-panel-header {
+          padding: 16px 18px 14px !important;
+        }
+
+        .identity-grid {
+          gap: 18px;
+        }
+
+        .identity-profile-image {
+          width: min(100%, 280px);
+        }
+
+        .identity-profile-card {
+          padding: 14px;
+          gap: 12px;
+          min-height: 76px;
+        }
+
+        .identity-profile-grid {
+          gap: 10px;
+        }
+
+        .identity-banner {
+          aspect-ratio: 16 / 4.6;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .portfolio-card.identity-expanded {
+          height: calc(100dvh - 16px);
+          max-height: calc(100dvh - 16px);
+        }
+
+        .identity-profile-image {
+          display: none;
+        }
+
+        .identity-panel-header {
+          padding: 14px 16px 12px !important;
+        }
+
+        .identity-panel-note {
+          font-size: 11px;
+          line-height: 1.4;
+        }
+
+        .identity-close-btn {
+          width: 42px;
+          height: 42px;
+        }
+
+        .identity-grid {
+          grid-template-columns: 1fr;
+          gap: 16px;
+          align-items: start;
+        }
+
+        .identity-headline {
+          font-size: clamp(24px, 5.8vw, 36px);
+          line-height: 1.06;
+        }
+
+        .identity-body-copy {
+          font-size: 13px;
+          line-height: 1.72;
+          max-width: none;
+        }
+
+        .identity-profile-image {
+          width: min(72vw, 260px);
+          margin-left: 0;
+        }
+
+        .identity-profile-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .identity-profile-card {
+          min-height: 72px;
+          padding: 12px;
+        }
+
+        .identity-action-btn {
+          min-width: 64px;
+          height: 32px;
+          padding: 0 12px;
+        }
+
+        .identity-row {
+          gap: 12px;
+          padding: 10px 0;
+        }
+
+        .identity-row-title {
+          font-size: 13px;
+          line-height: 1.45;
+        }
+
+        .identity-banner {
+          aspect-ratio: 16 / 5.2;
+          border-radius: 16px;
+        }
+
+        .identity-pill-row {
+          gap: 8px;
+        }
+
+        .identity-pill {
+          min-height: 38px;
+          padding: 9px 12px;
+          gap: 6px;
+        }
+
+        .identity-pill strong {
+          font-size: 12px;
+        }
+
+        .identity-pill span {
+          font-size: 11px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .portfolio-card.identity-expanded {
+          height: calc(100dvh - 12px);
+          max-height: calc(100dvh - 12px);
+          border-radius: 18px;
+        }
+
+        .identity-panel-backdrop {
+          padding: 6px;
+        }
+
+        .identity-panel-shell {
+          width: calc(100vw - 12px);
+          max-height: calc(100dvh - 12px);
+          border-radius: 18px;
+        }
+
+        .identity-panel-header {
+          padding: 12px 12px 10px !important;
+        }
+
+        .identity-panel-label {
+          font-size: 9px;
+          letter-spacing: 2px;
+        }
+
+        .identity-panel-note {
+          font-size: 10px;
+        }
+
+        .identity-grid {
+          gap: 14px;
+        }
+
+        .identity-headline {
+          font-size: clamp(22px, 8vw, 30px);
+        }
+
+        .identity-body-copy {
+          font-size: 12px;
+          line-height: 1.65;
+        }
+
+        .identity-profile-image {
+          width: min(78vw, 230px);
+        }
+
+        .identity-profile-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .identity-profile-card {
+          min-height: 68px;
+          padding: 12px;
+        }
+
+        .identity-platform-icon {
+          width: 36px;
+          height: 36px;
+        }
+
+        .identity-card-name {
+          font-size: 13px;
+        }
+
+        .identity-card-id {
+          font-size: 10px;
+        }
+
+        .identity-list-card {
+          padding: 14px 14px 6px;
+        }
+
+        .identity-row {
+          grid-template-columns: 1fr;
+          gap: 6px;
+        }
+
+        .identity-row-date {
+          white-space: normal;
+        }
+
+        .identity-pill {
+          width: 100%;
+          justify-content: space-between;
+          flex-wrap: wrap;
+        }
+
+        .identity-banner {
+          aspect-ratio: 16 / 6;
+          border-radius: 14px;
+        }
+      }
+
+      @media (max-height: 820px) {
+        .identity-panel-shell {
+          align-self: stretch;
+        }
+
+        .identity-panel-header {
+          padding-top: 12px !important;
+          padding-bottom: 10px !important;
+        }
+
+        .identity-body-copy {
+          line-height: 1.6;
+        }
+
+        .identity-banner {
+          aspect-ratio: 16 / 6;
+        }
+      }
+
       /* Responsive Design: mobile-first, fluid cards, no fixed-height compression */
       .page-shell {
         min-height: 100dvh;
@@ -960,13 +1590,14 @@
           <!-- About / Portfolio Sub-Card (right, full height) -->
           <div
             id="identityCard"
-            class="glass-card rounded-xl p-5 flex items-stretch"
+            class="glass-card rounded-xl p-5 flex items-stretch cursor-pointer"
             style="
               flex: 1 1 60%;
               min-height: 0;
               position: relative;
               min-width: 0;
             "
+            onclick="openIdentityExpanded()"
           >
             <div style="flex: 1; margin-right: 20px">
               <div
@@ -1074,8 +1705,1122 @@
             </div>
           </div>
         </div>
+        <div class="identity-expanded-view">
+          <div class="identity-expanded-shell">
+            <div class="identity-expanded-scroll">
+              <div
+                class="identity-panel-header"
+                style="padding: 18px 22px 16px"
+              >
+                <div
+                  style="
+                    display: flex;
+                    align-items: flex-start;
+                    justify-content: space-between;
+                    gap: 16px;
+                  "
+                >
+                  <div style="min-width: 0">
+                    <div class="identity-panel-label">PORTFOLIO</div>
+                    <div class="identity-panel-note" style="margin-top: 8px">
+                      Press Esc or use the close button to exit
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    class="identity-close-btn"
+                    aria-label="Close identity panel"
+                    onclick="closeIdentityExpanded()"
+                  >
+                    <i data-lucide="x" style="width: 18px; height: 18px"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div style="padding: 22px">
+                <div class="identity-grid" style="padding-bottom: 24px">
+                  <div>
+                    <h2 class="identity-headline">
+                      Leadership, identity, and execution across systems,
+                      speaking, and long-term technical interests.
+                    </h2>
+                    <p class="identity-body-copy" style="margin-top: 18px">
+                      I build reliable interfaces, lead with precision, and
+                      communicate clearly across technical and collaborative
+                      settings. My focus spans delivery, speaking, QA, and the
+                      kind of systems work that compounds over time.
+                    </p>
+                  </div>
+                  <div style="display: flex; justify-content: center">
+                    <div class="identity-profile-image">
+                      <img
+                        src="resources/photo/profile.png"
+                        alt="Paul Calang profile portrait"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 22px">
+                  <section>
+                    <div
+                      class="identity-panel-label"
+                      style="margin-bottom: 14px"
+                    >
+                      PROFILES
+                    </div>
+                    <div class="identity-card-shell" style="padding: 14px">
+                      <div class="identity-profile-grid">
+                        <div
+                          class="identity-profile-card identity-card-shell"
+                          onclick="openIdentityLink('https://github.com/')"
+                        >
+                          <span class="identity-platform-icon"
+                            ><i
+                              data-lucide="github"
+                              style="width: 18px; height: 18px"
+                            ></i
+                          ></span>
+                          <div class="identity-card-meta">
+                            <p class="identity-card-name">GitHub</p>
+                            <p class="identity-card-id">@paulcalang</p>
+                          </div>
+                          <button
+                            type="button"
+                            class="identity-action-btn"
+                            onclick="openIdentityLink('https://github.com/')"
+                          >
+                            OPEN
+                          </button>
+                        </div>
+                        <div
+                          class="identity-profile-card identity-card-shell"
+                          onclick="
+                            openIdentityLink('https://www.linkedin.com/')
+                          "
+                        >
+                          <span class="identity-platform-icon"
+                            ><i
+                              data-lucide="linkedin"
+                              style="width: 18px; height: 18px"
+                            ></i
+                          ></span>
+                          <div class="identity-card-meta">
+                            <p class="identity-card-name">LinkedIn</p>
+                            <p class="identity-card-id">Paul Calang</p>
+                          </div>
+                          <button
+                            type="button"
+                            class="identity-action-btn"
+                            onclick="
+                              openIdentityLink('https://www.linkedin.com/')
+                            "
+                          >
+                            OPEN
+                          </button>
+                        </div>
+                        <div
+                          class="identity-profile-card identity-card-shell"
+                          onclick="copyIdentityValue('paulcalang#0001')"
+                        >
+                          <span class="identity-platform-icon"
+                            ><i
+                              data-lucide="discord"
+                              style="width: 18px; height: 18px"
+                            ></i
+                          ></span>
+                          <div class="identity-card-meta">
+                            <p class="identity-card-name">Discord</p>
+                            <p class="identity-card-id">paulcalang#0001</p>
+                          </div>
+                          <button
+                            type="button"
+                            class="identity-action-btn"
+                            onclick="copyIdentityValue('paulcalang#0001')"
+                          >
+                            COPY
+                          </button>
+                        </div>
+                        <div
+                          class="identity-profile-card identity-card-shell"
+                          onclick="copyIdentityValue('paul.calang@proton.me')"
+                        >
+                          <span class="identity-platform-icon"
+                            ><i
+                              data-lucide="mail"
+                              style="width: 18px; height: 18px"
+                            ></i
+                          ></span>
+                          <div class="identity-card-meta">
+                            <p class="identity-card-name">Proton Mail</p>
+                            <p class="identity-card-id">
+                              paul.calang@proton.me
+                            </p>
+                          </div>
+                          <button
+                            type="button"
+                            class="identity-action-btn"
+                            onclick="copyIdentityValue('paul.calang@proton.me')"
+                          >
+                            COPY
+                          </button>
+                        </div>
+                        <div
+                          class="identity-profile-card identity-card-shell"
+                          onclick="
+                            openIdentityLink('https://www.instagram.com/')
+                          "
+                        >
+                          <span class="identity-platform-icon"
+                            ><i
+                              data-lucide="instagram"
+                              style="width: 18px; height: 18px"
+                            ></i
+                          ></span>
+                          <div class="identity-card-meta">
+                            <p class="identity-card-name">Instagram</p>
+                            <p class="identity-card-id">@paulcalang</p>
+                          </div>
+                          <button
+                            type="button"
+                            class="identity-action-btn"
+                            onclick="
+                              openIdentityLink('https://www.instagram.com/')
+                            "
+                          >
+                            OPEN
+                          </button>
+                        </div>
+                        <div
+                          class="identity-profile-card identity-card-shell"
+                          onclick="
+                            openIdentityLink('https://www.facebook.com/')
+                          "
+                        >
+                          <span class="identity-platform-icon"
+                            ><i
+                              data-lucide="facebook"
+                              style="width: 18px; height: 18px"
+                            ></i
+                          ></span>
+                          <div class="identity-card-meta">
+                            <p class="identity-card-name">Facebook</p>
+                            <p class="identity-card-id">Paul Calang</p>
+                          </div>
+                          <button
+                            type="button"
+                            class="identity-action-btn"
+                            onclick="
+                              openIdentityLink('https://www.facebook.com/')
+                            "
+                          >
+                            OPEN
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+
+                  <section
+                    class="identity-grid"
+                    style="align-items: start; gap: 18px"
+                  >
+                    <div>
+                      <div
+                        class="identity-panel-label"
+                        style="margin-bottom: 14px"
+                      >
+                        SCHOLARSHIPS & HONORS
+                      </div>
+                      <div class="identity-card-shell identity-list-card">
+                        <div class="identity-row-list">
+                          <div class="identity-row">
+                            <p class="identity-row-title">
+                              Academic Excellence Scholarship
+                            </p>
+                            <div class="identity-row-date">2024</div>
+                          </div>
+                          <div class="identity-row">
+                            <p class="identity-row-title">
+                              Dean’s List Recognition
+                            </p>
+                            <div class="identity-row-date">2023</div>
+                          </div>
+                          <div class="identity-row">
+                            <p class="identity-row-title">
+                              Department Merit Award
+                            </p>
+                            <div class="identity-row-date">2022</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <div
+                        class="identity-panel-label"
+                        style="margin-bottom: 14px"
+                      >
+                        LIGHTNING TALKS
+                      </div>
+                      <div class="identity-card-shell identity-list-card">
+                        <div class="identity-row-list">
+                          <div class="identity-row">
+                            <p class="identity-row-title">
+                              Building Reliable Systems for Fast Teams
+                            </p>
+                            <div class="identity-row-date">2024</div>
+                          </div>
+                          <div class="identity-row">
+                            <p class="identity-row-title">
+                              QA as a Product Discipline
+                            </p>
+                            <div class="identity-row-date">2023</div>
+                          </div>
+                          <div class="identity-row">
+                            <p class="identity-row-title">
+                              Monochrome Interfaces, Clearer Workflow
+                            </p>
+                            <div class="identity-row-date">2023</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+
+                  <section>
+                    <div
+                      class="identity-panel-label"
+                      style="margin-bottom: 14px"
+                    >
+                      ORGANIZATIONS
+                    </div>
+                    <div class="identity-card-shell" style="padding: 16px">
+                      <div class="identity-pill-row">
+                        <div class="identity-pill">
+                          <strong>IEEE Student Branch</strong
+                          ><span>Member</span>
+                        </div>
+                        <div class="identity-pill">
+                          <strong>ACM Community</strong><span>Contributor</span>
+                        </div>
+                        <div class="identity-pill">
+                          <strong>Linux User Group</strong
+                          ><span>Technical Volunteer</span>
+                        </div>
+                        <div class="identity-pill">
+                          <strong>Systems Study Circle</strong
+                          ><span>Organizer</span>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+
+                  <section>
+                    <div
+                      class="identity-panel-label"
+                      style="margin-bottom: 14px"
+                    >
+                      LANGUAGES
+                    </div>
+                    <div class="identity-card-shell" style="padding: 16px">
+                      <div class="identity-pill-row">
+                        <div class="identity-pill">
+                          <strong>English</strong><span>Fluent</span>
+                        </div>
+                        <div class="identity-pill">
+                          <strong>Filipino</strong><span>Fluent</span>
+                        </div>
+                        <div class="identity-pill">
+                          <strong>Spanish</strong><span>Beginner</span>
+                        </div>
+                        <div class="identity-pill">
+                          <strong>Japanese</strong><span>Beginner</span>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+
+                  <section>
+                    <div
+                      class="identity-panel-label"
+                      style="margin-bottom: 14px"
+                    >
+                      INTERESTS
+                    </div>
+                    <div class="identity-card-shell" style="padding: 16px">
+                      <div class="identity-pill-row">
+                        <div class="identity-pill">
+                          <strong>Network Technology</strong>
+                        </div>
+                        <div class="identity-pill">
+                          <strong>Systems Automation & Security</strong>
+                        </div>
+                        <div class="identity-pill">
+                          <strong>Operations Security</strong>
+                        </div>
+                        <div class="identity-pill">
+                          <strong>Linux Customization</strong>
+                        </div>
+                        <div class="identity-pill">
+                          <strong>Performance Tuning</strong>
+                        </div>
+                        <div class="identity-pill">
+                          <strong>Technical Competitions</strong>
+                        </div>
+                        <div class="identity-pill">
+                          <strong>Seminars</strong>
+                        </div>
+                        <div class="identity-pill">
+                          <strong>140 WPM Typing</strong>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+
+                  <section>
+                    <div class="identity-banner">
+                      <img
+                        src="resources/photo/banner.png"
+                        alt="Identity banner"
+                      />
+                    </div>
+                  </section>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="identity-expanded-view">
+        <div class="identity-expanded-shell">
+          <div class="identity-expanded-scroll">
+            <div class="identity-panel-header" style="padding: 18px 22px 16px">
+              <div
+                style="
+                  display: flex;
+                  align-items: flex-start;
+                  justify-content: space-between;
+                  gap: 16px;
+                "
+              >
+                <div style="min-width: 0">
+                  <div class="identity-panel-label">PORTFOLIO</div>
+                  <div class="identity-panel-note" style="margin-top: 8px">
+                    Press Esc or use the close button to exit
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  class="identity-close-btn"
+                  aria-label="Close identity panel"
+                  onclick="closeIdentityExpanded()"
+                >
+                  <i data-lucide="x" style="width: 18px; height: 18px"></i>
+                </button>
+              </div>
+            </div>
+
+            <div style="padding: 22px">
+              <div class="identity-grid" style="padding-bottom: 24px">
+                <div>
+                  <h2 class="identity-headline">
+                    Leadership, identity, and execution across systems,
+                    speaking, and long-term technical interests.
+                  </h2>
+                  <p class="identity-body-copy" style="margin-top: 18px">
+                    I build reliable interfaces, lead with precision, and
+                    communicate clearly across technical and collaborative
+                    settings. My focus spans delivery, speaking, QA, and the
+                    kind of systems work that compounds over time.
+                  </p>
+                </div>
+                <div style="display: flex; justify-content: center">
+                  <div class="identity-profile-image">
+                    <img
+                      src="resources/photo/profile.png"
+                      alt="Paul Calang profile portrait"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div style="display: flex; flex-direction: column; gap: 22px">
+                <section>
+                  <div class="identity-panel-label" style="margin-bottom: 14px">
+                    PROFILES
+                  </div>
+                  <div class="identity-card-shell" style="padding: 14px">
+                    <div class="identity-profile-grid">
+                      <div
+                        class="identity-profile-card identity-card-shell"
+                        onclick="openIdentityLink('https://github.com/')"
+                      >
+                        <span class="identity-platform-icon"
+                          ><i
+                            data-lucide="github"
+                            style="width: 18px; height: 18px"
+                          ></i
+                        ></span>
+                        <div class="identity-card-meta">
+                          <p class="identity-card-name">GitHub</p>
+                          <p class="identity-card-id">@paulcalang</p>
+                        </div>
+                        <button
+                          type="button"
+                          class="identity-action-btn"
+                          onclick="openIdentityLink('https://github.com/')"
+                        >
+                          OPEN
+                        </button>
+                      </div>
+                      <div
+                        class="identity-profile-card identity-card-shell"
+                        onclick="openIdentityLink('https://www.linkedin.com/')"
+                      >
+                        <span class="identity-platform-icon"
+                          ><i
+                            data-lucide="linkedin"
+                            style="width: 18px; height: 18px"
+                          ></i
+                        ></span>
+                        <div class="identity-card-meta">
+                          <p class="identity-card-name">LinkedIn</p>
+                          <p class="identity-card-id">Paul Calang</p>
+                        </div>
+                        <button
+                          type="button"
+                          class="identity-action-btn"
+                          onclick="
+                            openIdentityLink('https://www.linkedin.com/')
+                          "
+                        >
+                          OPEN
+                        </button>
+                      </div>
+                      <div
+                        class="identity-profile-card identity-card-shell"
+                        onclick="copyIdentityValue('paulcalang#0001')"
+                      >
+                        <span class="identity-platform-icon"
+                          ><i
+                            data-lucide="discord"
+                            style="width: 18px; height: 18px"
+                          ></i
+                        ></span>
+                        <div class="identity-card-meta">
+                          <p class="identity-card-name">Discord</p>
+                          <p class="identity-card-id">paulcalang#0001</p>
+                        </div>
+                        <button
+                          type="button"
+                          class="identity-action-btn"
+                          onclick="copyIdentityValue('paulcalang#0001')"
+                        >
+                          COPY
+                        </button>
+                      </div>
+                      <div
+                        class="identity-profile-card identity-card-shell"
+                        onclick="copyIdentityValue('paul.calang@proton.me')"
+                      >
+                        <span class="identity-platform-icon"
+                          ><i
+                            data-lucide="mail"
+                            style="width: 18px; height: 18px"
+                          ></i
+                        ></span>
+                        <div class="identity-card-meta">
+                          <p class="identity-card-name">Proton Mail</p>
+                          <p class="identity-card-id">paul.calang@proton.me</p>
+                        </div>
+                        <button
+                          type="button"
+                          class="identity-action-btn"
+                          onclick="copyIdentityValue('paul.calang@proton.me')"
+                        >
+                          COPY
+                        </button>
+                      </div>
+                      <div
+                        class="identity-profile-card identity-card-shell"
+                        onclick="openIdentityLink('https://www.instagram.com/')"
+                      >
+                        <span class="identity-platform-icon"
+                          ><i
+                            data-lucide="instagram"
+                            style="width: 18px; height: 18px"
+                          ></i
+                        ></span>
+                        <div class="identity-card-meta">
+                          <p class="identity-card-name">Instagram</p>
+                          <p class="identity-card-id">@paulcalang</p>
+                        </div>
+                        <button
+                          type="button"
+                          class="identity-action-btn"
+                          onclick="
+                            openIdentityLink('https://www.instagram.com/')
+                          "
+                        >
+                          OPEN
+                        </button>
+                      </div>
+                      <div
+                        class="identity-profile-card identity-card-shell"
+                        onclick="openIdentityLink('https://www.facebook.com/')"
+                      >
+                        <span class="identity-platform-icon"
+                          ><i
+                            data-lucide="facebook"
+                            style="width: 18px; height: 18px"
+                          ></i
+                        ></span>
+                        <div class="identity-card-meta">
+                          <p class="identity-card-name">Facebook</p>
+                          <p class="identity-card-id">Paul Calang</p>
+                        </div>
+                        <button
+                          type="button"
+                          class="identity-action-btn"
+                          onclick="
+                            openIdentityLink('https://www.facebook.com/')
+                          "
+                        >
+                          OPEN
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+
+                <section
+                  class="identity-grid"
+                  style="align-items: start; gap: 18px"
+                >
+                  <div>
+                    <div
+                      class="identity-panel-label"
+                      style="margin-bottom: 14px"
+                    >
+                      SCHOLARSHIPS & HONORS
+                    </div>
+                    <div class="identity-card-shell identity-list-card">
+                      <div class="identity-row-list">
+                        <div class="identity-row">
+                          <p class="identity-row-title">
+                            Academic Excellence Scholarship
+                          </p>
+                          <div class="identity-row-date">2024</div>
+                        </div>
+                        <div class="identity-row">
+                          <p class="identity-row-title">
+                            Dean’s List Recognition
+                          </p>
+                          <div class="identity-row-date">2023</div>
+                        </div>
+                        <div class="identity-row">
+                          <p class="identity-row-title">
+                            Department Merit Award
+                          </p>
+                          <div class="identity-row-date">2022</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div
+                      class="identity-panel-label"
+                      style="margin-bottom: 14px"
+                    >
+                      LIGHTNING TALKS
+                    </div>
+                    <div class="identity-card-shell identity-list-card">
+                      <div class="identity-row-list">
+                        <div class="identity-row">
+                          <p class="identity-row-title">
+                            Building Reliable Systems for Fast Teams
+                          </p>
+                          <div class="identity-row-date">2024</div>
+                        </div>
+                        <div class="identity-row">
+                          <p class="identity-row-title">
+                            QA as a Product Discipline
+                          </p>
+                          <div class="identity-row-date">2023</div>
+                        </div>
+                        <div class="identity-row">
+                          <p class="identity-row-title">
+                            Monochrome Interfaces, Clearer Workflow
+                          </p>
+                          <div class="identity-row-date">2023</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+
+                <section>
+                  <div class="identity-panel-label" style="margin-bottom: 14px">
+                    ORGANIZATIONS
+                  </div>
+                  <div class="identity-card-shell" style="padding: 16px">
+                    <div class="identity-pill-row">
+                      <div class="identity-pill">
+                        <strong>IEEE Student Branch</strong><span>Member</span>
+                      </div>
+                      <div class="identity-pill">
+                        <strong>ACM Community</strong><span>Contributor</span>
+                      </div>
+                      <div class="identity-pill">
+                        <strong>Linux User Group</strong
+                        ><span>Technical Volunteer</span>
+                      </div>
+                      <div class="identity-pill">
+                        <strong>Systems Study Circle</strong
+                        ><span>Organizer</span>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+
+                <section>
+                  <div class="identity-panel-label" style="margin-bottom: 14px">
+                    LANGUAGES
+                  </div>
+                  <div class="identity-card-shell" style="padding: 16px">
+                    <div class="identity-pill-row">
+                      <div class="identity-pill">
+                        <strong>English</strong><span>Fluent</span>
+                      </div>
+                      <div class="identity-pill">
+                        <strong>Filipino</strong><span>Fluent</span>
+                      </div>
+                      <div class="identity-pill">
+                        <strong>Spanish</strong><span>Beginner</span>
+                      </div>
+                      <div class="identity-pill">
+                        <strong>Japanese</strong><span>Beginner</span>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+
+                <section>
+                  <div class="identity-panel-label" style="margin-bottom: 14px">
+                    INTERESTS
+                  </div>
+                  <div class="identity-card-shell" style="padding: 16px">
+                    <div class="identity-pill-row">
+                      <div class="identity-pill">
+                        <strong>Network Technology</strong>
+                      </div>
+                      <div class="identity-pill">
+                        <strong>Systems Automation & Security</strong>
+                      </div>
+                      <div class="identity-pill">
+                        <strong>Network Analysis</strong>
+                      </div>
+                      <div class="identity-pill">
+                        <strong>Operations Security</strong>
+                      </div>
+                      <div class="identity-pill">
+                        <strong>Linux Customization</strong>
+                      </div>
+                      <div class="identity-pill">
+                        <strong>Performance Tuning</strong>
+                      </div>
+                      <div class="identity-pill">
+                        <strong>Technical Competitions</strong>
+                      </div>
+                      <div class="identity-pill"><strong>Seminars</strong></div>
+                      <div class="identity-pill">
+                        <strong>140 WPM Typing</strong>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+
+                <section>
+                  <div class="identity-banner">
+                    <img
+                      src="resources/photo/banner.png"
+                      alt="Identity banner"
+                    />
+                  </div>
+                </section>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+    <!-- Identity Overlay -->
+    <div
+      id="identityOverlay"
+      class="identity-panel-backdrop"
+      style="display: none !important"
+      onclick="closeIdentityOverlay(event)"
+    >
+      <div class="identity-panel-shell" onclick="event.stopPropagation()">
+        <div class="identity-panel-scroll">
+          <div class="identity-panel-header" style="padding: 18px 22px 16px">
+            <div
+              style="
+                display: flex;
+                align-items: flex-start;
+                justify-content: space-between;
+                gap: 16px;
+              "
+            >
+              <div style="min-width: 0">
+                <div class="identity-panel-label">PORTFOLIO</div>
+                <div class="identity-panel-note" style="margin-top: 8px">
+                  Press Esc or use the close button to exit
+                </div>
+              </div>
+              <button
+                type="button"
+                class="identity-close-btn"
+                aria-label="Close identity panel"
+                onclick="closeIdentityOverlay()"
+              >
+                <i data-lucide="x" style="width: 18px; height: 18px"></i>
+              </button>
+            </div>
+          </div>
+
+          <div style="padding: 22px">
+            <div class="identity-grid" style="padding-bottom: 24px">
+              <div>
+                <h2 class="identity-headline">
+                  Leadership, identity, and execution across systems, speaking,
+                  and long-term technical interests.
+                </h2>
+                <p class="identity-body-copy" style="margin-top: 18px">
+                  I build reliable interfaces, lead with precision, and
+                  communicate clearly across technical and collaborative
+                  settings. My focus spans delivery, speaking, QA, and the kind
+                  of systems work that compounds over time.
+                </p>
+              </div>
+              <div style="display: flex; justify-content: center">
+                <div class="identity-profile-image">
+                  <img
+                    src="resources/photo/profile.png"
+                    alt="Paul Calang profile portrait"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 22px">
+              <section>
+                <div class="identity-panel-label" style="margin-bottom: 14px">
+                  PROFILES
+                </div>
+                <div class="identity-card-shell" style="padding: 14px">
+                  <div class="identity-profile-grid">
+                    <div
+                      class="identity-profile-card identity-card-shell"
+                      onclick="openIdentityLink('https://github.com/')"
+                    >
+                      <span class="identity-platform-icon">
+                        <i
+                          data-lucide="github"
+                          style="width: 18px; height: 18px"
+                        ></i>
+                      </span>
+                      <div class="identity-card-meta">
+                        <p class="identity-card-name">GitHub</p>
+                        <p class="identity-card-id">@paulcalang</p>
+                      </div>
+                      <button
+                        type="button"
+                        class="identity-action-btn"
+                        onclick="openIdentityLink('https://github.com/')"
+                      >
+                        OPEN
+                      </button>
+                    </div>
+
+                    <div
+                      class="identity-profile-card identity-card-shell"
+                      onclick="openIdentityLink('https://www.linkedin.com/')"
+                    >
+                      <span class="identity-platform-icon">
+                        <i
+                          data-lucide="linkedin"
+                          style="width: 18px; height: 18px"
+                        ></i>
+                      </span>
+                      <div class="identity-card-meta">
+                        <p class="identity-card-name">LinkedIn</p>
+                        <p class="identity-card-id">Paul Calang</p>
+                      </div>
+                      <button
+                        type="button"
+                        class="identity-action-btn"
+                        onclick="openIdentityLink('https://www.linkedin.com/')"
+                      >
+                        OPEN
+                      </button>
+                    </div>
+
+                    <div
+                      class="identity-profile-card identity-card-shell"
+                      onclick="copyIdentityValue('paulcalang#0001')"
+                    >
+                      <span class="identity-platform-icon">
+                        <i
+                          data-lucide="discord"
+                          style="width: 18px; height: 18px"
+                        ></i>
+                      </span>
+                      <div class="identity-card-meta">
+                        <p class="identity-card-name">Discord</p>
+                        <p class="identity-card-id">paulcalang#0001</p>
+                      </div>
+                      <button
+                        type="button"
+                        class="identity-action-btn"
+                        onclick="copyIdentityValue('paulcalang#0001')"
+                      >
+                        COPY
+                      </button>
+                    </div>
+
+                    <div
+                      class="identity-profile-card identity-card-shell"
+                      onclick="copyIdentityValue('paul.calang@proton.me')"
+                    >
+                      <span class="identity-platform-icon">
+                        <i
+                          data-lucide="mail"
+                          style="width: 18px; height: 18px"
+                        ></i>
+                      </span>
+                      <div class="identity-card-meta">
+                        <p class="identity-card-name">Proton Mail</p>
+                        <p class="identity-card-id">paul.calang@proton.me</p>
+                      </div>
+                      <button
+                        type="button"
+                        class="identity-action-btn"
+                        onclick="copyIdentityValue('paul.calang@proton.me')"
+                      >
+                        COPY
+                      </button>
+                    </div>
+
+                    <div
+                      class="identity-profile-card identity-card-shell"
+                      onclick="openIdentityLink('https://www.instagram.com/')"
+                    >
+                      <span class="identity-platform-icon">
+                        <i
+                          data-lucide="instagram"
+                          style="width: 18px; height: 18px"
+                        ></i>
+                      </span>
+                      <div class="identity-card-meta">
+                        <p class="identity-card-name">Instagram</p>
+                        <p class="identity-card-id">@paulcalang</p>
+                      </div>
+                      <button
+                        type="button"
+                        class="identity-action-btn"
+                        onclick="openIdentityLink('https://www.instagram.com/')"
+                      >
+                        OPEN
+                      </button>
+                    </div>
+
+                    <div
+                      class="identity-profile-card identity-card-shell"
+                      onclick="openIdentityLink('https://www.facebook.com/')"
+                    >
+                      <span class="identity-platform-icon">
+                        <i
+                          data-lucide="facebook"
+                          style="width: 18px; height: 18px"
+                        ></i>
+                      </span>
+                      <div class="identity-card-meta">
+                        <p class="identity-card-name">Facebook</p>
+                        <p class="identity-card-id">Paul Calang</p>
+                      </div>
+                      <button
+                        type="button"
+                        class="identity-action-btn"
+                        onclick="openIdentityLink('https://www.facebook.com/')"
+                      >
+                        OPEN
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section
+                class="identity-grid"
+                style="align-items: start; gap: 18px"
+              >
+                <div>
+                  <div class="identity-panel-label" style="margin-bottom: 14px">
+                    SCHOLARSHIPS & HONORS
+                  </div>
+                  <div class="identity-card-shell identity-list-card">
+                    <div class="identity-row-list">
+                      <div class="identity-row">
+                        <p class="identity-row-title">
+                          Academic Excellence Scholarship
+                        </p>
+                        <div class="identity-row-date">2024</div>
+                      </div>
+                      <div class="identity-row">
+                        <p class="identity-row-title">
+                          Dean’s List Recognition
+                        </p>
+                        <div class="identity-row-date">2023</div>
+                      </div>
+                      <div class="identity-row">
+                        <p class="identity-row-title">Department Merit Award</p>
+                        <div class="identity-row-date">2022</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="identity-panel-label" style="margin-bottom: 14px">
+                    LIGHTNING TALKS
+                  </div>
+                  <div class="identity-card-shell identity-list-card">
+                    <div class="identity-row-list">
+                      <div class="identity-row">
+                        <p class="identity-row-title">
+                          Building Reliable Systems for Fast Teams
+                        </p>
+                        <div class="identity-row-date">2024</div>
+                      </div>
+                      <div class="identity-row">
+                        <p class="identity-row-title">
+                          QA as a Product Discipline
+                        </p>
+                        <div class="identity-row-date">2023</div>
+                      </div>
+                      <div class="identity-row">
+                        <p class="identity-row-title">
+                          Monochrome Interfaces, Clearer Workflow
+                        </p>
+                        <div class="identity-row-date">2023</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section>
+                <div class="identity-panel-label" style="margin-bottom: 14px">
+                  ORGANIZATIONS
+                </div>
+                <div class="identity-card-shell" style="padding: 16px">
+                  <div class="identity-pill-row">
+                    <div class="identity-pill">
+                      <strong>IEEE Student Branch</strong>
+                      <span>Member</span>
+                    </div>
+                    <div class="identity-pill">
+                      <strong>ACM Community</strong>
+                      <span>Contributor</span>
+                    </div>
+                    <div class="identity-pill">
+                      <strong>Linux User Group</strong>
+                      <span>Technical Volunteer</span>
+                    </div>
+                    <div class="identity-pill">
+                      <strong>Systems Study Circle</strong>
+                      <span>Organizer</span>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section>
+                <div class="identity-panel-label" style="margin-bottom: 14px">
+                  LANGUAGES
+                </div>
+                <div class="identity-card-shell identity-list-card">
+                  <div class="identity-row-list">
+                    <div class="identity-row">
+                      <p class="identity-row-title">English — Fluent</p>
+                      <div class="identity-row-date">&nbsp;</div>
+                    </div>
+                    <div class="identity-row">
+                      <p class="identity-row-title">Filipino — Fluent</p>
+                      <div class="identity-row-date">&nbsp;</div>
+                    </div>
+                    <div class="identity-row">
+                      <p class="identity-row-title">Spanish — Beginner</p>
+                      <div class="identity-row-date">&nbsp;</div>
+                    </div>
+                    <div class="identity-row">
+                      <p class="identity-row-title">Japanese — Beginner</p>
+                      <div class="identity-row-date">&nbsp;</div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section>
+                <div class="identity-panel-label" style="margin-bottom: 14px">
+                  INTERESTS
+                </div>
+                <div class="identity-card-shell" style="padding: 16px">
+                  <div class="identity-pill-row">
+                    <div class="identity-pill">
+                      <strong>Network Technology</strong>
+                    </div>
+                    <div class="identity-pill">
+                      <strong>Systems Automation & Security</strong>
+                    </div>
+                    <div class="identity-pill">
+                      <strong>Network Analysis</strong>
+                    </div>
+                    <div class="identity-pill">
+                      <strong>Operations Security</strong>
+                    </div>
+                    <div class="identity-pill">
+                      <strong>Linux Customization</strong>
+                    </div>
+                    <div class="identity-pill">
+                      <strong>Performance Tuning</strong>
+                    </div>
+                    <div class="identity-pill">
+                      <strong>Technical Competitions</strong>
+                    </div>
+                    <div class="identity-pill"><strong>Seminars</strong></div>
+                    <div class="identity-pill">
+                      <strong>140 WPM Typing</strong>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section>
+                <div class="identity-banner">
+                  <img src="resources/photo/banner.png" alt="Identity banner" />
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Expand Overlay -->
     <div id="expandOverlay" class="expand-overlay" onclick="closeExpand(event)">
       <div
@@ -1107,9 +2852,15 @@
             '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-6a4.9 4.9 0 0 0-1.1-3.2 4.4 4.4 0 0 0-.1-3.2s-1-.3-3.3 1.3a11.3 11.3 0 0 0-6 0C7.2 1.3 6.2 1.6 6.2 1.6a4.4 4.4 0 0 0-.1 3.2A4.9 4.9 0 0 0 5 8c0 4 3 6 6 6a4.8 4.8 0 0 0-1 3.5v4"/><path d="M9 18c-4.5 2-5-2-7-2"/></svg>',
           linkedin:
             '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6Z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>',
+          discord:
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 18c-1.5 1.1-3.1 2-4 2s-2.5-.9-4-2"/><path d="M7 18c-1.9-1.7-3-4-3-7 0-2 .8-4 2.2-5.4C7.3 4.8 9.3 4 12 4s4.7.8 5.8 1.6C19.2 7 20 9 20 11c0 3-1.1 5.3-3 7"/><path d="M9 11h.01"/><path d="M15 11h.01"/><path d="M9.5 14c1 .7 3 .7 5 0"/></svg>',
+          mail: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>',
+          instagram:
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="5"/><circle cx="12" cy="12" r="3.5"/><circle cx="17.5" cy="6.5" r="1"/></svg>',
+          facebook:
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 8h3V4h-3a4 4 0 0 0-4 4v3H7v4h3v9h4v-9h3.2l.8-4H14V8a1 1 0 0 1 1-1Z"/></svg>',
           twitter:
             '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 4s-1.5 1-3 1.5c0 0-1.2-2.5-4.5-2.5-2.5 0-4.5 2-4.5 4.5 0 .5 0 1 .2 1.4C6.7 9.6 4 8 2 5.5c0 0-2 7 5 10.5-1.4 1-3 1.5-5 1.5 7 4 15 0 17-6 .7-2.2.8-4.5.3-6.5.7-.5 1.7-1.5 2.7-3Z"/></svg>',
-          mail: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>',
           x: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>',
           trophy:
             '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M17 4H7v3a5 5 0 0 0 10 0V4Z"/><path d="M5 6H3a2 2 0 0 0 2 2"/><path d="M19 6h2a2 2 0 0 1-2 2"/></svg>',
@@ -1553,10 +3304,41 @@
         setTimeout(tryPlay, 50);
       }
 
+      function openIdentityExpanded() {
+        const card = document.querySelector(".portfolio-card");
+        if (!card) return;
+        card.classList.add("identity-expanded");
+        hydrateIcons(card);
+      }
+
+      function closeIdentityExpanded(e) {
+        const card = document.querySelector(".portfolio-card");
+        if (e && card && e.target !== card) return;
+        if (!card) return;
+        card.classList.remove("identity-expanded");
+      }
+
+      function openIdentityLink(url) {
+        window.open(url, "_blank", "noopener,noreferrer");
+      }
+
+      function copyIdentityValue(value) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(value);
+        }
+      }
+
       // Keyboard close
       document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape")
-          document.getElementById("expandOverlay").classList.remove("active");
+        if (e.key === "Escape") {
+          const card = document.querySelector(".portfolio-card");
+          const expandOverlay = document.getElementById("expandOverlay");
+          if (card && card.classList.contains("identity-expanded")) {
+            card.classList.remove("identity-expanded");
+          } else if (expandOverlay) {
+            expandOverlay.classList.remove("active");
+          }
+        }
       });
     </script>
   </body>
