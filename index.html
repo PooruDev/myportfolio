@@ -2228,9 +2228,196 @@
           aspect-ratio: 16 / 6;
           border-radius: 14px;
         }
-      }
     </style>
     <style>
+      .competitions-expanded-view {
+        display: none;
+        flex: 1 1 auto;
+        min-height: 0;
+      }
+      .portfolio-card.competitions-expanded #topRow,
+      .portfolio-card.competitions-expanded #bottomRow {
+        display: none !important;
+      }
+      .portfolio-card.competitions-expanded .competitions-expanded-view {
+        display: flex;
+      }
+      .portfolio-card.competitions-expanded {
+        height: calc(100dvh - 24px);
+        max-height: calc(100dvh - 24px);
+      }
+      .competitions-expanded-shell {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 auto;
+        min-height: 0;
+        height: 100%;
+        overflow: hidden;
+        border-radius: 24px;
+        border: 1px solid rgba(255, 255, 255, 0.09);
+        background: rgba(17, 17, 17, 0.42);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+        backdrop-filter: blur(26px);
+      }
+      .competitions-expanded-scroll {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
+        scrollbar-gutter: stable;
+      }
+      .competitions-panel-header {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        background: linear-gradient(
+          180deg,
+          rgba(17, 17, 17, 0.92) 0%,
+          rgba(17, 17, 17, 0.82) 100%
+        );
+        backdrop-filter: blur(18px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      .competitions-panel-label {
+        color: rgba(255, 255, 255, 0.34);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 2.4px;
+        text-transform: uppercase;
+      }
+      .competitions-panel-note {
+        color: rgba(255, 255, 255, 0.42);
+        font-size: 12px;
+        line-height: 1.45;
+        margin-top: 8px;
+      }
+      .competitions-close-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.04);
+        color: rgba(255, 255, 255, 0.8);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.25s ease;
+      }
+      .competitions-close-btn:hover {
+        background: rgba(255, 255, 255, 0.08);
+      }
+      .competitions-hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+        gap: 24px;
+        align-items: start;
+        padding: 24px 22px 18px;
+      }
+      .competitions-headline {
+        color: rgba(255, 255, 255, 0.92);
+        font-size: clamp(30px, 4vw, 54px);
+        line-height: 0.98;
+        margin: 0;
+        font-weight: 700;
+        letter-spacing: -0.04em;
+      }
+      .competitions-body-copy {
+        color: rgba(255, 255, 255, 0.56);
+        font-size: 14px;
+        line-height: 1.8;
+        margin: 16px 0 0 0;
+        max-width: 58ch;
+      }
+      .competitions-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+        padding: 0 22px 24px;
+      }
+      .competitions-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 18px;
+        padding: 22px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .competitions-card-title {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 16px;
+        line-height: 1.3;
+        font-weight: 700;
+        margin: 0;
+      }
+      .competitions-card-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+      }
+      .competitions-card-rank,
+      .competitions-card-scope,
+      .competitions-card-percentile {
+        color: rgba(255, 255, 255, 0.55);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px;
+      }
+      .competitions-card-percentile {
+        color: rgba(255, 255, 255, 0.75);
+      }
+      .competitions-card-summary {
+        color: rgba(255, 255, 255, 0.42);
+        font-size: 13px;
+        line-height: 1.65;
+        margin: 0;
+      }
+      @media (max-width: 1024px) {
+        .competitions-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .competitions-hero {
+          grid-template-columns: 1fr;
+          gap: 16px;
+          padding: 20px 18px 16px;
+        }
+        .competitions-headline {
+          font-size: clamp(24px, 5vw, 36px);
+          line-height: 1.04;
+        }
+        .competitions-body-copy {
+          font-size: 13px;
+          line-height: 1.7;
+          max-width: none;
+        }
+      }
+      @media (max-width: 640px) {
+        .competitions-grid {
+          grid-template-columns: 1fr;
+          gap: 16px;
+          padding: 0 18px 22px;
+        }
+        .competitions-hero {
+          padding: 20px 18px 16px;
+        }
+        .competitions-headline {
+          font-size: 22px;
+        }
+        .competitions-body-copy {
+          font-size: 13px;
+          line-height: 1.7;
+          max-width: none;
+        }
+      }
+      @media (max-width: 480px) {
+        .competitions-card {
+          padding: 18px;
+        }
+        .competitions-headline {
+          font-size: 20px;
+        }
+      }
       body {
         box-sizing: border-box;
       }
@@ -2826,6 +3013,57 @@
                   </div>
                 </article>
               </div>
+            </div>
+          </div>
+        </div>
+        <div class="competitions-expanded-view">
+          <div class="competitions-expanded-shell">
+            <div class="competitions-expanded-scroll">
+              <div
+                class="competitions-panel-header"
+                style="padding: 18px 22px 16px"
+              >
+                <div
+                  style="
+                    display: flex;
+                    align-items: flex-start;
+                    justify-content: space-between;
+                    gap: 16px;
+                  "
+                >
+                  <div style="min-width: 0">
+                    <div class="competitions-panel-label">COMPETITIONS</div>
+                    <div class="competitions-panel-note">
+                      Press Esc or use the close button to exit
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    class="competitions-close-btn"
+                    aria-label="Close achievements view"
+                    onclick="closeCompetitionsExpanded()"
+                  >
+                    <i data-lucide="x" style="width: 18px; height: 18px"></i>
+                  </button>
+                </div>
+              </div>
+              <div
+                class="competitions-divider"
+                style="border-bottom: 1px solid rgba(255, 255, 255, 0.06)"
+              ></div>
+              <div class="competitions-hero">
+                <div>
+                  <h2 class="competitions-headline">
+                    Competition results and pressure-tested technical work.
+                  </h2>
+                  <p class="competitions-body-copy">
+                    Hands-on experience across exploitation, networking,
+                    forensics, cryptography, reverse engineering, and secure
+                    systems.
+                  </p>
+                </div>
+              </div>
+              <div id="competitionsGrid" class="competitions-grid"></div>
             </div>
           </div>
         </div>
@@ -4295,9 +4533,33 @@
       ];
 
       const competitions = [
-        { name: "ICPC Regionals", result: "Gold Medal", year: "2022" },
-        { name: "HackMIT", result: "1st Place", year: "2023" },
-        { name: "Google Code Jam", result: "Round 3", year: "2023" },
+        {
+          name: "ICPC Regionals",
+          rank: "Gold Medal",
+          scope: "Asia-Pacific Regional",
+          percentile: "Top 5%",
+          year: "2022",
+          summary:
+            "Solved advanced algorithm and systems optimization problems under intense timed contest pressure.",
+        },
+        {
+          name: "HackMIT",
+          rank: "1st Place",
+          scope: "Global Finals",
+          percentile: "Top 2%",
+          year: "2023",
+          summary:
+            "Delivered a secure full-stack solution in a high-pressure hackathon that emphasized exploitation mitigation and rapid prototyping.",
+        },
+        {
+          name: "Google Code Jam",
+          rank: "Round 3",
+          scope: "Global",
+          percentile: "Top 8%",
+          year: "2023",
+          summary:
+            "Navigated complex reverse-engineering and cryptographic challenge sets while preserving performance and accuracy.",
+        },
       ];
 
       let currentSlide = 0;
@@ -4415,7 +4677,8 @@
           <div class="achievement-details">
             <div class="achievement-name">${c.name}</div>
             <div class="achievement-result">
-              <span>${c.result}</span>
+              <span>${c.rank}</span>
+              <span>${c.scope}</span>
               <span class="achievement-year">${c.year}</span>
             </div>
           </div>
@@ -4450,6 +4713,28 @@
         nested.addEventListener("focusout", resume);
       }
 
+      function renderCompetitionsExpandedContent() {
+        const grid = document.getElementById("competitionsGrid");
+        if (!grid) return;
+
+        grid.innerHTML = competitions
+          .map(
+            (c) => `
+            <article class="competitions-card">
+              <div class="competitions-card-title">${c.name}</div>
+              <div class="competitions-card-meta">
+                <span class="competitions-card-rank">${c.rank}</span>
+                <span class="competitions-card-scope">${c.scope}</span>
+                <span class="competitions-card-percentile">${c.percentile}</span>
+                <span class="achievement-year">${c.year}</span>
+              </div>
+              <p class="competitions-card-summary">${c.summary}</p>
+            </article>
+          `,
+          )
+          .join("");
+      }
+
       // Expand system
       function closeAllExpanded() {
         const card = document.querySelector(".portfolio-card");
@@ -4458,6 +4743,7 @@
           "projects-expanded",
           "identity-expanded",
           "tech-expanded",
+          "competitions-expanded",
         );
         delete card.dataset.projectsIndex;
       }
@@ -4487,17 +4773,8 @@
           openTechExpanded();
           return;
         } else if (type === "competitions") {
-          html = `<div style="color:rgba(255,255,255,0.3);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;margin-bottom:20px;">ALL ACHIEVEMENTS</div>
-          ${competitions
-            .map(
-              (
-                c,
-              ) => `<div class="comp-entry flex items-center justify-between" style="padding:14px 0;">
-            <div><span style="color:rgba(255,255,255,0.8);font-size:15px;font-weight:500;">${c.name}</span><span style="color:rgba(255,255,255,0.25);font-size:12px;margin-left:10px;">${c.year}</span></div>
-            <span style="color:rgba(255,255,255,0.55);font-family:'JetBrains Mono',monospace;font-size:12px;">${c.result}</span>
-          </div>`,
-            )
-            .join("")}`;
+          openCompetitionsExpanded();
+          return;
         }
 
         if (body) {
@@ -4518,6 +4795,19 @@
         if (!card) return;
         card.classList.add("tech-expanded");
         hydrateIcons(card);
+      }
+
+      function openCompetitionsExpanded() {
+        closeAllExpanded();
+        const card = document.querySelector(".portfolio-card");
+        if (!card) return;
+        card.classList.add("competitions-expanded");
+        renderCompetitionsExpandedContent();
+        hydrateIcons(card);
+      }
+
+      function closeCompetitionsExpanded() {
+        closeAllExpanded();
       }
 
       function openProjectsExpanded(idx = 0) {
@@ -4748,6 +5038,8 @@
             closeTechExpanded();
           } else if (card && card.classList.contains("projects-expanded")) {
             closeProjectsExpanded();
+          } else if (card && card.classList.contains("competitions-expanded")) {
+            closeCompetitionsExpanded();
           } else if (card && card.classList.contains("identity-expanded")) {
             closeIdentityExpanded();
           } else if (expandOverlay) {
