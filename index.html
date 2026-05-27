@@ -202,6 +202,174 @@
         border-color: rgba(255, 255, 255, 0.25);
       }
 
+      .tech-expanded-view {
+        display: none;
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow: hidden;
+      }
+      .portfolio-card.tech-expanded #topRow,
+      .portfolio-card.tech-expanded #bottomRow {
+        display: none !important;
+      }
+      .portfolio-card.tech-expanded .tech-expanded-view {
+        display: flex;
+      }
+      .portfolio-card.tech-expanded {
+        height: calc(100dvh - 24px);
+        max-height: calc(100dvh - 24px);
+      }
+      .tech-expanded-shell {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 auto;
+        min-height: 0;
+        height: 100%;
+        overflow: hidden;
+        border-radius: 24px;
+        border: 1px solid rgba(255, 255, 255, 0.09);
+        background: rgba(17, 17, 17, 0.42);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+        backdrop-filter: blur(26px);
+      }
+      .tech-expanded-scroll {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
+        scrollbar-gutter: stable;
+      }
+      .tech-panel-header {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        background: linear-gradient(
+          180deg,
+          rgba(17, 17, 17, 0.92) 0%,
+          rgba(17, 17, 17, 0.82) 100%
+        );
+        backdrop-filter: blur(18px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      .tech-panel-label {
+        color: rgba(255, 255, 255, 0.34);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 2.4px;
+        text-transform: uppercase;
+      }
+      .tech-panel-note {
+        color: rgba(255, 255, 255, 0.42);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+      .tech-close-btn {
+        width: 38px;
+        height: 38px;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 auto;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.04);
+        color: rgba(255, 255, 255, 0.76);
+        backdrop-filter: blur(16px);
+        transition:
+          transform 0.2s ease,
+          background 0.2s ease,
+          border-color 0.2s ease,
+          color 0.2s ease;
+      }
+      .tech-close-btn:hover {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 255, 255, 0.14);
+        color: rgba(255, 255, 255, 0.94);
+        transform: translateY(-1px);
+      }
+      .tech-hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+        gap: 24px;
+        align-items: start;
+        padding: 24px 22px 18px;
+      }
+      .tech-headline {
+        color: rgba(255, 255, 255, 0.96);
+        font-size: clamp(30px, 4vw, 54px);
+        line-height: 0.98;
+        font-weight: 700;
+        letter-spacing: -0.04em;
+        margin: 0;
+      }
+      .tech-body-copy {
+        color: rgba(255, 255, 255, 0.56);
+        font-size: 14px;
+        line-height: 1.8;
+        margin: 16px 0 0 0;
+        max-width: 58ch;
+      }
+      .tech-divider {
+        height: 1px;
+        background: rgba(255, 255, 255, 0.06);
+        margin: 0 22px;
+      }
+      .tech-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+        padding: 0 22px 22px;
+      }
+      .tech-section-card {
+        min-width: 0;
+        padding: 20px;
+        border-radius: 20px;
+        background:
+          radial-gradient(
+            circle at top left,
+            rgba(255, 255, 255, 0.04),
+            transparent 36%
+          ),
+          rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.03),
+          0 10px 32px rgba(0, 0, 0, 0.16);
+        overflow: hidden;
+      }
+      .tech-section-card.large {
+        min-height: 220px;
+      }
+      .tech-section-card.wide {
+        grid-column: span 2;
+      }
+      .tech-section-title {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 2.2px;
+        text-transform: uppercase;
+        margin: 0 0 14px 0;
+      }
+      .tech-chip-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .tech-chip {
+        display: inline-flex;
+        align-items: center;
+        min-height: 34px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.04);
+        color: rgba(255, 255, 255, 0.82);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        white-space: nowrap;
+      }
+
       .social-btn {
         width: 56px;
         height: 56px;
@@ -563,6 +731,570 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
+      }
+
+      .tech-expanded-view {
+        display: none;
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow: hidden;
+      }
+      .portfolio-card.tech-expanded #topRow,
+      .portfolio-card.tech-expanded #bottomRow {
+        display: none !important;
+      }
+      .portfolio-card.tech-expanded .tech-expanded-view {
+        display: flex;
+      }
+      .portfolio-card.tech-expanded {
+        height: calc(100dvh - 24px);
+        max-height: calc(100dvh - 24px);
+      }
+      .tech-expanded-shell {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 auto;
+        min-height: 0;
+        height: 100%;
+        overflow: hidden;
+        border-radius: 24px;
+        border: 1px solid rgba(255, 255, 255, 0.09);
+        background: rgba(17, 17, 17, 0.42);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+        backdrop-filter: blur(26px);
+      }
+      .tech-expanded-scroll {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
+        scrollbar-gutter: stable;
+      }
+      .tech-panel-header {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        background: linear-gradient(
+          180deg,
+          rgba(17, 17, 17, 0.92) 0%,
+          rgba(17, 17, 17, 0.82) 100%
+        );
+        backdrop-filter: blur(18px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      .tech-panel-label {
+        color: rgba(255, 255, 255, 0.34);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 2.4px;
+        text-transform: uppercase;
+      }
+      .tech-panel-note {
+        color: rgba(255, 255, 255, 0.42);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+      .tech-close-btn {
+        width: 38px;
+        height: 38px;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 auto;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.04);
+        color: rgba(255, 255, 255, 0.76);
+        backdrop-filter: blur(16px);
+        transition:
+          transform 0.2s ease,
+          background 0.2s ease,
+          border-color 0.2s ease,
+          color 0.2s ease;
+      }
+      .tech-close-btn:hover {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 255, 255, 0.14);
+        color: rgba(255, 255, 255, 0.94);
+        transform: translateY(-1px);
+      }
+      .tech-hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+        gap: 24px;
+        align-items: start;
+        padding: 24px 22px 18px;
+      }
+      .tech-headline {
+        color: rgba(255, 255, 255, 0.96);
+        font-size: clamp(30px, 4vw, 54px);
+        line-height: 0.98;
+        font-weight: 700;
+        letter-spacing: -0.04em;
+        margin: 0;
+      }
+      .tech-body-copy {
+        color: rgba(255, 255, 255, 0.56);
+        font-size: 14px;
+        line-height: 1.8;
+        margin: 16px 0 0 0;
+        max-width: 58ch;
+      }
+      .tech-divider {
+        height: 1px;
+        background: rgba(255, 255, 255, 0.06);
+        margin: 0 22px;
+      }
+      .tech-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+        padding: 0 22px 22px;
+      }
+      .tech-section-card {
+        min-width: 0;
+        padding: 20px;
+        border-radius: 20px;
+        background:
+          radial-gradient(
+            circle at top left,
+            rgba(255, 255, 255, 0.04),
+            transparent 36%
+          ),
+          rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.03),
+          0 10px 32px rgba(0, 0, 0, 0.16);
+        overflow: hidden;
+      }
+      .tech-section-card.large {
+        min-height: 220px;
+      }
+      .tech-section-card.wide {
+        grid-column: span 2;
+      }
+      .tech-section-title {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 2.2px;
+        text-transform: uppercase;
+        margin: 0 0 14px 0;
+      }
+      .tech-chip-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .tech-chip {
+        display: inline-flex;
+        align-items: center;
+        min-height: 34px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.04);
+        color: rgba(255, 255, 255, 0.82);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        white-space: nowrap;
+      }
+
+      @media (max-width: 1024px) {
+        .portfolio-card.tech-expanded {
+          height: calc(100dvh - 16px);
+          max-height: calc(100dvh - 16px);
+        }
+
+        .portfolio-card.tech-expanded .tech-expanded-shell {
+          border-radius: 20px;
+        }
+
+        .tech-panel-header {
+          padding: 16px 18px 14px !important;
+        }
+
+        .tech-hero {
+          grid-template-columns: 1fr;
+          gap: 16px;
+          padding: 20px 18px 16px;
+        }
+
+        .tech-headline {
+          font-size: clamp(24px, 5vw, 36px);
+          line-height: 1.04;
+        }
+
+        .tech-body-copy {
+          font-size: 13px;
+          line-height: 1.7;
+          max-width: none;
+        }
+
+        .tech-grid {
+          grid-template-columns: 1fr;
+          gap: 14px;
+          padding: 0 18px 18px;
+        }
+
+        .tech-section-card.large,
+        .tech-section-card.wide {
+          grid-column: span 1;
+        }
+
+        .tech-section-card {
+          padding: 16px;
+          border-radius: 16px;
+        }
+
+        .tech-chip {
+          min-height: 32px;
+          padding: 7px 11px;
+          font-size: 10px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .portfolio-card.tech-expanded {
+          height: calc(100dvh - 16px);
+          max-height: calc(100dvh - 16px);
+        }
+
+        .tech-panel-label {
+          font-size: 9px;
+          letter-spacing: 2px;
+        }
+
+        .tech-panel-note {
+          font-size: 11px;
+          line-height: 1.4;
+        }
+
+        .tech-close-btn {
+          width: 42px;
+          height: 42px;
+        }
+
+        .tech-hero {
+          padding: 18px 16px 14px;
+        }
+
+        .tech-headline {
+          font-size: clamp(22px, 6vw, 32px);
+        }
+
+        .tech-body-copy {
+          font-size: 12px;
+          line-height: 1.65;
+        }
+
+        .tech-grid {
+          padding: 0 16px 16px;
+        }
+
+        .tech-section-title {
+          font-size: 9px;
+          letter-spacing: 2px;
+          margin-bottom: 12px;
+        }
+
+        .tech-chip-row {
+          gap: 6px;
+        }
+
+        .tech-chip {
+          min-height: 30px;
+          padding: 6px 10px;
+          font-size: 9px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .portfolio-card.tech-expanded {
+          height: calc(100dvh - 12px);
+          max-height: calc(100dvh - 12px);
+          border-radius: 18px;
+        }
+
+        .portfolio-card.tech-expanded .tech-expanded-shell {
+          border-radius: 18px;
+        }
+
+        .tech-panel-header {
+          padding: 12px 12px 10px !important;
+        }
+
+        .tech-panel-note {
+          font-size: 10px;
+          line-height: 1.35;
+        }
+
+        .tech-hero {
+          padding: 16px 12px 12px;
+        }
+
+        .tech-headline {
+          font-size: clamp(22px, 8vw, 30px);
+        }
+
+        .tech-body-copy {
+          font-size: 12px;
+          line-height: 1.6;
+        }
+
+        .tech-grid {
+          padding: 0 12px 12px;
+        }
+
+        .tech-section-card {
+          padding: 14px;
+          border-radius: 14px;
+        }
+
+        .tech-chip-row {
+          gap: 6px;
+        }
+
+        .tech-chip {
+          width: auto;
+          max-width: 100%;
+          white-space: normal;
+          text-align: center;
+          justify-content: center;
+          padding: 6px 9px;
+          line-height: 1.25;
+        }
+      }
+      .projects-expanded-view {
+        display: none;
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow: hidden;
+      }
+      .portfolio-card.projects-expanded #topRow,
+      .portfolio-card.projects-expanded #bottomRow {
+        display: none !important;
+      }
+      .portfolio-card.projects-expanded .projects-expanded-view {
+        display: flex;
+      }
+      .projects-expanded-shell {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 auto;
+        min-height: 0;
+        height: 100%;
+        overflow: hidden;
+        border-radius: 24px;
+        border: 1px solid rgba(255, 255, 255, 0.09);
+        background: rgba(17, 17, 17, 0.42);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+        backdrop-filter: blur(26px);
+      }
+      .projects-expanded-scroll {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
+        scrollbar-gutter: stable;
+      }
+      .projects-panel-header {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        background: linear-gradient(
+          180deg,
+          rgba(17, 17, 17, 0.92) 0%,
+          rgba(17, 17, 17, 0.82) 100%
+        );
+        backdrop-filter: blur(18px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      .projects-panel-label {
+        color: rgba(255, 255, 255, 0.34);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 2.4px;
+        text-transform: uppercase;
+      }
+      .projects-panel-note {
+        color: rgba(255, 255, 255, 0.42);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+      .projects-close-btn {
+        width: 38px;
+        height: 38px;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 auto;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.04);
+        color: rgba(255, 255, 255, 0.76);
+        backdrop-filter: blur(16px);
+        transition:
+          transform 0.2s ease,
+          background 0.2s ease,
+          border-color 0.2s ease,
+          color 0.2s ease;
+      }
+      .projects-close-btn:hover {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 255, 255, 0.14);
+        color: rgba(255, 255, 255, 0.94);
+        transform: translateY(-1px);
+      }
+      .projects-hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+        gap: 24px;
+        align-items: start;
+        padding: 24px 22px 18px;
+      }
+      .projects-headline {
+        color: rgba(255, 255, 255, 0.96);
+        font-size: clamp(30px, 4vw, 54px);
+        line-height: 0.98;
+        font-weight: 700;
+        letter-spacing: -0.04em;
+        margin: 0;
+      }
+      .projects-body-copy {
+        color: rgba(255, 255, 255, 0.56);
+        font-size: 14px;
+        line-height: 1.8;
+        margin: 16px 0 0 0;
+        max-width: 58ch;
+      }
+      .projects-section-title {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        margin: 0 0 14px 0;
+      }
+      .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+        padding: 0 22px 22px;
+      }
+      .project-doc-card {
+        min-width: 0;
+        padding: 20px;
+        border-radius: 20px;
+        background:
+          radial-gradient(
+            circle at top left,
+            rgba(255, 255, 255, 0.04),
+            transparent 36%
+          ),
+          rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.03),
+          0 10px 32px rgba(0, 0, 0, 0.16);
+        overflow: hidden;
+      }
+      .project-doc-card.featured {
+        grid-column: span 2;
+      }
+      .project-doc-card:hover {
+        border-color: rgba(255, 255, 255, 0.12);
+        background:
+          radial-gradient(
+            circle at top left,
+            rgba(255, 255, 255, 0.06),
+            transparent 36%
+          ),
+          rgba(255, 255, 255, 0.04);
+      }
+      .project-doc-title {
+        color: rgba(255, 255, 255, 0.96);
+        font-size: clamp(20px, 2.3vw, 30px);
+        line-height: 1.04;
+        margin: 0 0 10px 0;
+        letter-spacing: -0.03em;
+      }
+      .project-doc-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 12px;
+        color: rgba(255, 255, 255, 0.42);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        margin-bottom: 14px;
+      }
+      .project-doc-award {
+        color: rgba(255, 187, 0, 0.92);
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        margin: 0 0 10px 0;
+      }
+      .project-doc-team {
+        color: rgba(255, 255, 255, 0.42);
+        font-size: 12px;
+        margin: 0 0 14px 0;
+      }
+      .project-doc-copy {
+        color: rgba(255, 255, 255, 0.56);
+        font-size: 13px;
+        line-height: 1.7;
+        margin: 0 0 16px 0;
+      }
+      .project-tech-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+      .project-tech-pill {
+        display: inline-flex;
+        align-items: center;
+        min-height: 34px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.04);
+        color: rgba(255, 255, 255, 0.82);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        white-space: nowrap;
+      }
+      .project-bullet-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 8px;
+      }
+      .project-bullet-list li {
+        position: relative;
+        padding-left: 16px;
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 12px;
+        line-height: 1.55;
+      }
+      .project-bullet-list li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0.7em;
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.5);
+      }
+      .projects-divider {
+        height: 1px;
+        background: rgba(255, 255, 255, 0.06);
+        margin: 0 22px;
       }
 
       .identity-expanded-view {
@@ -1226,6 +1958,277 @@
           padding: 12px;
         }
       }
+
+      @media (max-width: 1024px) {
+        .portfolio-card.projects-expanded,
+        .portfolio-card.identity-expanded {
+          height: calc(100dvh - 16px);
+          max-height: calc(100dvh - 16px);
+        }
+
+        .portfolio-card.projects-expanded .projects-expanded-shell,
+        .portfolio-card.identity-expanded .identity-expanded-shell {
+          border-radius: 20px;
+        }
+
+        .projects-hero {
+          grid-template-columns: 1fr;
+          gap: 16px;
+          padding: 20px 18px 16px;
+        }
+
+        .projects-grid {
+          gap: 14px;
+          padding: 0 18px 18px;
+        }
+
+        .project-doc-card.featured {
+          grid-column: span 2;
+        }
+
+        .project-doc-title {
+          font-size: clamp(19px, 2.8vw, 26px);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .projects-panel-header,
+        .identity-panel-header {
+          padding: 14px 16px 12px !important;
+        }
+
+        .projects-close-btn,
+        .identity-close-btn {
+          width: 42px;
+          height: 42px;
+        }
+
+        .projects-hero {
+          padding: 18px 16px 14px;
+        }
+
+        .projects-headline {
+          font-size: clamp(24px, 6vw, 34px);
+          line-height: 1.04;
+        }
+
+        .projects-body-copy {
+          font-size: 13px;
+          line-height: 1.7;
+          max-width: none;
+          margin-top: 12px;
+        }
+
+        .projects-grid {
+          grid-template-columns: 1fr;
+          padding: 0 16px 16px;
+        }
+
+        .project-doc-card.featured {
+          grid-column: span 1;
+        }
+
+        .project-doc-card {
+          padding: 16px;
+          border-radius: 16px;
+        }
+
+        .project-doc-title {
+          font-size: clamp(18px, 5vw, 24px);
+        }
+
+        .project-doc-meta {
+          gap: 6px 10px;
+          font-size: 9px;
+        }
+
+        .project-doc-award,
+        .project-doc-team,
+        .project-doc-copy {
+          font-size: 12px;
+          line-height: 1.6;
+        }
+
+        .project-tech-row {
+          gap: 6px;
+          margin-bottom: 14px;
+        }
+
+        .project-tech-pill {
+          min-height: 30px;
+          padding: 7px 10px;
+          font-size: 10px;
+        }
+
+        .project-bullet-list li {
+          font-size: 11px;
+          line-height: 1.5;
+        }
+
+        .identity-panel-shell {
+          width: min(1120px, calc(100vw - 16px));
+          max-height: calc(100dvh - 16px);
+        }
+
+        .identity-expanded-view .identity-grid,
+        .identity-grid {
+          grid-template-columns: 1fr;
+          gap: 14px;
+        }
+
+        .identity-expanded-view
+          > .identity-expanded-shell
+          > .identity-expanded-scroll
+          > div,
+        .identity-expanded-scroll > div {
+          padding-left: 16px !important;
+          padding-right: 16px !important;
+        }
+
+        .identity-profile-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .identity-profile-card {
+          min-height: 70px;
+        }
+
+        .identity-banner {
+          aspect-ratio: 16 / 5.5;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .portfolio-card.projects-expanded,
+        .portfolio-card.identity-expanded {
+          height: calc(100dvh - 12px);
+          max-height: calc(100dvh - 12px);
+          border-radius: 18px;
+        }
+
+        .projects-expanded-shell,
+        .identity-expanded-shell {
+          border-radius: 18px;
+        }
+
+        .projects-panel-header,
+        .identity-panel-header {
+          padding: 12px 12px 10px !important;
+        }
+
+        .projects-panel-label,
+        .identity-panel-label {
+          font-size: 9px;
+          letter-spacing: 2px;
+        }
+
+        .projects-panel-note,
+        .identity-panel-note {
+          font-size: 10px;
+          line-height: 1.4;
+        }
+
+        .projects-hero {
+          padding: 16px 12px 12px;
+        }
+
+        .projects-headline {
+          font-size: clamp(22px, 8vw, 30px);
+        }
+
+        .projects-body-copy {
+          font-size: 12px;
+          line-height: 1.6;
+        }
+
+        .projects-grid {
+          padding: 0 12px 12px;
+        }
+
+        .project-doc-card {
+          padding: 14px;
+          border-radius: 14px;
+        }
+
+        .project-doc-meta {
+          font-size: 8px;
+          letter-spacing: 1.2px;
+        }
+
+        .project-tech-pill {
+          width: 100%;
+          justify-content: center;
+        }
+
+        .project-bullet-list {
+          gap: 7px;
+        }
+
+        .identity-panel-shell {
+          width: calc(100vw - 12px);
+          max-height: calc(100dvh - 12px);
+          border-radius: 18px;
+        }
+
+        .identity-expanded-view .identity-expanded-shell,
+        .identity-expanded-shell {
+          border-radius: 18px;
+        }
+
+        .identity-grid {
+          gap: 12px;
+        }
+
+        .identity-headline {
+          font-size: clamp(22px, 8vw, 30px);
+        }
+
+        .identity-body-copy {
+          font-size: 12px;
+          line-height: 1.65;
+        }
+
+        .identity-profile-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .identity-profile-card {
+          padding: 12px;
+          gap: 10px;
+          min-height: 68px;
+        }
+
+        .identity-action-btn {
+          min-width: 60px;
+          height: 30px;
+          padding: 0 10px;
+          font-size: 10px;
+        }
+
+        .identity-list-card {
+          padding: 14px 14px 6px;
+        }
+
+        .identity-row {
+          grid-template-columns: 1fr;
+          gap: 6px;
+        }
+
+        .identity-row-date {
+          white-space: normal;
+        }
+
+        .identity-pill {
+          width: 100%;
+          justify-content: space-between;
+          flex-wrap: wrap;
+        }
+
+        .identity-banner {
+          aspect-ratio: 16 / 6;
+          border-radius: 14px;
+        }
+      }
     </style>
     <style>
       body {
@@ -1422,8 +2425,9 @@
           <!-- Projects Sub-Card (Carousel) -->
           <div
             id="projectCard"
-            class="glass-card rounded-xl p-4 flex flex-col"
+            class="glass-card rounded-xl p-4 flex flex-col cursor-pointer"
             style="flex: 1; min-width: 0"
+            onclick="openProjectsExpanded(0)"
           >
             <div style="margin-bottom: 14px">
               <div
@@ -1505,7 +2509,7 @@
                 flex-direction: column;
                 overflow: hidden;
               "
-              onclick="openExpand('tech')"
+              onclick="openTechExpanded()"
             >
               <span
                 style="
@@ -1705,6 +2709,363 @@
             </div>
           </div>
         </div>
+        <div class="tech-expanded-view">
+          <div class="tech-expanded-shell">
+            <div class="tech-expanded-scroll">
+              <div class="tech-panel-header" style="padding: 18px 22px 16px">
+                <div
+                  style="
+                    display: flex;
+                    align-items: flex-start;
+                    justify-content: space-between;
+                    gap: 16px;
+                  "
+                >
+                  <div style="min-width: 0">
+                    <div class="tech-panel-label">STACK I USE</div>
+                    <div class="tech-panel-note" style="margin-top: 8px">
+                      Press Esc or use the close button to exit
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    class="tech-close-btn"
+                    aria-label="Close tech stack view"
+                    onclick="closeTechExpanded()"
+                  >
+                    <i data-lucide="x" style="width: 18px; height: 18px"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="tech-divider"></div>
+
+              <div class="tech-hero">
+                <div>
+                  <h2 class="tech-headline">
+                    Tools, frameworks, systems, and security workflow.
+                  </h2>
+                  <p class="tech-body-copy">
+                    A monochrome working stack spanning frontend, backend,
+                    infrastructure, deployment, automation, and security
+                    analysis. The layout stays inside the parent card and
+                    replaces the nested cards below.
+                  </p>
+                </div>
+              </div>
+
+              <div class="tech-grid">
+                <article class="tech-section-card">
+                  <div class="tech-section-title">Software & Systems</div>
+                  <div class="tech-chip-row">
+                    <span class="tech-chip">JavaScript</span>
+                    <span class="tech-chip">TypeScript</span>
+                    <span class="tech-chip">Python</span>
+                    <span class="tech-chip">Java</span>
+                    <span class="tech-chip">C#</span>
+                    <span class="tech-chip">Bash</span>
+                    <span class="tech-chip">REST APIs</span>
+                    <span class="tech-chip">Linux Administration</span>
+                  </div>
+                </article>
+
+                <article class="tech-section-card">
+                  <div class="tech-section-title">Web & Applications</div>
+                  <div class="tech-chip-row">
+                    <span class="tech-chip">React</span>
+                    <span class="tech-chip">Node.js</span>
+                    <span class="tech-chip">Django REST</span>
+                    <span class="tech-chip">HTML/CSS</span>
+                    <span class="tech-chip">TailwindCSS</span>
+                    <span class="tech-chip">React + TypeScript</span>
+                    <span class="tech-chip">Java Swing</span>
+                    <span class="tech-chip">Spline</span>
+                    <span class="tech-chip">Figma</span>
+                  </div>
+                </article>
+
+                <article class="tech-section-card">
+                  <div class="tech-section-title">Infrastructure & DevOps</div>
+                  <div class="tech-chip-row">
+                    <span class="tech-chip">Docker</span>
+                    <span class="tech-chip">Kubernetes</span>
+                    <span class="tech-chip">CI/CD</span>
+                    <span class="tech-chip">Linux Servers</span>
+                    <span class="tech-chip">Deployment Automation</span>
+                    <span class="tech-chip">MySQL</span>
+                    <span class="tech-chip">Redis</span>
+                    <span class="tech-chip">Monitoring</span>
+                    <span class="tech-chip">Error Tracking</span>
+                  </div>
+                </article>
+
+                <article class="tech-section-card">
+                  <div class="tech-section-title">Security & Analysis</div>
+                  <div class="tech-chip-row">
+                    <span class="tech-chip">Traffic Analysis</span>
+                    <span class="tech-chip">Protocol Decoding</span>
+                    <span class="tech-chip">Authentication Systems</span>
+                    <span class="tech-chip">Access Control</span>
+                    <span class="tech-chip">Log Analysis</span>
+                    <span class="tech-chip">JWT</span>
+                    <span class="tech-chip">OTP</span>
+                    <span class="tech-chip">2FA</span>
+                    <span class="tech-chip">HTTPS</span>
+                    <span class="tech-chip">Encrypted Storage</span>
+                    <span class="tech-chip">CTF Problem-Solving</span>
+                  </div>
+                </article>
+
+                <article class="tech-section-card">
+                  <div class="tech-section-title">Creative & Build Tools</div>
+                  <div class="tech-chip-row">
+                    <span class="tech-chip">Blender</span>
+                    <span class="tech-chip">Unity</span>
+                    <span class="tech-chip">QR Scanning</span>
+                    <span class="tech-chip">Receipt Printing</span>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="projects-expanded-view">
+          <div class="projects-expanded-shell">
+            <div class="projects-expanded-scroll">
+              <div
+                class="projects-panel-header"
+                style="padding: 18px 22px 16px"
+              >
+                <div
+                  style="
+                    display: flex;
+                    align-items: flex-start;
+                    justify-content: space-between;
+                    gap: 16px;
+                  "
+                >
+                  <div style="min-width: 0">
+                    <div class="projects-panel-label">PROJECTS</div>
+                    <div class="projects-panel-note" style="margin-top: 8px">
+                      Press Esc or use the close button to exit
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    class="projects-close-btn"
+                    aria-label="Close projects view"
+                    onclick="closeProjectsExpanded()"
+                  >
+                    <i data-lucide="x" style="width: 18px; height: 18px"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="projects-divider"></div>
+
+              <div class="projects-hero">
+                <div>
+                  <h2 class="projects-headline">
+                    Selected projects, awards, and implementation work.
+                  </h2>
+                  <p class="projects-body-copy">
+                    A compact internal workspace for full-stack systems,
+                    interactive web applications, desktop software,
+                    infrastructure work, technical recognition, and
+                    implementation-focused engineering.
+                  </p>
+                </div>
+              </div>
+
+              <div class="projects-grid">
+                <article class="project-doc-card">
+                  <h3 class="project-doc-title">Ignivox SOS</h3>
+                  <div class="project-doc-meta">
+                    <span>Full-Stack Developer & UI/UX Designer • 2024</span>
+                  </div>
+                  <div class="project-doc-award">
+                    Real-time emergency response platform with GPS-triggered
+                    alert infrastructure
+                  </div>
+                  <div class="project-doc-team">
+                    Public safety systems • multi-service architecture •
+                    emergency workflows
+                  </div>
+                  <p class="project-doc-copy">
+                    Built a high-availability emergency alert and incident
+                    response platform for the Bureau of Fire Protection
+                    Philippines, focused on rapid alert dispatching, live
+                    geolocation tracking, and deployment-safe communication
+                    between citizens and responders.
+                  </p>
+                  <div class="project-tech-row">
+                    <span class="project-tech-pill">React</span>
+                    <span class="project-tech-pill">Laravel</span>
+                    <span class="project-tech-pill">MySQL</span>
+                    <span class="project-tech-pill">Tailwind CSS</span>
+                    <span class="project-tech-pill">Firebase</span>
+                  </div>
+                  <ul class="project-bullet-list">
+                    <li>
+                      Designed a low-latency alert pipeline with real-time
+                      location synchronization.
+                    </li>
+                    <li>
+                      Implemented responsive emergency dashboards and incident
+                      monitoring workflows.
+                    </li>
+                    <li>
+                      Optimized API communication and notification delivery
+                      across distributed services.
+                    </li>
+                    <li>
+                      Built scalable UI systems focused on accessibility, speed,
+                      and operational clarity.
+                    </li>
+                  </ul>
+                </article>
+
+                <article class="project-doc-card">
+                  <h3 class="project-doc-title">PawCare</h3>
+                  <div class="project-doc-meta">
+                    <span>Frontend Developer & System Designer • 2023</span>
+                  </div>
+                  <div class="project-doc-award">
+                    Premium veterinary booking experience with modern
+                    healthcare-inspired UX
+                  </div>
+                  <div class="project-doc-team">
+                    Appointment systems • pet healthcare platform • booking
+                    infrastructure
+                  </div>
+                  <p class="project-doc-copy">
+                    Developed a veterinary appointment and pet healthcare web
+                    platform focused on intuitive scheduling, smooth mobile
+                    interactions, and elegant healthcare-inspired interface
+                    systems.
+                  </p>
+                  <div class="project-tech-row">
+                    <span class="project-tech-pill">Next.js</span>
+                    <span class="project-tech-pill">TypeScript</span>
+                    <span class="project-tech-pill">PostgreSQL</span>
+                    <span class="project-tech-pill">Prisma</span>
+                    <span class="project-tech-pill">Framer Motion</span>
+                  </div>
+                  <ul class="project-bullet-list">
+                    <li>
+                      Created responsive booking flows with polished
+                      mobile-first interactions.
+                    </li>
+                    <li>
+                      Designed scalable appointment scheduling architecture and
+                      healthcare UI patterns.
+                    </li>
+                    <li>
+                      Integrated animated transitions and dynamic state handling
+                      for smoother UX.
+                    </li>
+                    <li>
+                      Structured reusable frontend components for maintainable
+                      long-term scaling.
+                    </li>
+                  </ul>
+                </article>
+
+                <article class="project-doc-card">
+                  <h3 class="project-doc-title">Silent Petals</h3>
+                  <div class="project-doc-meta">
+                    <span>Game Developer & Narrative Designer • 2022</span>
+                  </div>
+                  <div class="project-doc-award">
+                    Branching narrative adventure with emotional choice-driven
+                    progression
+                  </div>
+                  <div class="project-doc-team">
+                    Indie narrative production • dialogue systems • gameplay
+                    scripting
+                  </div>
+                  <p class="project-doc-copy">
+                    Created a 2D anime romance and mystery adventure game
+                    centered around branching storylines, emotional player
+                    decisions, and immersive narrative pacing.
+                  </p>
+                  <div class="project-tech-row">
+                    <span class="project-tech-pill">Unity</span>
+                    <span class="project-tech-pill">C#</span>
+                    <span class="project-tech-pill">Dialogue System</span>
+                    <span class="project-tech-pill">Pixel Art</span>
+                    <span class="project-tech-pill">Story Branching</span>
+                  </div>
+                  <ul class="project-bullet-list">
+                    <li>
+                      Developed branching dialogue systems with multiple
+                      narrative outcomes.
+                    </li>
+                    <li>
+                      Implemented interactive gameplay events and emotional
+                      decision tracking.
+                    </li>
+                    <li>
+                      Designed atmospheric UI and visual storytelling systems
+                      for immersion.
+                    </li>
+                    <li>
+                      Structured scalable narrative logic for future story
+                      expansion and replayability.
+                    </li>
+                  </ul>
+                </article>
+
+                <article class="project-doc-card">
+                  <h3 class="project-doc-title">Kairova</h3>
+                  <div class="project-doc-meta">
+                    <span>MEDIA PLATFORM / DIGITAL EXPERIENCE • 2022</span>
+                  </div>
+                  <div class="project-doc-award">
+                    Immersive manhwa reading platform with modern
+                    content-focused UX
+                  </div>
+                  <div class="project-doc-team">
+                    Digital reading systems • content delivery • frontend
+                    experience
+                  </div>
+                  <p class="project-doc-copy">
+                    Built a modern manhwa reader platform emphasizing immersive
+                    reading flows, responsive performance, and visually refined
+                    content presentation across devices.
+                  </p>
+                  <div class="project-tech-row">
+                    <span class="project-tech-pill">Vue.js</span>
+                    <span class="project-tech-pill">Node.js</span>
+                    <span class="project-tech-pill">MongoDB</span>
+                    <span class="project-tech-pill">Express</span>
+                    <span class="project-tech-pill">Cloudinary</span>
+                  </div>
+                  <ul class="project-bullet-list">
+                    <li>
+                      Designed distraction-free reading interfaces optimized for
+                      long-form content.
+                    </li>
+                    <li>
+                      Implemented responsive image delivery and scalable media
+                      management systems.
+                    </li>
+                    <li>
+                      Built modern frontend layouts with smooth transitions and
+                      adaptive reading behavior.
+                    </li>
+                    <li>
+                      Improved platform performance through optimized asset
+                      handling and content loading.
+                    </li>
+                  </ul>
+                </article>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="identity-expanded-view">
           <div class="identity-expanded-shell">
             <div class="identity-expanded-scroll">
@@ -2882,22 +4243,39 @@
       // Data
       const projects = [
         {
-          title: "Nexus Engine",
-          role: "Lead Architect",
-          desc: "High-throughput event processing pipeline handling 2M+ events/sec with sub-millisecond latency.",
-          tags: ["Rust", "Kafka", "gRPC"],
+          title: "Ignivox SOS",
+          role: "Full-Stack Developer & UI/UX Designer",
+          desc: "Real-time emergency response and alert management web application for the Bureau of Fire Protection Philippines.",
+          tags: ["React", "Laravel", "MySQL", "Tailwind CSS", "Firebase"],
         },
         {
-          title: "Spectra UI",
-          role: "Creator & Maintainer",
-          desc: "Design system and component library adopted by 40+ internal teams for consistent interfaces.",
-          tags: ["React", "TypeScript", "Storybook"],
+          title: "PawCare",
+          role: "Frontend Developer & System Designer",
+          desc: "Veterinary appointment and pet healthcare booking web platform.",
+          tags: [
+            "Next.js",
+            "TypeScript",
+            "PostgreSQL",
+            "Prisma",
+            "Framer Motion",
+          ],
         },
         {
-          title: "Vaultline",
-          role: "Backend Engineer",
-          desc: "Zero-knowledge encrypted storage service with end-to-end client-side encryption architecture.",
-          tags: ["Go", "PostgreSQL", "WebCrypto"],
+          title: "Silent Petals",
+          role: "Game Developer & Narrative Designer",
+          desc: "Choice-based 2D anime romance and mystery adventure game.",
+          tags: [
+            "Unity, C#",
+            "Dialogue System",
+            "Pixel Art",
+            "Story Branching",
+          ],
+        },
+        {
+          title: "Kairova",
+          role: "Frontend Developer & Product Designer",
+          desc: "Modern manhwa reader platform with immersive digital reading experience.",
+          tags: ["Vue.js", "Node.js", "MongoDB", "Express", "Cloudinary"],
         },
       ];
 
@@ -2939,13 +4317,13 @@
         const projectsHTML = projects
           .map(
             (p, i) => `
-      <div class="marquee-item" onclick="openExpand('project', ${i})">
-        <div style="color:rgba(255,255,255,0.25);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;margin-bottom:6px;text-transform:uppercase;flex-shrink:0;">${p.role.toUpperCase()}</div>
-        <h4 style="color:rgba(255,255,255,0.85);font-size:16px;font-weight:600;margin:0 0 6px 0;line-height:1.2;flex-shrink:0;">${p.title}</h4>
-        <p style="color:rgba(255,255,255,0.35);font-size:12px;line-height:1.45;margin:0 0 6px 0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;flex-grow:1;">${p.desc}</p>
-        <div class="flex flex-wrap gap-2">${p.tags.map((t) => `<span class="tag" style="font-size:10px;padding:4px 9px;">${t}</span>`).join("")}</div>
-      </div>
-    `,
+        <div class="marquee-item" onclick="openExpand('project', ${i})">
+          <div style="color:rgba(255,255,255,0.25);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;margin-bottom:6px;text-transform:uppercase;flex-shrink:0;">${p.role.toUpperCase()}</div>
+          <h4 style="color:rgba(255,255,255,0.85);font-size:16px;font-weight:600;margin:0 0 6px 0;line-height:1.2;flex-shrink:0;">${p.title}</h4>
+          <p style="color:rgba(255,255,255,0.35);font-size:12px;line-height:1.45;margin:0 0 6px 0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;flex-grow:1;">${p.desc}</p>
+          <div class="flex flex-wrap gap-2">${p.tags.map((t) => `<span class="tag" style="font-size:10px;padding:4px 9px;">${t}</span>`).join("")}</div>
+        </div>
+      `,
           )
           .join("");
 
@@ -2967,13 +4345,13 @@
         track.innerHTML = projects
           .map(
             (p, i) => `
-      <div class="project-card ${i === currentSlide ? "active" : ""}" onclick="openExpand('project', ${i})">
-        <div style="color:rgba(255,255,255,0.25);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;margin-bottom:10px;">${p.role.toUpperCase()}</div>
-        <h3 style="color:rgba(255,255,255,0.88);font-size:18px;font-weight:600;margin:0 0 8px 0;">${p.title}</h3>
-        <p style="color:rgba(255,255,255,0.4);font-size:12px;line-height:1.6;margin:0 0 12px 0;">${p.desc}</p>
-        <div class="flex flex-wrap gap-1">${p.tags.map((t) => `<span class="tag">${t}</span>`).join("")}</div>
-      </div>
-    `,
+        <div class="project-card ${i === currentSlide ? "active" : ""}" onclick="openExpand('project', ${i})">
+          <div style="color:rgba(255,255,255,0.25);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;margin-bottom:10px;">${p.role.toUpperCase()}</div>
+          <h3 style="color:rgba(255,255,255,0.88);font-size:18px;font-weight:600;margin:0 0 8px 0;">${p.title}</h3>
+          <p style="color:rgba(255,255,255,0.4);font-size:12px;line-height:1.6;margin:0 0 12px 0;">${p.desc}</p>
+          <div class="flex flex-wrap gap-1">${p.tags.map((t) => `<span class="tag">${t}</span>`).join("")}</div>
+        </div>
+      `,
           )
           .join("");
         dots.innerHTML = projects
@@ -3030,19 +4408,19 @@
         const achievementItems = competitions
           .map(
             (c, i) => `
-      <div class="achievement-item" onclick="openExpand('competitions')">
-        <div class="achievement-icon">
-          <i data-lucide="trophy" style="width: 18px; height: 18px"></i>
-        </div>
-        <div class="achievement-details">
-          <div class="achievement-name">${c.name}</div>
-          <div class="achievement-result">
-            <span>${c.result}</span>
-            <span class="achievement-year">${c.year}</span>
+        <div class="achievement-item" onclick="openExpand('competitions')">
+          <div class="achievement-icon">
+            <i data-lucide="trophy" style="width: 18px; height: 18px"></i>
+          </div>
+          <div class="achievement-details">
+            <div class="achievement-name">${c.name}</div>
+            <div class="achievement-result">
+              <span>${c.result}</span>
+              <span class="achievement-year">${c.year}</span>
+            </div>
           </div>
         </div>
-      </div>
-    `,
+      `,
           )
           .join("");
 
@@ -3073,46 +4451,55 @@
       }
 
       // Expand system
+      function closeAllExpanded() {
+        const card = document.querySelector(".portfolio-card");
+        if (!card) return;
+        card.classList.remove(
+          "projects-expanded",
+          "identity-expanded",
+          "tech-expanded",
+        );
+        delete card.dataset.projectsIndex;
+      }
+
       function openExpand(type, idx) {
+        if (type === "project") {
+          openProjectsExpanded(idx);
+          return;
+        }
+
         const body = document.getElementById("expandBody");
         let html = "";
         if (type === "gallery") {
           html = `<div style="color:rgba(255,255,255,0.3);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;margin-bottom:20px;">GALLERY</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-          ${[1, 2, 3, 4]
-            .map(
-              (
-                i,
-              ) => `<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:10px;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;">
-            <svg viewBox="0 0 200 150" style="width:80%;opacity:0.3;"><rect width="200" height="150" fill="rgba(255,255,255,0.02)"/><text x="100" y="80" text-anchor="middle" fill="rgba(255,255,255,0.2)" font-family="JetBrains Mono" font-size="10">IMG_0${i}</text></svg>
-          </div>`,
-            )
-            .join("")}
-        </div>`;
-        } else if (type === "project") {
-          const p = projects[idx];
-          html = `<div style="color:rgba(255,255,255,0.25);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;margin-bottom:8px;">${p.role.toUpperCase()}</div>
-        <h2 style="color:rgba(255,255,255,0.9);font-size:24px;font-weight:700;margin:0 0 12px 0;">${p.title}</h2>
-        <p style="color:rgba(255,255,255,0.5);font-size:14px;line-height:1.7;margin:0 0 20px 0;">${p.desc}</p>
-        <div class="flex flex-wrap gap-1.5">${p.tags.map((t) => `<span class="tag">${t}</span>`).join("")}</div>`;
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            ${[1, 2, 3, 4]
+              .map(
+                (
+                  i,
+                ) => `<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:10px;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;">
+              <svg viewBox="0 0 200 150" style="width:80%;opacity:0.3;"><rect width="200" height="150" fill="rgba(255,255,255,0.02)"/><text x="100" y="80" text-anchor="middle" fill="rgba(255,255,255,0.2)" font-family="JetBrains Mono" font-size="10">IMG_0${i}</text></svg>
+            </div>`,
+              )
+              .join("")}
+          </div>`;
         } else if (type === "tech") {
-          html = `<div style="color:rgba(255,255,255,0.3);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;margin-bottom:20px;">FULL TECH STACK</div>
-        <div class="flex flex-wrap gap-2">${techStack.map((t) => `<span class="tag" style="font-size:13px;padding:6px 14px;">${t}</span>`).join("")}</div>`;
+          openTechExpanded();
+          return;
         } else if (type === "competitions") {
           html = `<div style="color:rgba(255,255,255,0.3);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;margin-bottom:20px;">ALL ACHIEVEMENTS</div>
-        ${competitions
-          .map(
-            (
-              c,
-            ) => `<div class="comp-entry flex items-center justify-between" style="padding:14px 0;">
-          <div><span style="color:rgba(255,255,255,0.8);font-size:15px;font-weight:500;">${c.name}</span><span style="color:rgba(255,255,255,0.25);font-size:12px;margin-left:10px;">${c.year}</span></div>
-          <span style="color:rgba(255,255,255,0.55);font-family:'JetBrains Mono',monospace;font-size:12px;">${c.result}</span>
-        </div>`,
-          )
-          .join("")}`;
+          ${competitions
+            .map(
+              (
+                c,
+              ) => `<div class="comp-entry flex items-center justify-between" style="padding:14px 0;">
+            <div><span style="color:rgba(255,255,255,0.8);font-size:15px;font-weight:500;">${c.name}</span><span style="color:rgba(255,255,255,0.25);font-size:12px;margin-left:10px;">${c.year}</span></div>
+            <span style="color:rgba(255,255,255,0.55);font-family:'JetBrains Mono',monospace;font-size:12px;">${c.result}</span>
+          </div>`,
+            )
+            .join("")}`;
         }
 
-        // Safely update expand body
         if (body) {
           body.innerHTML = html;
         }
@@ -3123,6 +4510,31 @@
         }
 
         hydrateIcons();
+      }
+
+      function openTechExpanded() {
+        closeAllExpanded();
+        const card = document.querySelector(".portfolio-card");
+        if (!card) return;
+        card.classList.add("tech-expanded");
+        hydrateIcons(card);
+      }
+
+      function openProjectsExpanded(idx = 0) {
+        closeAllExpanded();
+        const card = document.querySelector(".portfolio-card");
+        if (!card) return;
+        card.classList.add("projects-expanded");
+        card.dataset.projectsIndex = String(idx);
+        hydrateIcons(card);
+      }
+
+      function closeProjectsExpanded() {
+        closeAllExpanded();
+      }
+
+      function closeTechExpanded() {
+        closeAllExpanded();
       }
 
       function closeExpand(e) {
@@ -3146,9 +4558,10 @@
         developer_role: "Full-Stack Web Developer & QA Tester",
         developer_bio:
           "A detail-oriented developer focused on building reliable, user-friendly web applications with an emphasis on quality assurance and clean, maintainable code. Passionate about improving system performance, debugging complex issues, and delivering smooth user experiences from front-end to back-end.",
-        project_1_title: "Nexus Engine",
-        project_2_title: "Spectra UI",
-        project_3_title: "Vaultline",
+        project_1_title: "Ignivox SOS",
+        project_2_title: "PawCare",
+        project_3_title: "Silent Petals",
+        project_4_title: "Kairova",
       };
 
       function applyConfig(config) {
@@ -3305,6 +4718,7 @@
       }
 
       function openIdentityExpanded() {
+        closeAllExpanded();
         const card = document.querySelector(".portfolio-card");
         if (!card) return;
         card.classList.add("identity-expanded");
@@ -3312,10 +4726,7 @@
       }
 
       function closeIdentityExpanded(e) {
-        const card = document.querySelector(".portfolio-card");
-        if (e && card && e.target !== card) return;
-        if (!card) return;
-        card.classList.remove("identity-expanded");
+        closeAllExpanded();
       }
 
       function openIdentityLink(url) {
@@ -3333,8 +4744,12 @@
         if (e.key === "Escape") {
           const card = document.querySelector(".portfolio-card");
           const expandOverlay = document.getElementById("expandOverlay");
-          if (card && card.classList.contains("identity-expanded")) {
-            card.classList.remove("identity-expanded");
+          if (card && card.classList.contains("tech-expanded")) {
+            closeTechExpanded();
+          } else if (card && card.classList.contains("projects-expanded")) {
+            closeProjectsExpanded();
+          } else if (card && card.classList.contains("identity-expanded")) {
+            closeIdentityExpanded();
           } else if (expandOverlay) {
             expandOverlay.classList.remove("active");
           }
