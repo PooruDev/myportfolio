@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Paul Calang Portfolio</title>
+    <title>Paul Calang - Portfolio</title>
     <link rel="icon" href="resources/photo/pclogo.svg" type="image/svg+xml" />
     <!-- Local CSS with Tailwind utilities and custom styles -->
     <link rel="stylesheet" href="resources/css/styles.css" />
@@ -95,7 +95,8 @@
           transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
           filter 0.6s ease;
       }
-      .gallery-container:hover .gallery-img {
+      .gallery-container:hover .gallery-img,
+      .gallery-container:hover .gallery-preview-image {
         transform: scale(1.04);
       }
       .gallery-overlay {
@@ -112,6 +113,62 @@
       }
       .gallery-container:hover .gallery-overlay {
         opacity: 1;
+      }
+
+      .gallery-container > div span {
+        color: rgba(255, 255, 255, 0.95);
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.45), 0 1px 2px rgba(0, 0, 0, 0.55);
+      }
+
+      .gallery-preview {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        background: #0e0e0e;
+      }
+      .gallery-preview-image {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0;
+        transition: opacity 0.75s ease;
+      }
+      .gallery-preview-image.visible {
+        opacity: 1;
+      }
+      .gallery-preview-caption {
+        position: absolute;
+        left: 16px;
+        right: 16px;
+        bottom: 56px;
+        padding: 14px 16px;
+        border-radius: 16px;
+        background: rgba(0, 0, 0, 0.28);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(12px);
+        color: rgba(255, 255, 255, 0.92);
+        pointer-events: none;
+      }
+      .gallery-preview-caption-meta {
+        color: rgba(255, 255, 255, 0.65);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 1.4px;
+        text-transform: uppercase;
+        margin-bottom: 6px;
+      }
+      .gallery-preview-caption-title {
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 1.2;
+        margin-bottom: 6px;
+      }
+      .gallery-preview-caption-copy {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.78);
+        line-height: 1.5;
       }
 
       .carousel-track {
@@ -1066,11 +1123,228 @@
           line-height: 1.25;
         }
       }
+      .gallery-expanded-view {
+        display: none;
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow: hidden;
+      }
+      .portfolio-card.gallery-expanded {
+        height: calc(100dvh - 24px);
+        max-height: calc(100dvh - 24px);
+      }
+      .portfolio-card.gallery-expanded #topRow,
+      .portfolio-card.gallery-expanded #bottomRow {
+        display: none !important;
+      }
+      .portfolio-card.gallery-expanded .gallery-expanded-view {
+        display: flex;
+      }
+      .gallery-expanded-shell {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow: hidden;
+        border-radius: 24px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(17, 17, 17, 0.44);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+        backdrop-filter: blur(24px);
+      }
+      .gallery-expanded-scroll {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
+        scrollbar-gutter: stable;
+      }
+      .gallery-panel-header {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        background: linear-gradient(
+          180deg,
+          rgba(17, 17, 17, 0.96) 0%,
+          rgba(17, 17, 17, 0.86) 100%
+        );
+        backdrop-filter: blur(14px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        padding: 22px;
+      }
+      .gallery-header-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .gallery-panel-label {
+        color: rgba(255, 255, 255, 0.32);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+      }
+      .gallery-panel-note {
+        margin-top: 8px;
+        color: rgba(255, 255, 255, 0.55);
+        font-size: 13px;
+        line-height: 1.7;
+        max-width: 56ch;
+      }
+      .gallery-close-btn {
+        width: 44px;
+        height: 44px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.04);
+        color: rgba(255, 255, 255, 0.85);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.25s ease;
+      }
+      .gallery-close-btn:hover {
+        background: rgba(255, 255, 255, 0.08);
+      }
+      .gallery-divider {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        margin: 0 22px;
+      }
+      .gallery-hero {
+        padding: 24px 22px 0;
+      }
+      .gallery-headline {
+        font-size: clamp(2.35rem, 5vw, 3.8rem);
+        line-height: 1.02;
+        margin: 0;
+        color: #ffffff;
+        letter-spacing: -0.04em;
+      }
+      .gallery-body-copy {
+        margin-top: 16px;
+        max-width: 740px;
+        color: rgba(255, 255, 255, 0.72);
+        font-size: 15px;
+        line-height: 1.85;
+      }
+      .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 20px;
+        padding: 0 22px 22px;
+        margin-top: 24px;
+      }
+      .gallery-item {
+        display: flex;
+        flex-direction: column;
+        border-radius: 24px;
+        overflow: hidden;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        box-shadow: 0 22px 70px rgba(0, 0, 0, 0.18);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      .gallery-item:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 28px 90px rgba(0, 0, 0, 0.24);
+      }
+      .gallery-card-image {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 16 / 10;
+        background: rgba(255, 255, 255, 0.05);
+        overflow: hidden;
+      }
+      .gallery-card-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.6s ease, filter 0.6s ease;
+      }
+      .gallery-card-image:hover img {
+        transform: scale(1.03);
+      }
+      .gallery-card-block {
+        padding: 18px 18px 22px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .gallery-card-meta {
+        color: rgba(255, 255, 255, 0.5);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+      }
+      .gallery-card-title {
+        color: #ffffff;
+        font-size: 1.25rem;
+        line-height: 1.1;
+        margin: 0;
+      }
+      .gallery-card-copy {
+        margin: 0;
+        color: rgba(255, 255, 255, 0.70);
+        font-size: 0.95rem;
+        line-height: 1.7;
+      }
+      @media (max-width: 1024px) {
+        .gallery-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 18px;
+          padding: 0 18px 18px;
+        }
+      }
+      @media (max-width: 768px) {
+        .gallery-panel-header {
+          padding: 18px;
+        }
+        .gallery-divider {
+          margin: 0 18px;
+        }
+        .gallery-hero {
+          padding: 0 18px 0;
+        }
+        .gallery-grid {
+          grid-template-columns: 1fr;
+          gap: 16px;
+          padding: 0 16px 18px;
+        }
+        .gallery-card-block {
+          padding: 16px 16px 20px;
+        }
+      }
+      @media (max-width: 480px) {
+        .gallery-panel-header {
+          padding: 16px;
+        }
+        .gallery-hero {
+          padding: 0 16px 0;
+        }
+        .gallery-headline {
+          font-size: clamp(24px, 9vw, 32px);
+        }
+        .gallery-grid {
+          padding: 0 14px 18px;
+        }
+        .gallery-card-block {
+          padding: 14px 14px 18px;
+        }
+      }
       .projects-expanded-view {
         display: none;
         flex: 1 1 auto;
         min-height: 0;
         overflow: hidden;
+      }
+      .portfolio-card.projects-expanded {
+        height: calc(100dvh - 24px);
+        max-height: calc(100dvh - 24px);
       }
       .portfolio-card.projects-expanded #topRow,
       .portfolio-card.projects-expanded #bottomRow {
@@ -2514,79 +2788,21 @@
                 >GALLERY</span
               >
             </div>
-            <svg
-              class="gallery-img"
-              viewbox="0 0 800 500"
-              xmlns="http://www.w3.org/2000/svg"
-              preserveaspectratio="xMidYMid slice"
-            >
-              <defs>
-                <lineargradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="#1a1a1a" />
-                  <stop offset="50%" stop-color="#2a2a2a" />
-                  <stop offset="100%" stop-color="#111" />
-                </lineargradient>
-                <pattern
-                  id="grid"
-                  width="40"
-                  height="40"
-                  patternunits="userSpaceOnUse"
-                >
-                  <path
-                    d="M 40 0 L 0 0 0 40"
-                    fill="none"
-                    stroke="rgba(255,255,255,0.03)"
-                    stroke-width="0.5"
-                  />
-                </pattern>
-              </defs>
-              <rect fill="url(#g1)" width="800" height="500" />
-              <rect fill="url(#grid)" width="800" height="500" />
-              <circle
-                cx="200"
-                cy="180"
-                r="120"
-                fill="rgba(255,255,255,0.02)"
-                stroke="rgba(255,255,255,0.06)"
-                stroke-width="0.5"
+            <div class="gallery-preview">
+              <img
+                class="gallery-preview-image visible"
+                id="galleryPreviewImageA"
+                src="resources/gallery/Sample-Image-1.png"
+                alt="Gallery preview"
               />
-              <circle
-                cx="550"
-                cy="300"
-                r="80"
-                fill="rgba(255,255,255,0.015)"
-                stroke="rgba(255,255,255,0.04)"
-                stroke-width="0.5"
+              <img
+                class="gallery-preview-image"
+                id="galleryPreviewImageB"
+                src=""
+                alt=""
+                aria-hidden="true"
               />
-              <line
-                x1="100"
-                y1="350"
-                x2="700"
-                y2="150"
-                stroke="rgba(255,255,255,0.03)"
-                stroke-width="0.5"
-              />
-              <rect
-                x="300"
-                y="120"
-                width="200"
-                height="260"
-                rx="8"
-                fill="none"
-                stroke="rgba(255,255,255,0.06)"
-                stroke-width="0.5"
-              />
-              <text
-                x="400"
-                y="260"
-                text-anchor="middle"
-                fill="rgba(255,255,255,0.12)"
-                font-family="JetBrains Mono"
-                font-size="14"
-              >
-                PORTFOLIO.SYS
-              </text>
-            </svg>
+            </div>
             <div
               style="
                 position: absolute;
@@ -3064,6 +3280,152 @@
                 </div>
               </div>
               <div id="competitionsGrid" class="competitions-grid"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="gallery-expanded-view">
+          <div class="gallery-expanded-shell">
+            <div class="gallery-expanded-scroll">
+              <div class="gallery-panel-header">
+                <div class="gallery-header-top">
+                  <div style="min-width: 0">
+                    <div class="gallery-panel-label">GALLERY</div>
+                    <div class="gallery-panel-note">
+                      Press Esc or use the close button to exit
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    class="gallery-close-btn"
+                    aria-label="Close gallery view"
+                    onclick="closeGalleryExpanded()"
+                  >
+                    <i data-lucide="x" style="width: 18px; height: 18px"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="gallery-divider"></div>
+              <div class="gallery-hero">
+                <div>
+                  <h2 class="gallery-headline">
+                    Selected moments behind the portfolio.
+                  </h2>
+                  <p class="gallery-body-copy">
+                    A cinematic archive of competition highlights, leadership
+                    moments, technical milestones, collaboration stories, event
+                    participation, and behind-the-scenes implementation work.
+                  </p>
+                </div>
+              </div>
+              <div class="gallery-grid">
+                <article class="gallery-item">
+                  <div class="gallery-card-image">
+                    <img
+                      src="resources/gallery/Sample-Image-1.png"
+                      alt="Competition finals"
+                    />
+                  </div>
+                  <div class="gallery-card-block">
+                    <div class="gallery-card-meta">EVENT</div>
+                    <h3 class="gallery-card-title">ICPC Regionals Finals</h3>
+                    <p class="gallery-card-copy">
+                      High-pressure algorithmic problem solving under strict
+                      time constraints, earning top regional placement through
+                      speed and precision.
+                    </p>
+                  </div>
+                </article>
+                <article class="gallery-item">
+                  <div class="gallery-card-image">
+                    <img
+                      src="resources/gallery/Sample-Image-2.png"
+                      alt="Team collaboration"
+                    />
+                  </div>
+                  <div class="gallery-card-block">
+                    <div class="gallery-card-meta">EVENT</div>
+                    <h3 class="gallery-card-title">HackMIT Global Finals</h3>
+                    <p class="gallery-card-copy">
+                      Built a secure full-stack solution in a competitive
+                      hackathon focused on rapid prototyping and real-world
+                      system safety.
+                    </p>
+                  </div>
+                </article>
+                <article class="gallery-item">
+                  <div class="gallery-card-image">
+                    <img
+                      src="resources/gallery/Sample-Image-3.png"
+                      alt="Photo highlight"
+                    />
+                  </div>
+                  <div class="gallery-card-block">
+                    <div class="gallery-card-meta">EVENT</div>
+                    <h3 class="gallery-card-title">Google Code Jam Round 3</h3>
+                    <p class="gallery-card-copy">
+                      Solved advanced cryptography and optimization challenges
+                      under global competition conditions with high accuracy and
+                      efficiency.
+                    </p>
+                  </div>
+                </article>
+                <article class="gallery-item">
+                  <div class="gallery-card-image">
+                    <img
+                      src="resources/gallery/Sample-Image-4.png"
+                      alt="Competition moment"
+                    />
+                  </div>
+                  <div class="gallery-card-block">
+                    <div class="gallery-card-meta">PROJECT</div>
+                    <h3 class="gallery-card-title">
+                      Ignivox SOS Deployment System
+                    </h3>
+                    <p class="gallery-card-copy">
+                      Real-time emergency response platform enabling GPS alerts,
+                      live tracking, and multi-agency coordination for public
+                      safety.
+                    </p>
+                  </div>
+                </article>
+                <article class="gallery-item">
+                  <div class="gallery-card-image">
+                    <img
+                      src="resources/gallery/Sample-Image-5.png"
+                      alt="Portfolio journey"
+                    />
+                  </div>
+                  <div class="gallery-card-block">
+                    <div class="gallery-card-meta">MILESTONE</div>
+                    <h3 class="gallery-card-title">
+                      UX & Performance Optimization
+                    </h3>
+                    <p class="gallery-card-copy">
+                      Improved speed, responsiveness, and system efficiency
+                      across deployed applications.
+                    </p>
+                  </div>
+                </article>
+                <article class="gallery-item">
+                  <div class="gallery-card-image">
+                    <img
+                      src="resources/gallery/Sample-Image-6.png"
+                      alt="Portfolio journey"
+                    />
+                  </div>
+                  <div class="gallery-card-block">
+                    <div class="gallery-card-meta">COLLABORATION</div>
+                    <h3 class="gallery-card-title">
+                      Team Development Workflows
+                    </h3>
+                    <p class="gallery-card-copy">
+                      Cross-functional execution turning product ideas into
+                      scalable, production-ready applications.
+                    </p>
+                  </div>
+                </article>
+              </div>
             </div>
           </div>
         </div>
@@ -4713,6 +5075,107 @@
         nested.addEventListener("focusout", resume);
       }
 
+      const galleryPreviewItems = [];
+      let galleryPreviewIndex = 0;
+      let galleryPreviewTimer = null;
+      let galleryPreviewSlots = [];
+      let galleryPreviewActiveSlot = 0;
+
+      function initGalleryPreview() {
+        const items = document.querySelectorAll(
+          ".gallery-expanded-view .gallery-grid .gallery-item",
+        );
+
+        items.forEach((item) => {
+          const img = item.querySelector("img");
+          const title = item.querySelector(".gallery-card-title");
+          const meta = item.querySelector(".gallery-card-meta");
+          const copy = item.querySelector(".gallery-card-copy");
+
+          if (!img || !img.src) return;
+
+          galleryPreviewItems.push({
+            src: img.src,
+            alt: img.alt || title?.textContent.trim() || "Gallery preview",
+            title: title?.textContent.trim() || "",
+            meta: meta?.textContent.trim() || "",
+            copy: copy?.textContent.trim() || "",
+          });
+        });
+
+        galleryPreviewSlots = [
+          document.getElementById("galleryPreviewImageA"),
+          document.getElementById("galleryPreviewImageB"),
+        ].filter(Boolean);
+
+        if (galleryPreviewItems.length === 0 || galleryPreviewSlots.length < 2)
+          return;
+
+        const firstPreview = galleryPreviewItems[0];
+        galleryPreviewSlots[0].src = firstPreview.src;
+        galleryPreviewSlots[0].alt = firstPreview.alt;
+        galleryPreviewSlots[0].classList.add("visible");
+        galleryPreviewActiveSlot = 0;
+
+        updateGalleryPreviewText(firstPreview);
+
+        const galleryCard = document.getElementById("galleryCard");
+        if (galleryCard) {
+          galleryCard.addEventListener("mouseenter", stopGalleryPreviewLoop);
+          galleryCard.addEventListener("mouseleave", startGalleryPreviewLoop);
+        }
+
+        startGalleryPreviewLoop();
+      }
+
+      function updateGalleryPreviewText(preview) {
+        const titleEl = document.getElementById("galleryPreviewTitle");
+        const copyEl = document.getElementById("galleryPreviewCopy");
+        const metaEl = document.getElementById("galleryPreviewTag");
+
+        if (titleEl) titleEl.textContent = preview.title;
+        if (copyEl) copyEl.textContent = preview.copy;
+        if (metaEl) metaEl.textContent = preview.meta;
+      }
+
+      function renderGalleryPreviewItem(index) {
+        if (!galleryPreviewItems.length || galleryPreviewSlots.length < 2)
+          return;
+
+        galleryPreviewIndex = index % galleryPreviewItems.length;
+        const nextSlot = 1 - galleryPreviewActiveSlot;
+        const currentImage = galleryPreviewSlots[galleryPreviewActiveSlot];
+        const nextImage = galleryPreviewSlots[nextSlot];
+        const preview = galleryPreviewItems[galleryPreviewIndex];
+
+        nextImage.src = preview.src;
+        nextImage.alt = preview.alt;
+        nextImage.classList.add("visible");
+        currentImage.classList.remove("visible");
+        galleryPreviewActiveSlot = nextSlot;
+
+        updateGalleryPreviewText(preview);
+      }
+
+      function startGalleryPreviewLoop() {
+        stopGalleryPreviewLoop();
+
+        if (galleryPreviewItems.length === 0) return;
+
+        galleryPreviewTimer = window.setInterval(() => {
+          const nextIndex =
+            (galleryPreviewIndex + 1) % galleryPreviewItems.length;
+          renderGalleryPreviewItem(nextIndex);
+        }, 5800);
+      }
+
+      function stopGalleryPreviewLoop() {
+        if (galleryPreviewTimer) {
+          clearInterval(galleryPreviewTimer);
+          galleryPreviewTimer = null;
+        }
+      }
+
       function renderCompetitionsExpandedContent() {
         const grid = document.getElementById("competitionsGrid");
         if (!grid) return;
@@ -4744,6 +5207,7 @@
           "identity-expanded",
           "tech-expanded",
           "competitions-expanded",
+          "gallery-expanded",
         );
         delete card.dataset.projectsIndex;
       }
@@ -4753,40 +5217,30 @@
           openProjectsExpanded(idx);
           return;
         }
-
-        const body = document.getElementById("expandBody");
-        let html = "";
         if (type === "gallery") {
-          html = `<div style="color:rgba(255,255,255,0.3);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;margin-bottom:20px;">GALLERY</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-            ${[1, 2, 3, 4]
-              .map(
-                (
-                  i,
-                ) => `<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:10px;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;">
-              <svg viewBox="0 0 200 150" style="width:80%;opacity:0.3;"><rect width="200" height="150" fill="rgba(255,255,255,0.02)"/><text x="100" y="80" text-anchor="middle" fill="rgba(255,255,255,0.2)" font-family="JetBrains Mono" font-size="10">IMG_0${i}</text></svg>
-            </div>`,
-              )
-              .join("")}
-          </div>`;
-        } else if (type === "tech") {
+          openGalleryExpanded();
+          return;
+        }
+        if (type === "tech") {
           openTechExpanded();
           return;
-        } else if (type === "competitions") {
+        }
+        if (type === "competitions") {
           openCompetitionsExpanded();
           return;
         }
-
-        if (body) {
-          body.innerHTML = html;
+        if (type === "identity") {
+          openIdentityExpanded();
+          return;
         }
+      }
 
-        const expandOverlay = document.getElementById("expandOverlay");
-        if (expandOverlay) {
-          expandOverlay.classList.add("active");
-        }
-
-        hydrateIcons();
+      function openGalleryExpanded() {
+        closeAllExpanded();
+        const card = document.querySelector(".portfolio-card");
+        if (!card) return;
+        card.classList.add("gallery-expanded");
+        hydrateIcons(card);
       }
 
       function openTechExpanded() {
@@ -4824,6 +5278,10 @@
       }
 
       function closeTechExpanded() {
+        closeAllExpanded();
+      }
+
+      function closeGalleryExpanded() {
         closeAllExpanded();
       }
 
@@ -4993,6 +5451,7 @@
       renderComps();
       hydrateIcons();
       startAchievementMarquee();
+      initGalleryPreview();
 
       // Ensure background video starts (some browsers are picky even when muted)
       const bgVideo = document.getElementById("bgVideo");
@@ -5042,6 +5501,8 @@
             closeCompetitionsExpanded();
           } else if (card && card.classList.contains("identity-expanded")) {
             closeIdentityExpanded();
+          } else if (card && card.classList.contains("gallery-expanded")) {
+            closeGalleryExpanded();
           } else if (expandOverlay) {
             expandOverlay.classList.remove("active");
           }
