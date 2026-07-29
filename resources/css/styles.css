@@ -130,6 +130,25 @@ body {
   min-width: 0;
 }
 
+/* Compact desktop/laptop sizing: caps the card to a smaller, balanced
+   footprint instead of stretching to fill the whole viewport. Internal
+   rows/columns are flex-based percentages, so shrinking the outer card
+   scales every section proportionally and preserves spacing/layout.
+   Scoped to min-width: 1025px so mobile/tablet behavior is untouched. */
+@media (min-width: 1025px) {
+  .page-shell {
+    padding: 1.5rem !important;
+  }
+
+  .portfolio-card {
+    width: 1150px !important;
+    max-width: calc(100vw - 3rem) !important;
+    height: 760px !important;
+    min-height: 760px !important;
+    max-height: calc(100vh - 3rem) !important;
+  }
+}
+
 .glass-card {
   min-width: 0;
 }
@@ -147,26 +166,18 @@ body {
 
 /* Tablet layout intentionally left unchanged; mobile-specific overrides live below. */
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
   .portfolio-card {
     gap: 0.9rem;
     padding: 0.9rem;
   }
 
   #galleryCard {
-    min-height: 200px;
-  }
-
-  #devName {
-    font-size: clamp(24px, 7vw, 28px) !important;
-  }
-
-  #devRole {
-    font-size: 12px !important;
+    min-height: 240px;
+    aspect-ratio: 4 / 3;
   }
 
   #devBio {
-    font-size: 14px !important;
     line-height: 1.6;
   }
 
@@ -217,16 +228,7 @@ body {
     padding: 1rem;
   }
 
-  #devName {
-    font-size: clamp(22px, 9vw, 25px) !important;
-  }
-
-  #devRole {
-    font-size: 11px !important;
-  }
-
   #devBio {
-    font-size: 13px !important;
     line-height: 1.55;
   }
 
@@ -376,7 +378,9 @@ body {
 .marquee-item {
   min-width: 240px;
   width: 240px;
-  height: 210px;
+  height: auto;
+  min-height: 170px;
+  max-height: 100%;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 10px;
