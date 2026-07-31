@@ -115,7 +115,7 @@
       .marquee-item {
         min-width: 240px;
         width: 240px;
-        height: 240px;
+        height: 260px;
         background: rgba(255, 255, 255, 0.03);
         border: 1px solid rgba(255, 255, 255, 0.06);
         border-radius: 10px;
@@ -315,30 +315,28 @@
       .tech-hero,
       .competitions-hero,
       .projects-hero {
-        display: grid;
-        grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-        gap: 24px;
-        align-items: start;
-        padding: 24px 22px 18px;
+        padding: 24px 22px 0;
       }
       .tech-headline,
       .competitions-headline,
       .projects-headline {
         color: rgba(255, 255, 255, 0.96);
-        font-size: clamp(30px, 4vw, 54px);
-        line-height: 0.98;
+        font-size: clamp(2.35rem, 5vw, 3.8rem);
+        line-height: 1.02;
         font-weight: 700;
         letter-spacing: -0.04em;
         margin: 0;
+        text-align: left;
       }
       .tech-body-copy,
       .competitions-body-copy,
       .projects-body-copy {
         color: rgba(255, 255, 255, 0.56);
-        font-size: 14px;
-        line-height: 1.8;
+        font-size: 15px;
+        line-height: 1.85;
         margin: 16px 0 0 0;
-        max-width: 58ch;
+        max-width: 740px;
+        text-align: left;
       }
 
       .tech-divider,
@@ -354,6 +352,7 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 16px;
         padding: 0 22px 22px;
+        margin-top: 24px;
       }
       .tech-section-card {
         min-width: 0;
@@ -709,6 +708,7 @@
         grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 18px;
         padding: 0 22px 24px;
+        margin-top: 24px;
       }
       .competitions-card {
         background: rgba(255, 255, 255, 0.03);
@@ -784,6 +784,8 @@
         margin: 0;
         color: #ffffff;
         letter-spacing: -0.04em;
+        font-weight: 700;
+        text-align: left;
       }
       .gallery-body-copy {
         margin-top: 16px;
@@ -791,6 +793,7 @@
         color: rgba(255, 255, 255, 0.72);
         font-size: 15px;
         line-height: 1.85;
+        text-align: left;
       }
       .gallery-grid {
         display: grid;
@@ -866,6 +869,7 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 16px;
         padding: 0 22px 22px;
+        margin-top: 24px;
       }
       .project-doc-card {
         min-width: 0;
@@ -1071,6 +1075,9 @@
           min-height: 760px !important;
           max-height: calc(100vh - 3rem) !important;
         }
+        #techCard {
+          flex: 0 0 auto !important;
+        }
       }
 
       @media (max-width: 1024px) {
@@ -1134,8 +1141,22 @@
           min-width: 200px;
           width: 200px;
           height: auto;
-          min-height: 180px;
+          min-height: 195px;
           padding: 14px;
+        }
+        .achievement-item {
+          padding: 10px;
+          gap: 10px;
+        }
+        .achievement-icon {
+          width: 32px;
+          height: 32px;
+        }
+        .achievement-name {
+          font-size: 13px;
+        }
+        .achievement-result {
+          font-size: 10.5px;
         }
         .tech-item {
           font-size: 11px;
@@ -1162,20 +1183,21 @@
         }
         .tech-hero,
         .competitions-hero,
-        .projects-hero {
-          grid-template-columns: 1fr;
-          gap: 16px;
-          padding: 20px 18px 16px;
+        .projects-hero,
+        .gallery-hero {
+          padding: 20px 18px 0;
         }
         .tech-headline,
         .competitions-headline,
-        .projects-headline {
+        .projects-headline,
+        .gallery-headline {
           font-size: clamp(24px, 5vw, 36px);
           line-height: 1.04;
         }
         .tech-body-copy,
         .competitions-body-copy,
-        .projects-body-copy {
+        .projects-body-copy,
+        .gallery-body-copy {
           font-size: 13px;
           line-height: 1.7;
           max-width: none;
@@ -1214,13 +1236,27 @@
           display: none !important;
         }
         #compCard .achievement-nested-container {
-          max-height: 300px;
+          max-height: 280px;
           padding: 12px;
+        }
+        .achievement-item {
+          padding: 8px;
+          gap: 8px;
+        }
+        .achievement-icon {
+          width: 28px;
+          height: 28px;
+        }
+        .achievement-name {
+          font-size: 12.5px;
+        }
+        .achievement-result {
+          font-size: 10px;
         }
         .marquee-item {
           min-width: 180px;
           width: 180px;
-          min-height: 160px;
+          min-height: 175px;
           padding: 12px;
         }
         .expand-content {
@@ -1293,12 +1329,16 @@
         .marquee-item {
           min-width: 160px;
           width: 160px;
-          min-height: 140px;
+          min-height: 155px;
           padding: 10px;
         }
         .tech-item {
           font-size: 9px;
           padding: 4px 8px;
+        }
+        .achievement-icon {
+          width: 26px;
+          height: 26px;
         }
         .social-btn {
           width: 40px;
@@ -1325,10 +1365,17 @@
           font-size: 10px;
           line-height: 1.35;
         }
-        .tech-headline {
+        .tech-headline,
+        .gallery-headline,
+        .competitions-headline,
+        .projects-headline {
           font-size: clamp(22px, 8vw, 30px);
+          line-height: 1.06;
         }
-        .tech-body-copy {
+        .tech-body-copy,
+        .gallery-body-copy,
+        .competitions-body-copy,
+        .projects-body-copy {
           font-size: 12px;
           line-height: 1.6;
         }
@@ -1352,18 +1399,12 @@
         .gallery-panel-header {
           padding: 16px;
         }
-        .gallery-headline {
-          font-size: clamp(24px, 9vw, 32px);
-        }
         .gallery-grid {
           padding: 0 14px 18px;
         }
 
         .competitions-card {
           padding: 18px;
-        }
-        .competitions-headline {
-          font-size: 20px;
         }
         .competitions-grid {
           padding: 0 18px 22px;
@@ -1600,7 +1641,7 @@
                   font-size: 10px;
                   letter-spacing: 2px;
                   display: block;
-                  margin-bottom: 8px;
+                  margin-bottom: 6px;
                 "
                 >TECH STACK</span
               >
@@ -1608,7 +1649,7 @@
                 style="
                   color: rgba(255, 255, 255, 0.25);
                   font-size: 11px;
-                  margin: 0 0 14px 0;
+                  margin: 0 0 10px 0;
                 "
               >
                 Click to expand
@@ -1623,7 +1664,7 @@
                   background: rgba(255, 255, 255, 0.025);
                   border: 1px solid rgba(255, 255, 255, 0.05);
                   border-radius: 10px;
-                  padding: 10px;
+                  padding: 8px;
                 "
               >
                 <div id="techMarqueeTrack" class="tech-marquee-track"></div>
