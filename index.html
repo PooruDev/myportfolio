@@ -688,6 +688,96 @@
         color: rgba(255, 255, 255, 0.48);
         font-size: 12px;
       }
+      .identity-quick-actions {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 12px;
+      }
+      .identity-quick-action-btn {
+        flex: 1 1 0;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-height: 60px;
+        padding: 10px 16px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.04),
+          0 4px 16px rgba(0, 0, 0, 0.15);
+        color: rgba(255, 255, 255, 0.9);
+        cursor: pointer;
+        text-align: left;
+        font-family: "DM Sans", sans-serif;
+        transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        min-width: 0;
+      }
+      .identity-quick-action-btn:hover {
+        background: rgba(255, 255, 255, 0.07);
+        border-color: rgba(255, 255, 255, 0.16);
+        transform: translateY(-2px);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.06),
+          0 8px 24px rgba(0, 0, 0, 0.28);
+      }
+      .identity-quick-action-btn:active {
+        transform: translateY(0);
+      }
+      .identity-quick-action-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 999px;
+        flex: 0 0 auto;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: rgba(255, 255, 255, 0.85);
+        transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .identity-quick-action-btn:hover .identity-quick-action-icon {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.16);
+        color: rgba(255, 255, 255, 0.98);
+      }
+      .identity-quick-action-text {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        min-width: 0;
+      }
+      .identity-quick-action-label {
+        font-size: 13.5px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.92);
+        line-height: 1.2;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .identity-quick-action-shortcut {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10.5px;
+        color: rgba(255, 255, 255, 0.4);
+        letter-spacing: 0.5px;
+        white-space: nowrap;
+      }
+      @media (max-width: 768px) {
+        .identity-quick-actions {
+          flex-wrap: wrap;
+        }
+        .identity-quick-action-btn {
+          flex: 1 1 calc(50% - 6px);
+          min-width: 150px;
+        }
+      }
+      @media (max-width: 480px) {
+        .identity-quick-action-btn {
+          flex: 1 1 100%;
+        }
+      }
       .identity-banner {
         width: 100%;
         aspect-ratio: 16/4;
@@ -994,7 +1084,7 @@
         display: flex;
         flex-direction: column;
         gap: 10px;
-        animation: achievementMarquee 22s linear infinite;
+        animation: achievementMarquee 40s linear infinite;
       }
       @keyframes achievementMarquee {
         0% {
@@ -1019,18 +1109,6 @@
       .achievement-item:hover {
         background: rgba(255, 255, 255, 0.06);
         border-color: rgba(255, 255, 255, 0.12);
-      }
-      .achievement-icon {
-        width: 38px;
-        height: 38px;
-        border-radius: 999px;
-        flex: 0 0 auto;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        background: rgba(255, 255, 255, 0.06);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        color: rgba(255, 255, 255, 0.7);
       }
       .achievement-details {
         min-width: 0;
@@ -1148,10 +1226,6 @@
           padding: 10px;
           gap: 10px;
         }
-        .achievement-icon {
-          width: 32px;
-          height: 32px;
-        }
         .achievement-name {
           font-size: 13px;
         }
@@ -1243,10 +1317,6 @@
           padding: 8px;
           gap: 8px;
         }
-        .achievement-icon {
-          width: 28px;
-          height: 28px;
-        }
         .achievement-name {
           font-size: 12.5px;
         }
@@ -1335,10 +1405,6 @@
         .tech-item {
           font-size: 9px;
           padding: 4px 8px;
-        }
-        .achievement-icon {
-          width: 26px;
-          height: 26px;
         }
         .social-btn {
           width: 40px;
@@ -1983,7 +2049,7 @@
                   "
                 >
                   <div style="min-width: 0">
-                    <div class="competitions-panel-label">COMPETITIONS</div>
+                    <div class="competitions-panel-label">ACHIEVEMENTS</div>
                     <div class="competitions-panel-note">
                       Press Esc or use the close button to exit
                     </div>
@@ -2002,12 +2068,13 @@
               <div class="competitions-hero">
                 <div>
                   <h2 class="competitions-headline">
-                    Competition results and pressure-tested technical work.
+                    Recognized for Academic Excellence.
                   </h2>
                   <p class="competitions-body-copy">
-                    Hands-on experience across exploitation, networking,
-                    forensics, cryptography, reverse engineering, and secure
-                    systems.
+                    Consistently ranked among the top-performing students with
+                    outstanding academic results, maintaining exceptional grades
+                    while actively participating in leadership and technical
+                    projects.
                   </p>
                 </div>
               </div>
@@ -2433,8 +2500,7 @@
                 <div class="identity-grid" style="padding-bottom: 24px">
                   <div>
                     <h2 class="identity-headline">
-                      Leadership, identity, and execution across systems,
-                      speaking, and long-term technical interests.
+                      Building Reliable Systems with Leadership and Precision.
                     </h2>
                     <p class="identity-body-copy" style="margin-top: 18px">
                       I build reliable interfaces, lead with precision, and
@@ -2541,7 +2607,7 @@
                         </div>
                         <div
                           class="identity-profile-card identity-card-shell"
-                          onclick="copyIdentityValue('paul.calang@proton.me')"
+                          onclick="copyIdentityValue('calangpaul422@gmail.com')"
                         >
                           <span class="identity-platform-icon"
                             ><i
@@ -2550,9 +2616,9 @@
                             ></i
                           ></span>
                           <div class="identity-card-meta">
-                            <p class="identity-card-name">Proton Mail</p>
+                            <p class="identity-card-name">Email</p>
                             <p class="identity-card-id">
-                              paul.calang@proton.me
+                              calangpaul422@gmail.com
                             </p>
                           </div>
                           <button
@@ -2560,7 +2626,7 @@
                             class="identity-action-btn"
                             onclick="
                               event.stopPropagation();
-                              copyIdentityValue('paul.calang@proton.me');
+                              copyIdentityValue('calangpaul422@gmail.com');
                             "
                           >
                             COPY
@@ -2623,6 +2689,76 @@
                           </button>
                         </div>
                       </div>
+                    </div>
+                  </section>
+                  <section>
+                    <div
+                      class="identity-panel-label"
+                      style="margin-bottom: 14px"
+                    >
+                      QUICK ACTIONS
+                    </div>
+                    <div class="identity-quick-actions">
+                      <button
+                        type="button"
+                        class="identity-quick-action-btn"
+                        onclick="openQuickAction('ask')"
+                      >
+                        <span class="identity-quick-action-icon"
+                          ><i
+                            data-lucide="sparkles"
+                            style="width: 18px; height: 18px"
+                          ></i
+                        ></span>
+                        <span class="identity-quick-action-text">
+                          <span class="identity-quick-action-label"
+                            >Ask Anything</span
+                          >
+                          <span class="identity-quick-action-shortcut"
+                            >Alt + K</span
+                          >
+                        </span>
+                      </button>
+                      <button
+                        type="button"
+                        class="identity-quick-action-btn"
+                        onclick="openQuickAction('typing')"
+                      >
+                        <span class="identity-quick-action-icon"
+                          ><i
+                            data-lucide="keyboard"
+                            style="width: 18px; height: 18px"
+                          ></i
+                        ></span>
+                        <span class="identity-quick-action-text">
+                          <span class="identity-quick-action-label"
+                            >Typing Test</span
+                          >
+                          <span class="identity-quick-action-shortcut"
+                            >Alt + J</span
+                          >
+                        </span>
+                      </button>
+                      <button
+                        type="button"
+                        class="identity-quick-action-btn"
+                        onclick="openQuickAction('community')"
+                      >
+                        <span class="identity-quick-action-icon"
+                          ><i
+                            data-lucide="users"
+                            style="width: 18px; height: 18px"
+                          ></i
+                        ></span>
+                        <span class="identity-quick-action-text">
+                          <span class="identity-quick-action-label"
+                            >Community Chat</span
+                          >
+                          <span class="identity-quick-action-shortcut"
+                            >Alt + L</span
+                          >
+                        </span>
+                      </button>
                     </div>
                   </section>
                   <section
@@ -2831,8 +2967,7 @@
               <div class="identity-grid" style="padding-bottom: 24px">
                 <div>
                   <h2 class="identity-headline">
-                    Leadership, identity, and execution across systems,
-                    speaking, and long-term technical interests.
+                    Building Reliable Systems with Leadership and Precision.
                   </h2>
                   <p class="identity-body-copy" style="margin-top: 18px">
                     I build reliable interfaces, lead with precision, and
@@ -2934,7 +3069,7 @@
                       </div>
                       <div
                         class="identity-profile-card identity-card-shell"
-                        onclick="copyIdentityValue('paul.calang@proton.me')"
+                        onclick="copyIdentityValue('calangpaul422@gmail.com')"
                       >
                         <span class="identity-platform-icon"
                           ><i
@@ -2943,15 +3078,17 @@
                           ></i
                         ></span>
                         <div class="identity-card-meta">
-                          <p class="identity-card-name">Proton Mail</p>
-                          <p class="identity-card-id">paul.calang@proton.me</p>
+                          <p class="identity-card-name">Gmail</p>
+                          <p class="identity-card-id">
+                            calangpaul422@gmail.com
+                          </p>
                         </div>
                         <button
                           type="button"
                           class="identity-action-btn"
                           onclick="
                             event.stopPropagation();
-                            copyIdentityValue('paul.calang@proton.me');
+                            copyIdentityValue('calangpaul422@gmail.com');
                           "
                         >
                           COPY
@@ -3200,6 +3337,3270 @@
     </div>
     <!-- /page-shell -->
 
+    <!-- ── Ask Anything overlay (⌘K / Alt+K) — logic ported from asdasd.html ── -->
+    <style>
+      #askOverlay {
+        position: fixed;
+        inset: 0;
+        z-index: 130;
+        display: none;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 1.5rem;
+      }
+      #askOverlay.is-visible {
+        display: flex;
+      }
+      .ask-backdrop {
+        position: absolute;
+        inset: 0;
+        background: rgba(10, 10, 10, 0.72);
+        -webkit-backdrop-filter: blur(16px);
+        backdrop-filter: blur(16px);
+        opacity: 0;
+        transition: opacity 0.4s ease;
+      }
+      #askOverlay.is-open .ask-backdrop {
+        opacity: 1;
+      }
+      .ask-content {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+        gap: 1.5rem;
+        width: 100%;
+        max-width: 760px;
+        padding-left: clamp(1.5rem, 9vw, 8rem);
+        opacity: 0;
+        transform: translateY(12px);
+        transition:
+          opacity 0.45s ease 0.1s,
+          transform 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.1s;
+      }
+      #askOverlay.is-open .ask-content {
+        opacity: 1;
+        transform: none;
+      }
+      .ask-title {
+        font-family: "JetBrains Mono", monospace;
+        font-size: clamp(1.9rem, 5.5vw, 3.4rem);
+        line-height: 1.05;
+        color: rgba(255, 255, 255, 0.92);
+        letter-spacing: -0.01em;
+        text-transform: lowercase;
+        white-space: nowrap;
+        transition:
+          opacity 0.25s ease,
+          transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      @keyframes askSweep {
+        from {
+          -webkit-mask-position: 100% 0;
+          mask-position: 100% 0;
+        }
+        to {
+          -webkit-mask-position: 0% 0;
+          mask-position: 0% 0;
+        }
+      }
+      .ask-head.is-shimmer {
+        -webkit-mask-image: linear-gradient(
+          90deg,
+          #000 0 38%,
+          rgba(0, 0, 0, 0.22) 50%,
+          #000 62% 100%
+        );
+        mask-image: linear-gradient(
+          90deg,
+          #000 0 38%,
+          rgba(0, 0, 0, 0.22) 50%,
+          #000 62% 100%
+        );
+        -webkit-mask-size: 300% 100%;
+        mask-size: 300% 100%;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        animation: askSweep 1.8s linear infinite;
+      }
+      .ask-title.is-small {
+        font-size: clamp(1.25rem, 3.4vw, 1.95rem);
+        line-height: 1.3;
+        white-space: normal;
+      }
+      @media (max-width: 640px) {
+        .ask-title {
+          white-space: normal;
+        }
+      }
+      .ask-head.is-shimmer .ask-title {
+        color: rgba(255, 255, 255, 0.55);
+      }
+      .ask-head {
+        display: flex;
+        align-items: center;
+        gap: 0.5em;
+        max-width: 100%;
+        font-size: clamp(1.25rem, 3.4vw, 1.95rem);
+      }
+      .loader {
+        width: 0.85em;
+        aspect-ratio: 1;
+        --_g: no-repeat
+          radial-gradient(farthest-side, rgba(255, 255, 255, 0.55) 94%, #0000);
+        background:
+          var(--_g) 0 0,
+          var(--_g) 100% 0,
+          var(--_g) 100% 100%,
+          var(--_g) 0 100%;
+        background-size: 40% 40%;
+        animation: l38 1s infinite;
+      }
+      @keyframes l38 {
+        100% {
+          background-position:
+            100% 0,
+            100% 100%,
+            0 100%,
+            0 0;
+        }
+      }
+      #askLoader {
+        display: none;
+        flex: 0 0 auto;
+        transform: translateY(0.08em);
+      }
+      #askLoader.is-on {
+        display: block;
+      }
+      .ask-bubble {
+        display: none;
+        position: relative;
+        margin-left: 11px;
+        max-width: min(85vw, 600px);
+        background: rgba(255, 255, 255, 0.09);
+        color: rgba(255, 255, 255, 0.92);
+        font-family: "JetBrains Mono", monospace;
+        font-size: clamp(0.95rem, 2.6vw, 1.2rem);
+        line-height: 1.45;
+        padding: 10px 15px;
+        border-radius: 14px;
+        border-top-left-radius: 5px;
+        word-break: break-word;
+      }
+      .ask-bubble.is-on {
+        display: block;
+        transform-origin: 0 50%;
+        animation: bubbleIn 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .ask-bubble::before {
+        content: "";
+        position: absolute;
+        left: -7px;
+        top: 13px;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 6px 8px 6px 0;
+        border-color: transparent rgba(255, 255, 255, 0.09) transparent
+          transparent;
+      }
+      @keyframes bubbleIn {
+        from {
+          opacity: 0;
+          transform: translateY(3px) scale(0.94);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      .ask-reveal {
+        display: none;
+        flex-direction: column;
+        align-items: flex-start;
+        max-width: min(92vw, 660px);
+      }
+      .reveal-item {
+        opacity: 0;
+        filter: blur(10px);
+        transition:
+          opacity 0.6s ease,
+          filter 0.6s ease;
+      }
+      .reveal-item.show {
+        opacity: 1;
+        filter: blur(0);
+      }
+      .reveal-title {
+        font-family: "JetBrains Mono", monospace;
+        font-size: clamp(1.5rem, 4.5vw, 2.3rem);
+        line-height: 1.15;
+        color: rgba(255, 255, 255, 0.92);
+      }
+      .reveal-sub {
+        margin-top: 0.9rem;
+        max-width: 36rem;
+        font-family: "JetBrains Mono", monospace;
+        font-size: clamp(1rem, 2.7vw, 1.25rem);
+        line-height: 1.5;
+        color: rgba(255, 255, 255, 0.6);
+      }
+      .reveal-line {
+        margin-top: 0.65rem;
+        font-family: "JetBrains Mono", monospace;
+        font-size: clamp(0.95rem, 2.5vw, 1.15rem);
+        line-height: 1.55;
+        color: rgba(255, 255, 255, 0.92);
+      }
+      .reveal-line.gap {
+        margin-top: 1.35rem;
+      }
+      .reveal-edu {
+        margin-top: 1.5rem;
+        max-width: 36rem;
+        font-family: "JetBrains Mono", monospace;
+        font-size: clamp(0.95rem, 2.5vw, 1.15rem);
+        line-height: 1.6;
+        color: rgba(255, 255, 255, 0.6);
+      }
+      .ask-field {
+        display: inline-flex;
+        align-items: center;
+        min-height: 2.4rem;
+        max-width: 90vw;
+        font-family: "JetBrains Mono", monospace;
+        font-size: clamp(1.05rem, 3vw, 1.5rem);
+        color: rgba(255, 255, 255, 0.5);
+        cursor: text;
+      }
+      #askText {
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+      .ask-caret {
+        display: inline-block;
+        width: 2px;
+        height: 1.2em;
+        background: rgba(255, 255, 255, 0.55);
+        margin-left: 3px;
+        vertical-align: middle;
+        animation: caretBlink 1.06s step-end infinite;
+      }
+      @keyframes caretBlink {
+        0% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+      .ask-hidden-input {
+        position: absolute;
+        opacity: 0;
+        width: 1px;
+        height: 1px;
+        border: 0;
+        padding: 0;
+      }
+    </style>
+
+    <div id="askOverlay" role="dialog" aria-modal="true" aria-label="Ask">
+      <div class="ask-backdrop" onclick="closeAsk()"></div>
+      <div class="ask-content" onclick="focusAsk()">
+        <div class="ask-bubble" id="askBubble">
+          <span id="askBubbleText"></span>
+        </div>
+        <div class="ask-head">
+          <div class="loader" id="askLoader"></div>
+          <h2 class="ask-title">what do you want to ask?</h2>
+        </div>
+        <div class="ask-reveal" id="askReveal"></div>
+        <div class="ask-field">
+          <span id="askText"></span><span class="ask-caret"></span>
+        </div>
+        <input
+          id="askInput"
+          class="ask-hidden-input"
+          type="text"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+          aria-label="Type your question"
+        />
+      </div>
+    </div>
+
+    <script>
+      // ── Ask overlay: ⌘K (Mac) / Alt+K (Windows) — ported from asdasd.html ──
+      const askOverlay = document.getElementById("askOverlay");
+      const askInput = document.getElementById("askInput");
+      const askText = document.getElementById("askText");
+      const askContent = askOverlay.querySelector(".ask-content");
+      const askTitle = askOverlay.querySelector(".ask-title");
+      const askCaret = askOverlay.querySelector(".ask-caret");
+      const askLoader = document.getElementById("askLoader");
+      const askHead = askOverlay.querySelector(".ask-head");
+      const askField = askOverlay.querySelector(".ask-field");
+      const askBubble = document.getElementById("askBubble");
+      const askBubbleText = document.getElementById("askBubbleText");
+      const askReveal = document.getElementById("askReveal");
+      const ASK_DEFAULT_TITLE = "what do you want to ask?";
+      let askSeq = 0; // bumped on open/close to cancel in-flight sequences
+      let askBusy = false; // true while the "answer" sequence runs
+
+      const askSleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+      function askResetState() {
+        askBusy = false;
+        askInput.removeAttribute("readonly");
+        askInput.value = "";
+        askText.textContent = "";
+        askCaret.style.display = "";
+        askField.style.display = "";
+        askBubble.classList.remove("is-on");
+        askBubble.style.opacity = "";
+        askBubble.style.filter = "";
+        askBubble.style.transition = "";
+        askBubbleText.textContent = "";
+        askTitle.classList.remove("is-small");
+        askHead.classList.remove("is-shimmer");
+        askLoader.classList.remove("is-on");
+        askTitle.style.transition = "";
+        askTitle.style.opacity = "";
+        askTitle.style.transform = "";
+        askTitle.style.filter = "";
+        askTitle.textContent = ASK_DEFAULT_TITLE;
+        askReveal.style.display = "none";
+        askReveal.innerHTML = "";
+        askReveal.style.opacity = "";
+        askReveal.style.transition = "";
+        askHead.style.display = "";
+        askHead.style.opacity = "";
+        askHead.style.transition = "";
+        askHead.style.filter = "";
+      }
+
+      async function askSetTitle(text, pulse) {
+        askTitle.style.transition =
+          "opacity .25s ease, transform .3s cubic-bezier(.16,1,.3,1)";
+        askTitle.style.opacity = "0";
+        askTitle.style.transform = "translateY(6px)";
+        await askSleep(250);
+        askTitle.textContent = text;
+        if (pulse) {
+          askTitle.classList.add("is-small");
+          askLoader.classList.add("is-on");
+          askHead.classList.add("is-shimmer");
+          askTitle.style.transition = "";
+          askTitle.style.opacity = "";
+          askTitle.style.transform = "";
+        } else {
+          askLoader.classList.remove("is-on");
+          askHead.classList.remove("is-shimmer");
+          askTitle.classList.add("is-small");
+          askTitle.style.opacity = "1";
+          askTitle.style.transform = "none";
+          await askSleep(300);
+        }
+      }
+
+      // ── Sniff what the browser exposes (real data) ──
+      function detectBrowser(ua) {
+        if (/Edg\//.test(ua))
+          return "Edge " + ((ua.match(/Edg\/(\d+)/) || [])[1] || "");
+        if (/OPR\//.test(ua))
+          return "Opera " + ((ua.match(/OPR\/(\d+)/) || [])[1] || "");
+        if (/Firefox\//.test(ua))
+          return "Firefox " + ((ua.match(/Firefox\/(\d+)/) || [])[1] || "");
+        if (/Chrome\//.test(ua))
+          return "Chrome " + ((ua.match(/Chrome\/(\d+)/) || [])[1] || "");
+        if (/Safari\//.test(ua) && /Version\//.test(ua))
+          return "Safari " + ((ua.match(/Version\/(\d+)/) || [])[1] || "");
+        return "your browser";
+      }
+      function detectOS(ua) {
+        if (/Windows/.test(ua)) return "Windows";
+        if (/iPhone|iPad|iPod/.test(ua)) return "iOS";
+        if (/Mac OS X/.test(ua)) return "macOS";
+        if (/Android/.test(ua)) return "Android";
+        if (/Linux/.test(ua)) return "Linux";
+        return "your device";
+      }
+      async function collectData() {
+        const ua = navigator.userAgent;
+        const data = {
+          ip: "",
+          city: "",
+          region: "",
+          country: "",
+          isp: "",
+          lat: "",
+          lon: "",
+          os: detectOS(ua),
+          browser: detectBrowser(ua),
+          screen: screen.width + "×" + screen.height,
+          cores: navigator.hardwareConcurrency || "?",
+          ramNum: navigator.deviceMemory || null,
+          lang:
+            navigator.language ||
+            (navigator.languages && navigator.languages[0]) ||
+            "—",
+          tz: Intl.DateTimeFormat().resolvedOptions().timeZone || "—",
+          time: new Date().toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
+          conn:
+            (navigator.connection && navigator.connection.effectiveType) || "",
+          referrer: "",
+        };
+        try {
+          if (document.referrer)
+            data.referrer = new URL(document.referrer).hostname;
+        } catch (e) {}
+        try {
+          const ctrl = new AbortController();
+          const to = setTimeout(() => ctrl.abort(), 3500);
+          const res = await fetch("https://ipwho.is/", { signal: ctrl.signal });
+          clearTimeout(to);
+          const j = await res.json();
+          if (j && j.success !== false) {
+            data.ip = j.ip || "";
+            data.city = j.city || "";
+            data.region = j.region || "";
+            data.country = j.country || "";
+            data.isp = (j.connection && j.connection.isp) || j.org || "";
+            data.lat = j.latitude;
+            data.lon = j.longitude;
+            if ((!data.tz || data.tz === "—") && j.timezone && j.timezone.id)
+              data.tz = j.timezone.id;
+          }
+        } catch (e) {}
+        return data;
+      }
+
+      // ── The plot twist: interrupt loading and reveal their data ──
+      async function askInterrupt(data, mySeq) {
+        askBubble.style.transition = "opacity .55s ease, filter .55s ease";
+        askBubble.style.filter = "blur(8px)";
+        askBubble.style.opacity = "0";
+        askHead.style.transition = "opacity .55s ease, filter .55s ease";
+        askHead.style.filter = "blur(8px)";
+        askHead.style.opacity = "0";
+        await askSleep(600);
+        if (mySeq !== askSeq) return;
+
+        askBubble.classList.remove("is-on");
+        askBubble.style.transition = "";
+        askBubble.style.filter = "";
+        askBubble.style.opacity = "";
+        askLoader.classList.remove("is-on");
+        askHead.classList.remove("is-shimmer");
+        askTitle.textContent = "";
+        askTitle.classList.remove("is-small");
+        askTitle.style.opacity = "";
+        askTitle.style.transform = "";
+        askTitle.style.filter = "";
+        askHead.style.transition = "";
+        askHead.style.filter = "";
+        askHead.style.opacity = "";
+        await askSleep(300);
+        if (mySeq !== askSeq) return;
+
+        const loc = [data.city, data.region, data.country]
+          .filter(Boolean)
+          .join(", ");
+        const msgs = [
+          "before i answer",
+          "here is what your browser already shared the moment you opened this site",
+        ];
+        if (loc) msgs.push("you are currently in " + loc);
+        if (data.ip) msgs.push("your public ip address is " + data.ip);
+        if (data.isp) msgs.push("you are connected through " + data.isp);
+        if (data.lat && data.lon)
+          msgs.push(
+            "your approximate coordinates are around " +
+              (+data.lat).toFixed(2) +
+              ", " +
+              (+data.lon).toFixed(2),
+          );
+        msgs.push(
+          "you are on a " +
+            data.os +
+            " device with " +
+            data.cores +
+            " processor cores" +
+            (data.ramNum ? " and " + data.ramNum + "gb of memory" : ""),
+        );
+        msgs.push(
+          "you are browsing with " + data.browser + " set to " + data.lang,
+        );
+        msgs.push(
+          "your timezone is " +
+            data.tz +
+            " and it is around " +
+            String(data.time).toLowerCase() +
+            " where you are",
+        );
+        if (data.conn) msgs.push("you are on a " + data.conn + " connection");
+        if (data.referrer) msgs.push("you arrived here from " + data.referrer);
+        msgs.push("none of this needed your permission");
+        msgs.push(
+          "your browser shares it with every website you open, automatically",
+        );
+        msgs.push("so be mindful of what you click, and who you trust online");
+
+        for (const m of msgs) {
+          await askSetTitle(m, false);
+          if (mySeq !== askSeq) return;
+          await askSleep(2500);
+          if (mySeq !== askSeq) return;
+        }
+      }
+
+      async function askSubmit() {
+        if (askBusy) return;
+        const query = askInput.value.trim();
+        if (!query) return;
+
+        askBusy = true;
+        const mySeq = askSeq;
+        askInput.setAttribute("readonly", "");
+        askCaret.style.display = "none";
+
+        askBubbleText.textContent = query;
+        askBubble.classList.add("is-on");
+        askField.style.display = "none";
+
+        const dataPromise = collectData();
+
+        await askSetTitle("thinking...", true);
+        await askSleep(1900);
+        if (mySeq !== askSeq) return;
+
+        await askSetTitle("analyzing...", true);
+        await askSleep(1500);
+        if (mySeq !== askSeq) return;
+
+        const data = await dataPromise;
+        if (mySeq !== askSeq) return;
+        await askInterrupt(data, mySeq);
+        if (mySeq !== askSeq) return;
+
+        await askSetTitle("as for your question", false);
+        await askSleep(2000);
+        if (mySeq !== askSeq) return;
+
+        await askSetTitle(
+          "i don't want to waste tokens on that, search for it yourself :)",
+          false,
+        );
+        await askSleep(2200);
+        if (mySeq !== askSeq) return;
+
+        window.open(
+          "https://www.google.com/search?q=" + encodeURIComponent(query),
+          "_blank",
+          "noopener",
+        );
+      }
+
+      function openAsk() {
+        askSeq++;
+        askResetState();
+        askContent.style.transition = "";
+        askContent.style.opacity = "";
+        askContent.style.transform = "";
+        askOverlay.classList.add("is-visible");
+        document.documentElement.style.overflow = "hidden";
+        requestAnimationFrame(() => askOverlay.classList.add("is-open"));
+        setTimeout(() => askInput.focus(), 60);
+      }
+      function closeAsk() {
+        askSeq++;
+        document.documentElement.style.overflow = "";
+        askInput.blur();
+        askContent.style.transition = "opacity .22s ease, transform .22s ease";
+        askContent.style.opacity = "0";
+        askContent.style.transform = "translateY(6px)";
+        setTimeout(() => askOverlay.classList.remove("is-open"), 210);
+        setTimeout(() => {
+          askOverlay.classList.remove("is-visible");
+          askContent.style.transition = "";
+          askContent.style.opacity = "";
+          askContent.style.transform = "";
+          askResetState();
+        }, 640);
+      }
+      function focusAsk() {
+        if (!askBusy) askInput.focus();
+      }
+      function askIsOpen() {
+        return askOverlay.classList.contains("is-visible");
+      }
+
+      askInput.addEventListener("input", () => {
+        askText.textContent = askInput.value;
+      });
+      askInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          askSubmit();
+        }
+      });
+
+      // Alt+K / ⌘K opens or closes the Ask Anything quick action. It reuses
+      // openQuickAction("ask") — the exact same handler the Quick Actions
+      // button uses — so the button and the shortcut share identical logic.
+      document.addEventListener("keydown", (e) => {
+        if ((e.metaKey || e.altKey) && e.code === "KeyK") {
+          var shortcutCard = document.querySelector(".portfolio-card");
+          if (
+            !shortcutCard ||
+            !shortcutCard.classList.contains("identity-expanded")
+          ) {
+            return;
+          }
+          e.preventDefault();
+          openQuickAction("ask");
+          return;
+        }
+        if (e.key === "Escape" && askIsOpen()) closeAsk();
+      });
+
+      (function () {
+        const isMac = /Mac|iPhone|iPad/.test(
+          navigator.platform || navigator.userAgent || "",
+        );
+        document.querySelectorAll(".ask-mod-key").forEach((el) => {
+          el.textContent = isMac ? "⌘" : "Alt";
+        });
+      })();
+    </script>
+
+    <!-- ── Typing Test overlay (logic ported from asdasd.html) ── -->
+    <style>
+      #typingOverlay {
+        position: fixed;
+        inset: 0;
+        z-index: 135;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+      }
+      #typingOverlay.is-visible {
+        display: flex;
+      }
+      .tt-backdrop {
+        position: absolute;
+        inset: 0;
+        background: rgba(10, 10, 10, 0.72);
+        -webkit-backdrop-filter: blur(16px);
+        backdrop-filter: blur(16px);
+        opacity: 0;
+        transition: opacity 0.35s ease;
+      }
+      #typingOverlay.is-open .tt-backdrop {
+        opacity: 1;
+      }
+      .tt-content {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        max-width: 880px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.7rem;
+        opacity: 0;
+        transform: translateY(16px) scale(0.99);
+        transition:
+          opacity 0.45s ease 0.05s,
+          transform 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.05s;
+      }
+      #typingOverlay.is-open .tt-content {
+        opacity: 1;
+        transform: none;
+      }
+      #typingOverlay.is-open.is-closing .tt-content {
+        opacity: 0;
+        transform: translateY(10px) scale(0.99);
+        transition:
+          opacity 0.26s ease,
+          transform 0.3s cubic-bezier(0.4, 0, 1, 1);
+      }
+
+      .tt-stats {
+        display: flex;
+        align-items: flex-start;
+        gap: 2.6rem;
+        font-family: "JetBrains Mono", monospace;
+      }
+      .tt-stat {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.3rem;
+      }
+      .tt-stat-val {
+        font-size: 1.8rem;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.92);
+        line-height: 1;
+        font-variant-numeric: tabular-nums;
+      }
+      .tt-stat-val i {
+        font-style: normal;
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.4);
+        margin-left: 1px;
+      }
+      .tt-stat-val .tt-num {
+        display: inline-block;
+        min-width: 3ch;
+        text-align: center;
+      }
+      .tt-stat-label {
+        font-size: 9.5px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.4);
+      }
+
+      .tt-words-wrap {
+        width: 100%;
+      }
+      .tt-words {
+        position: relative;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 1.5rem;
+        line-height: 2.5rem;
+        min-height: 5rem;
+        color: rgba(255, 255, 255, 0.3);
+        user-select: none;
+        letter-spacing: 0.02em;
+      }
+      .tt-word {
+        display: inline-block;
+        margin: 0 0.55rem 0.15rem 0;
+        white-space: nowrap;
+      }
+      .tt-char {
+        transition: color 0.09s ease;
+      }
+      .tt-char.correct {
+        color: rgba(255, 255, 255, 0.92);
+      }
+      .tt-char.incorrect {
+        color: #e0584f;
+      }
+      .tt-char.extra {
+        color: #e0584f;
+        opacity: 0.55;
+      }
+      .tt-caret {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 2px;
+        height: 1.5rem;
+        background: rgba(255, 255, 255, 0.92);
+        border-radius: 2px;
+        transform: translateY(0.19rem);
+        transition:
+          left 0.11s cubic-bezier(0.16, 1, 0.3, 1),
+          top 0.11s ease;
+        animation: tt-blink 1.05s ease-in-out infinite;
+      }
+      @keyframes tt-blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.12;
+        }
+      }
+
+      .tt-keyboard {
+        display: flex;
+        flex-direction: column;
+        gap: 0.42rem;
+        align-items: center;
+      }
+      .tt-krow {
+        display: flex;
+        gap: 0.42rem;
+      }
+      .tt-key {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 2.4rem;
+        height: 2.4rem;
+        padding: 0 0.45rem;
+        border-radius: 0.62rem;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 2px 0 rgba(255, 255, 255, 0.06);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.5);
+        transition:
+          transform 0.07s ease,
+          background 0.14s ease,
+          color 0.14s ease,
+          box-shadow 0.1s ease,
+          border-color 0.14s ease;
+      }
+      .tt-key.space {
+        min-width: 15rem;
+        font-size: 10px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.4);
+      }
+      .tt-key.next {
+        border-color: rgba(255, 255, 255, 0.14);
+        color: rgba(255, 255, 255, 0.92);
+        box-shadow:
+          0 0 0 3px rgba(255, 255, 255, 0.06),
+          0 2px 0 rgba(255, 255, 255, 0.06);
+      }
+      .tt-key.active {
+        background: rgba(255, 255, 255, 0.12);
+        color: rgba(255, 255, 255, 0.92);
+        border-color: rgba(255, 255, 255, 0.14);
+        transform: translateY(2px);
+        box-shadow: 0 0 0 rgba(255, 255, 255, 0.14);
+      }
+      #typingOverlay.is-open .tt-key {
+        animation: tt-keyin 0.42s both cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      @keyframes tt-keyin {
+        from {
+          opacity: 0;
+          transform: translateY(7px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+
+      .tt-hint {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.4);
+        display: flex;
+        gap: 1.1rem;
+      }
+      .tt-hint kbd {
+        padding: 1px 6px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 5px;
+        background: rgba(255, 255, 255, 0.03);
+        color: rgba(255, 255, 255, 0.5);
+      }
+
+      /* results */
+      .tt-results {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.4rem;
+      }
+      #typingOverlay.show-results .tt-results {
+        display: flex;
+        animation: tt-keyin 0.5s both;
+      }
+      #typingOverlay.show-results .tt-stats,
+      #typingOverlay.show-results .tt-words-wrap,
+      #typingOverlay.show-results .tt-keyboard {
+        display: none;
+      }
+      .tt-res-main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.3rem;
+      }
+      .tt-res-wpm {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 5rem;
+        line-height: 1;
+        color: rgba(255, 255, 255, 0.92);
+        font-variant-numeric: tabular-nums;
+      }
+      .tt-res-cap {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.4);
+      }
+      .tt-res-grid {
+        display: flex;
+        gap: 2.6rem;
+        font-family: "JetBrains Mono", monospace;
+      }
+      .tt-res-grid > div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.35rem;
+      }
+      .tt-res-grid b {
+        font-weight: 500;
+        font-size: 1.5rem;
+        color: rgba(255, 255, 255, 0.78);
+        font-variant-numeric: tabular-nums;
+      }
+      .tt-res-grid b i {
+        font-style: normal;
+        font-size: 0.85rem;
+        color: rgba(255, 255, 255, 0.4);
+      }
+      .tt-res-grid label {
+        font-size: 9.5px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.4);
+      }
+      .tt-restart {
+        margin-top: 0.4rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1.1rem;
+        border-radius: 0.7rem;
+        background: rgba(255, 255, 255, 0.92);
+        color: #0a0a0a;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px;
+        transition:
+          background 0.2s,
+          transform 0.2s;
+        cursor: pointer;
+      }
+      .tt-restart:hover {
+        background: #ffffff;
+        transform: translateY(-1px);
+      }
+      .tt-verdict {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12.5px;
+        letter-spacing: 0.03em;
+        color: rgba(255, 255, 255, 0.4);
+      }
+      .tt-verdict .tt-vicon {
+        width: 14px;
+        height: 14px;
+        flex: none;
+        color: rgba(255, 255, 255, 0.3);
+      }
+      .tt-verdict.beat {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 15px;
+        letter-spacing: 0.01em;
+        color: rgba(255, 255, 255, 0.92);
+        animation: tt-beatpop 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+      }
+      .tt-verdict.beat .tt-vicon {
+        color: rgba(255, 255, 255, 0.92);
+        width: 15px;
+        height: 15px;
+      }
+      @keyframes tt-beatpop {
+        0% {
+          opacity: 0;
+          transform: scale(0.7);
+        }
+        60% {
+          transform: scale(1.08);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .tt-confirm {
+        display: none;
+        align-items: center;
+        gap: 0.55rem;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.92);
+        padding: 0.5rem 0.95rem;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 0.7rem;
+        background: rgba(255, 255, 255, 0.04);
+        box-shadow: 0 10px 28px -14px rgba(0, 0, 0, 0.3);
+        animation: tt-keyin 0.28s both;
+      }
+      .tt-confirm kbd {
+        padding: 1px 6px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 5px;
+        background: rgba(255, 255, 255, 0.03);
+        color: rgba(255, 255, 255, 0.5);
+      }
+      #typingOverlay.is-confirming .tt-confirm {
+        display: inline-flex;
+      }
+      #typingOverlay.is-confirming .tt-hint {
+        display: none;
+      }
+    </style>
+
+    <div
+      id="typingOverlay"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Typing test"
+    >
+      <div class="tt-backdrop" onclick="closeTyping()"></div>
+      <div class="tt-content">
+        <div class="tt-stats">
+          <div class="tt-stat">
+            <span class="tt-stat-val"
+              ><span class="tt-num" id="ttWpm">0</span></span
+            >
+            <span class="tt-stat-label">wpm</span>
+          </div>
+          <div class="tt-stat">
+            <span class="tt-stat-val"
+              ><span class="tt-num" id="ttAcc">100</span><i>%</i></span
+            >
+            <span class="tt-stat-label">acc</span>
+          </div>
+          <div class="tt-stat">
+            <span class="tt-stat-val"
+              ><span class="tt-num" id="ttTime">0</span><i>s</i></span
+            >
+            <span class="tt-stat-label">time</span>
+          </div>
+        </div>
+
+        <div class="tt-words-wrap">
+          <div class="tt-words" id="ttWords"></div>
+        </div>
+
+        <div class="tt-keyboard" id="ttKeyboard"></div>
+
+        <div class="tt-hint">
+          <span><kbd>tab</kbd> restart</span>
+          <span><kbd>esc</kbd> close</span>
+        </div>
+        <div class="tt-confirm" id="ttConfirm">
+          restart test? <kbd>↵</kbd> to confirm · <kbd>esc</kbd> cancel
+        </div>
+
+        <div class="tt-results">
+          <div class="tt-res-main">
+            <span class="tt-res-wpm" id="ttResWpm">0</span>
+            <span class="tt-res-cap">words per minute</span>
+          </div>
+          <div class="tt-res-grid">
+            <div>
+              <b><span id="ttResAcc">0</span><i>%</i></b
+              ><label>accuracy</label>
+            </div>
+            <div>
+              <b><span id="ttResRaw">0</span></b
+              ><label>raw</label>
+            </div>
+            <div>
+              <b><span id="ttResTime">0</span><i>s</i></b
+              ><label>time</label>
+            </div>
+          </div>
+          <div class="tt-verdict" id="ttVerdict"></div>
+          <button type="button" class="tt-restart" onclick="ttRestart()">
+            ↻ try again
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // ── Typing test: ⌘J (Mac) / Alt+J (Windows) — logic ported from asdasd.html ──
+      (function () {
+        const overlay = document.getElementById("typingOverlay");
+        if (!overlay) return;
+        const wordsEl = document.getElementById("ttWords");
+        const kbEl = document.getElementById("ttKeyboard");
+        const elWpm = document.getElementById("ttWpm"),
+          elAcc = document.getElementById("ttAcc"),
+          elTime = document.getElementById("ttTime");
+        const rWpm = document.getElementById("ttResWpm"),
+          rAcc = document.getElementById("ttResAcc"),
+          rRaw = document.getElementById("ttResRaw"),
+          rTime = document.getElementById("ttResTime");
+        const verdictEl = document.getElementById("ttVerdict");
+        const BRYL_WPM = 140;
+
+        const WORD_BANK =
+          "the be of and a to in he have it that for they with as not on she at by this we you do but from or which one would all will there say who make when can more if no out other so what time up go about than into could state only new year some take come these know see use get like then first any work now may such give over think most even find day also after way many must look before great back through long where much should well people down own just because good each those feel seem how high too place little world very still hand old life tell write become here show house both between need mean call under last right move thing school never same begin while number part turn real leave might want point form off child few small since against ask late home large person end open public follow during without again hold around possible head consider word program problem however lead system set order eye plan run keep face fact group play stand early course change help line".split(
+            " ",
+          );
+
+        const KB_ROWS = ["qwertyuiop", "asdfghjkl", "zxcvbnm"];
+        const N_WORDS = 26;
+
+        let words = [],
+          wordEls = [],
+          wi = 0,
+          ci = 0;
+        let started = false,
+          finished = false,
+          startTime = 0,
+          rafId = null;
+        let raw = 0,
+          correct = 0;
+        let dispWpm = 0,
+          dispAcc = 100,
+          dispTime = 0,
+          lastStatWrite = 0;
+        let isOpen = false,
+          pendingRestart = false,
+          closeT1 = null,
+          closeT2 = null;
+        const caretEl = document.createElement("span");
+        caretEl.className = "tt-caret";
+        function setConfirm(on) {
+          pendingRestart = on;
+          overlay.classList.toggle("is-confirming", on);
+        }
+
+        function rand(n) {
+          return Math.floor(Math.random() * n);
+        }
+        function genWords() {
+          words = Array.from(
+            { length: N_WORDS },
+            () => WORD_BANK[rand(WORD_BANK.length)],
+          );
+        }
+
+        function buildKeyboard() {
+          kbEl.innerHTML = "";
+          let idx = 0;
+          KB_ROWS.forEach((row) => {
+            const r = document.createElement("div");
+            r.className = "tt-krow";
+            for (const ch of row) {
+              const k = document.createElement("span");
+              k.className = "tt-key";
+              k.dataset.key = ch;
+              k.textContent = ch;
+              k.style.animationDelay = idx * 7 + "ms";
+              r.appendChild(k);
+              idx++;
+            }
+            kbEl.appendChild(r);
+          });
+          const r = document.createElement("div");
+          r.className = "tt-krow";
+          const sp = document.createElement("span");
+          sp.className = "tt-key space";
+          sp.dataset.key = " ";
+          sp.textContent = "space";
+          sp.style.animationDelay = idx * 7 + "ms";
+          r.appendChild(sp);
+          kbEl.appendChild(r);
+        }
+        function keyEl(ch) {
+          try {
+            return kbEl.querySelector(
+              '.tt-key[data-key="' + (ch === " " ? " " : ch) + '"]',
+            );
+          } catch (e) {
+            return null;
+          }
+        }
+        function flashKey(ch) {
+          const k = keyEl(ch);
+          if (k) {
+            k.classList.add("active");
+            setTimeout(() => k.classList.remove("active"), 110);
+          }
+        }
+        function highlightNext() {
+          kbEl
+            .querySelectorAll(".tt-key.next")
+            .forEach((k) => k.classList.remove("next"));
+          if (finished) return;
+          const cur = wordEls[wi];
+          let nc = null;
+          if (ci < cur.word.length) nc = cur.word[ci];
+          else if (wi < words.length - 1) nc = " ";
+          if (nc) {
+            const k = keyEl(nc);
+            if (k) k.classList.add("next");
+          }
+        }
+
+        function buildText() {
+          wordsEl.innerHTML = "";
+          wordEls = [];
+          words.forEach((w) => {
+            const wEl = document.createElement("span");
+            wEl.className = "tt-word";
+            const chars = [];
+            for (const ch of w) {
+              const c = document.createElement("span");
+              c.className = "tt-char";
+              c.textContent = ch;
+              wEl.appendChild(c);
+              chars.push(c);
+            }
+            wordsEl.appendChild(wEl);
+            wordEls.push({ el: wEl, chars: chars, word: w });
+          });
+          wordsEl.appendChild(caretEl);
+        }
+
+        function moveCaret() {
+          const cur = wordEls[wi];
+          let left, top;
+          if (ci < cur.chars.length) {
+            const el = cur.chars[ci];
+            left = el.offsetLeft;
+            top = el.offsetTop;
+          } else {
+            const el = cur.chars[cur.chars.length - 1];
+            left = el.offsetLeft + el.offsetWidth;
+            top = el.offsetTop;
+          }
+          caretEl.style.left = left + "px";
+          caretEl.style.top = top + "px";
+        }
+
+        function start() {
+          started = true;
+          startTime = Date.now();
+          wordsEl.classList.add("is-typing");
+          cancelAnimationFrame(rafId);
+          rafId = requestAnimationFrame(statsLoop);
+        }
+        function statsLoop(now) {
+          const ms = now || 0;
+          const t = started ? (Date.now() - startTime) / 1000 : 0;
+          const tgtWpm = started && t > 0.5 ? correct / 5 / (t / 60) : 0;
+          const tgtAcc = raw ? (correct / raw) * 100 : 100;
+          dispWpm += (tgtWpm - dispWpm) * 0.16;
+          dispAcc += (tgtAcc - dispAcc) * 0.16;
+          dispTime += (t - dispTime) * 0.4;
+          if (Math.abs(tgtWpm - dispWpm) < 0.5) dispWpm = tgtWpm;
+          if (Math.abs(tgtAcc - dispAcc) < 0.5) dispAcc = tgtAcc;
+          if (ms - lastStatWrite >= 240) {
+            lastStatWrite = ms;
+            elWpm.textContent = Math.round(dispWpm);
+            elAcc.textContent = Math.round(dispAcc);
+            elTime.textContent = Math.floor(dispTime + 1e-4);
+          }
+          if (isOpen && !finished) rafId = requestAnimationFrame(statsLoop);
+        }
+
+        function afterInput() {
+          moveCaret();
+          highlightNext();
+          const cur = wordEls[wi];
+          if (wi === words.length - 1 && ci >= cur.word.length) finish();
+        }
+
+        function handleChar(k) {
+          if (finished) return;
+          if (!started) start();
+          const cur = wordEls[wi];
+          if (ci < cur.word.length) {
+            const el = cur.chars[ci];
+            const ok = k === cur.word[ci];
+            el.classList.add(ok ? "correct" : "incorrect");
+            raw++;
+            if (ok) correct++;
+            ci++;
+          } else if (cur.chars.length - cur.word.length < 8) {
+            const ex = document.createElement("span");
+            ex.className = "tt-char extra";
+            ex.textContent = k;
+            cur.el.appendChild(ex);
+            cur.chars.push(ex);
+            raw++;
+            ci++;
+          }
+          afterInput();
+        }
+        function handleSpace() {
+          if (finished || !started) return;
+          if (wi < words.length - 1) {
+            wi++;
+            ci = 0;
+            afterInput();
+          }
+        }
+        function handleBackspace() {
+          if (finished) return;
+          if (ci > 0) {
+            ci--;
+            const cur = wordEls[wi];
+            if (ci >= cur.word.length) {
+              const ex = cur.chars.pop();
+              if (ex) ex.remove();
+            } else cur.chars[ci].classList.remove("correct", "incorrect");
+          } else if (wi > 0) {
+            wi--;
+            ci = wordEls[wi].chars.length;
+          }
+          moveCaret();
+          highlightNext();
+        }
+
+        function finish() {
+          if (finished) return;
+          finished = true;
+          cancelAnimationFrame(rafId);
+          wordsEl.classList.remove("is-typing");
+          const el = Math.max(0.001, (Date.now() - startTime) / 1000);
+          const wpm = Math.round(correct / 5 / (el / 60));
+          const rawWpm = Math.round(raw / 5 / (el / 60));
+          const acc = raw ? Math.round((correct / raw) * 100) : 100;
+          rAcc.textContent = acc;
+          rRaw.textContent = rawWpm;
+          rTime.textContent = el.toFixed(1);
+          const beat = wpm >= BRYL_WPM;
+          const icon = beat
+            ? '<svg class="tt-vicon" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+            : '<svg class="tt-vicon" viewBox="0 0 24 24" fill="none"><path d="M7 7l10 10M17 7L7 17" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>';
+          verdictEl.className = "tt-verdict" + (beat ? " beat" : " miss");
+          verdictEl.innerHTML =
+            icon +
+            "<span>" +
+            (beat
+              ? "you beat paul · 140 wpm"
+              : "you didn't beat paul · 140 wpm") +
+            "</span>";
+          overlay.classList.add("show-results");
+          countUp(rWpm, wpm, 750);
+        }
+        function countUp(el, target, dur) {
+          const t0 = performance.now();
+          (function tick(now) {
+            const p = Math.min(1, (now - t0) / dur);
+            const e = 1 - Math.pow(1 - p, 3);
+            el.textContent = Math.round(target * e);
+            if (p < 1) requestAnimationFrame(tick);
+            else el.textContent = target;
+          })(t0);
+        }
+
+        function reset() {
+          finished = false;
+          started = false;
+          startTime = 0;
+          wi = 0;
+          ci = 0;
+          raw = 0;
+          correct = 0;
+          cancelAnimationFrame(rafId);
+          overlay.classList.remove("show-results");
+          setConfirm(false);
+          dispWpm = 0;
+          dispAcc = 100;
+          dispTime = 0;
+          lastStatWrite = 0;
+          elWpm.textContent = "0";
+          elAcc.textContent = "100";
+          elTime.textContent = "0";
+          genWords();
+          buildText();
+          requestAnimationFrame(() => {
+            moveCaret();
+            highlightNext();
+          });
+        }
+        window.ttRestart = reset;
+
+        window.openTyping = function () {
+          clearTimeout(closeT1);
+          clearTimeout(closeT2);
+          overlay.classList.remove("is-closing");
+          // Keep the Identity Tech Expanded View open and active — never
+          // collapse, hide, or navigate away from it. Only close the ancillary
+          // Ask Anything overlay (same behavior as the original).
+          if (window.closeAsk)
+            try {
+              window.closeAsk();
+            } catch (e) {}
+          // Same as the original asdasd.html: opening the Typing Test also
+          // closes the Community Chat overlay (never the expanded view).
+          if (window.closeChat)
+            try {
+              window.closeChat();
+            } catch (e) {}
+          overlay.classList.add("is-visible");
+          document.documentElement.style.overflow = "hidden";
+          requestAnimationFrame(() => overlay.classList.add("is-open"));
+          isOpen = true;
+          reset();
+        };
+        window.closeTyping = function () {
+          if (!isOpen) return;
+          isOpen = false;
+          cancelAnimationFrame(rafId);
+          setConfirm(false);
+          document.documentElement.style.overflow = "";
+          overlay.classList.add("is-closing");
+          closeT1 = setTimeout(() => {
+            overlay.classList.remove("is-open");
+            closeT2 = setTimeout(() => {
+              overlay.classList.remove("is-visible", "is-closing");
+            }, 380);
+          }, 280);
+        };
+        // true while the overlay is on screen (open OR closing) so the global
+        // Escape handler never collapses the expanded view underneath it.
+        window.typingIsOpen = function () {
+          return isOpen || overlay.classList.contains("is-visible");
+        };
+
+        buildKeyboard();
+
+        // Alt+J / ⌘J is owned by index.html's openQuickAction() in the main
+        // script (it toggles openTyping/closeTyping) — this handler only owns
+        // the in-test keystrokes so the two never double-fire on one keypress.
+        document.addEventListener("keydown", (e) => {
+          if (!isOpen) return;
+          if (e.key === "Escape") {
+            e.preventDefault();
+            if (pendingRestart) setConfirm(false);
+            else closeTyping();
+            return;
+          }
+          if (e.metaKey || e.ctrlKey || e.altKey) return;
+          if (e.key === "Tab") {
+            e.preventDefault();
+            if (started && !finished) setConfirm(true);
+            else reset();
+            return;
+          }
+          if (e.key === "Enter") {
+            if (pendingRestart || finished) {
+              e.preventDefault();
+              reset();
+            }
+            return;
+          }
+          if (pendingRestart) return;
+          if (e.key === "Backspace") {
+            e.preventDefault();
+            flashKey("backspace");
+            handleBackspace();
+            return;
+          }
+          if (e.key === " ") {
+            e.preventDefault();
+            flashKey(" ");
+            finished ? reset() : handleSpace();
+            return;
+          }
+          if (e.key.length === 1) {
+            const ch = e.key.toLowerCase();
+            if (/[a-z]/.test(ch)) {
+              e.preventDefault();
+              flashKey(ch);
+              if (!finished) handleChar(ch);
+            }
+          }
+        });
+      })();
+    </script>
+
+    <!-- ── Community Chat overlay (logic ported from asdasd.html) ── -->
+    <style>
+      #chatOverlay {
+        position: fixed;
+        inset: 0;
+        z-index: 132;
+        display: none;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 1.5rem;
+      }
+      #chatOverlay.is-visible {
+        display: flex;
+      }
+      .chat-backdrop {
+        position: absolute;
+        inset: 0;
+        background: rgba(10, 10, 10, 0.72);
+        -webkit-backdrop-filter: blur(16px);
+        backdrop-filter: blur(16px);
+        opacity: 0;
+        transition: opacity 0.35s ease;
+      }
+      #chatOverlay.is-open .chat-backdrop {
+        opacity: 1;
+      }
+      .chat-content {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        max-width: 640px;
+        padding-left: clamp(1.5rem, 9vw, 8rem);
+        padding-right: 1rem;
+        opacity: 0;
+        transform: translateY(12px);
+        transition:
+          opacity 0.4s ease 0.05s,
+          transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.05s;
+      }
+      #chatOverlay.is-open .chat-content {
+        opacity: 1;
+        transform: none;
+      }
+      #chatOverlay.is-open.is-closing .chat-content {
+        opacity: 0;
+        transform: translateY(10px);
+        transition:
+          opacity 0.26s ease,
+          transform 0.3s cubic-bezier(0.4, 0, 1, 1);
+      }
+      .chat-messages {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        height: min(340px, 50vh);
+        overflow-y: auto;
+        padding-right: 8px;
+        scrollbar-width: none;
+      }
+      .chat-messages > :first-child {
+        margin-top: auto;
+      }
+      .chat-messages::-webkit-scrollbar {
+        display: none;
+      }
+      .chat-messages.fade-top:not(.fade-bottom) {
+        -webkit-mask-image: linear-gradient(
+          to bottom,
+          transparent 0,
+          #000 30px
+        );
+        mask-image: linear-gradient(to bottom, transparent 0, #000 30px);
+      }
+      .chat-messages.fade-bottom:not(.fade-top) {
+        -webkit-mask-image: linear-gradient(to top, transparent 0, #000 30px);
+        mask-image: linear-gradient(to top, transparent 0, #000 30px);
+      }
+      .chat-messages.fade-top.fade-bottom {
+        -webkit-mask-image: linear-gradient(
+          to bottom,
+          transparent 0,
+          #000 30px,
+          #000 calc(100% - 30px),
+          transparent 100%
+        );
+        mask-image: linear-gradient(
+          to bottom,
+          transparent 0,
+          #000 30px,
+          #000 calc(100% - 30px),
+          transparent 100%
+        );
+      }
+      .chat-count {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.4);
+        margin-bottom: 9px;
+        padding-left: 4px;
+      }
+      .chat-count svg {
+        width: 12px;
+        height: 12px;
+        flex: none;
+      }
+      .chat-empty {
+        color: rgba(255, 255, 255, 0.4);
+        font-size: 14px;
+        font-family: "JetBrains Mono", monospace;
+      }
+      .chat-item {
+        display: flex;
+        align-items: flex-end;
+        gap: 8px;
+        max-width: 92%;
+        transition:
+          opacity 0.3s ease,
+          transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .chat-item.chat-enter {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      .chat-avatar {
+        width: 28px;
+        height: 28px;
+        margin-left: 5px;
+        border-radius: 50%;
+        flex: none;
+        background: rgba(255, 255, 255, 0.06);
+        box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
+      }
+      .chat-body {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        min-width: 0;
+      }
+      .chat-author {
+        display: inline-flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 5px;
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.5);
+        font-family: "JetBrains Mono", monospace;
+        padding-left: 4px;
+      }
+      .chat-author .chat-name-txt {
+        color: rgba(255, 255, 255, 0.64);
+      }
+      .chat-author .chat-sep {
+        color: rgba(255, 255, 255, 0.2);
+      }
+      .chat-author .chat-loc {
+        color: rgba(255, 255, 255, 0.4);
+      }
+      .chat-author .chat-dev-wrap {
+        display: inline-flex;
+        color: rgba(255, 255, 255, 0.4);
+      }
+      .chat-author .chat-time {
+        color: rgba(255, 255, 255, 0.4);
+        font-size: 9.5px;
+      }
+      .chat-author .chat-dev {
+        width: 12px;
+        height: 12px;
+        display: block;
+      }
+      .chat-bubble {
+        background: rgba(255, 255, 255, 0.09);
+        color: rgba(255, 255, 255, 0.92);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 13px;
+        line-height: 1.5;
+        padding: 8px 12px;
+        border-radius: 15px;
+        border-bottom-left-radius: 5px;
+        word-break: break-word;
+        white-space: pre-wrap;
+      }
+      .chat-input-row {
+        display: flex;
+        flex-direction: column;
+        gap: 9px;
+        margin-top: 1.7rem;
+        max-width: 92%;
+      }
+      .chat-prompt {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12.5px;
+        color: rgba(255, 255, 255, 0.5);
+      }
+      .chat-prompt b {
+        color: rgba(255, 255, 255, 0.92);
+        font-weight: 600;
+      }
+      .chat-entry {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .chat-field {
+        flex: 1;
+        min-width: 0;
+        background: transparent;
+        border: none;
+        padding: 4px 0;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 15px;
+        color: rgba(255, 255, 255, 0.92);
+      }
+      .chat-field::placeholder {
+        color: rgba(255, 255, 255, 0.4);
+      }
+      .chat-field:focus {
+        outline: none;
+      }
+      .chat-send {
+        flex: none;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.5);
+        padding: 4px 2px;
+        transition:
+          color 0.2s,
+          opacity 0.2s;
+        cursor: pointer;
+        background: none;
+        border: none;
+      }
+      .chat-send:hover {
+        color: rgba(255, 255, 255, 0.92);
+      }
+      .chat-send:disabled {
+        opacity: 0.35;
+      }
+    </style>
+
+    <div
+      id="chatOverlay"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Community chat"
+    >
+      <div class="chat-backdrop" onclick="closeChat()"></div>
+      <div class="chat-content">
+        <div class="chat-count" id="chatCount"></div>
+        <div class="chat-messages" id="chatMessages"></div>
+        <form class="chat-input-row" id="chatForm">
+          <div class="chat-prompt" id="chatPrompt">what's your name?</div>
+          <div class="chat-entry">
+            <input
+              id="chatInput"
+              class="chat-field"
+              type="text"
+              placeholder="your name"
+              maxlength="40"
+              autocomplete="off"
+              aria-label="Input"
+            />
+            <button type="submit" class="chat-send" id="chatSend">
+              next ↵
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- ── Playground mini-game (ported from asdasd.html) ── -->
+      <style>
+        .pg-wrap {
+          position: absolute;
+          right: clamp(1.5rem, 6vw, 5.5rem);
+          top: 50%;
+          z-index: 1;
+          display: none;
+          opacity: 0;
+          transform: translateY(-50%) translateX(26px);
+          transition:
+            opacity 0.5s ease,
+            transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @media (min-width: 1024px) {
+          .pg-wrap {
+            display: block;
+          }
+        }
+        .pg-wrap.is-on {
+          opacity: 1;
+          transform: translateY(-50%) translateX(0);
+        }
+        .pg-head {
+          display: flex;
+          align-items: baseline;
+          justify-content: flex-end;
+          margin-bottom: 9px;
+          padding: 0 2px;
+        }
+        .pg-hint {
+          font-family: "JetBrains Mono", monospace;
+          font-size: 10px;
+          letter-spacing: 0.02em;
+          color: rgba(255, 255, 255, 0.4);
+        }
+        .pg-box {
+          position: relative;
+          -webkit-mask-image:
+            linear-gradient(
+              to right,
+              transparent,
+              #000 9%,
+              #000 91%,
+              transparent
+            ),
+            linear-gradient(
+              to bottom,
+              transparent,
+              #000 9%,
+              #000 91%,
+              transparent
+            );
+          -webkit-mask-composite: source-in;
+          mask-image:
+            linear-gradient(
+              to right,
+              transparent,
+              #000 9%,
+              #000 91%,
+              transparent
+            ),
+            linear-gradient(
+              to bottom,
+              transparent,
+              #000 9%,
+              #000 91%,
+              transparent
+            );
+          mask-composite: intersect;
+        }
+        #pgCanvas {
+          display: block;
+          width: 460px;
+          height: 380px;
+          outline: none;
+          cursor: pointer;
+        }
+        .pg-veil {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.5rem;
+          font-family: "JetBrains Mono", monospace;
+          font-size: 12px;
+          color: rgba(255, 255, 255, 0.6);
+          pointer-events: none;
+          background: rgba(10, 10, 10, 0.66);
+          -webkit-backdrop-filter: blur(4px);
+          backdrop-filter: blur(4px);
+          transition: opacity 0.3s ease;
+        }
+        .pg-box.is-playing .pg-veil {
+          opacity: 0;
+        }
+        .pg-veil kbd {
+          padding: 1px 6px;
+          border: 1px solid rgba(255, 255, 255, 0.14);
+          border-radius: 5px;
+          font-size: 10px;
+          color: rgba(255, 255, 255, 0.5);
+        }
+      </style>
+
+      <div class="pg-wrap" id="pgWrap" aria-hidden="true">
+        <div class="pg-head">
+          <span class="pg-hint">wasd / arrows to move</span>
+        </div>
+        <div class="pg-box" id="pgBox">
+          <canvas
+            id="pgCanvas"
+            tabindex="0"
+            width="460"
+            height="380"
+            aria-label="Playground game"
+          ></canvas>
+          <div class="pg-veil">
+            <span>click to play</span> · <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd
+            ><kbd>D</kbd>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        // ── Playground mini-game: WASD/arrow movement, simulated visitors
+        // named after recent chat participants — logic ported 1:1 from
+        // asdasd.html. Lives inside the Community Chat overlay; opening or
+        // playing it never closes the Identity Tech Expanded View. Sprites
+        // load from the shared asset set (same as asdasd.html) with a
+        // lightweight procedural fallback so the game is fully playable even
+        // before they arrive (or when running fully offline).
+        (function () {
+          const wrap = document.getElementById("pgWrap");
+          const box = document.getElementById("pgBox");
+          const canvas = document.getElementById("pgCanvas");
+          if (!canvas) return;
+          const ctx = canvas.getContext("2d");
+
+          // ── config (ported from asdasd.html) ──
+          const CELL = 32,
+            SCALE = 2; // sprite-sheet cell / draw scale (player ≈ 64px)
+          const TILE = 36; // visual grid + furniture unit
+          const SUB = 2,
+            STEP = TILE / SUB; // 2×2 movement sub-cells per tile → finer movement
+          const MOVE_SPEED = 95; // ms per movement step (one STEP)
+          const IDLE_SPEED = 800,
+            WALK_SPEED = 150;
+          const ROW = {
+            IDLE_DOWN: 0,
+            IDLE_RIGHT: 32,
+            IDLE_UP: 64,
+            WALK_DOWN: 96,
+            WALK_RIGHT: 128,
+            WALK_UP: 160,
+          };
+          const MAP_W = 18,
+            MAP_H = 18; // map size in tiles
+          const MAP_CW = MAP_W * SUB,
+            MAP_CH = MAP_H * SUB; // movement grid in sub-cells (36×36)
+          const DIRS = ["up", "down", "left", "right"];
+          const NPC_ALPHA = 0.6; // "other players" a bit lighter than the local player
+
+          let VIEW_W = 460,
+            VIEW_H = 380;
+
+          // ── sprites (shared asset set, same as asdasd.html) ──
+          const charImg = new Image(),
+            shadowImg = new Image();
+          const furn = {};
+          const FURN_BASE = "https://bryllim.com/images/game/";
+          let assetsReady = false,
+            loadedCt = 0;
+          function assetLoaded() {
+            if (++loadedCt >= 2) assetsReady = true;
+          }
+          function ensureAssets() {
+            if (charImg.src) return;
+            charImg.onload = assetLoaded;
+            charImg.src = FURN_BASE + "character.png";
+            shadowImg.onload = assetLoaded;
+            shadowImg.src = FURN_BASE + "character_shadow.png";
+            [
+              "desk",
+              "table",
+              "computer",
+              "big_table",
+              "cabinet_1",
+              "cabinet_2",
+              "cabinet_3",
+            ].forEach((n) => {
+              const img = new Image();
+              img.src = FURN_BASE + n + ".png";
+              furn[n] = img;
+            });
+          }
+
+          // ── placed furniture (footprint in tiles) + collision (in sub-cells) ──
+          const FOOT = {
+            desk: { w: 2, h: 1 },
+            table: { w: 2, h: 1 },
+            bigtable: { w: 2, h: 2 },
+            cabinet: { w: 1, h: 1 },
+          };
+          const OBJECTS = [
+            { type: "desk", x: 3, y: 2 },
+            { type: "desk", x: 13, y: 2 },
+            { type: "cabinet", x: 2, y: 6, v: 1 },
+            { type: "cabinet", x: 15, y: 6, v: 2 },
+            { type: "table", x: 4, y: 14, computer: true },
+            { type: "bigtable", x: 11, y: 12 },
+            { type: "cabinet", x: 14, y: 15, v: 3 },
+          ];
+          // block the footprint in sub-cells, but leave the BOTTOM sub-row walkable so the
+          // player can stand at (and tuck behind) the base of each object.
+          const blocked = new Set();
+          for (const o of OBJECTS) {
+            const f = FOOT[o.type];
+            const ox = o.x * SUB,
+              oy = o.y * SUB,
+              fw = f.w * SUB,
+              fh = f.h * SUB;
+            for (let yy = 0; yy < fh - 1; yy++)
+              for (let xx = 0; xx < fw; xx++)
+                blocked.add(ox + xx + "," + (oy + yy));
+          }
+          function furnImg(o) {
+            if (o.type === "desk") return furn.desk;
+            if (o.type === "table") return furn.table;
+            if (o.type === "bigtable") return furn.big_table;
+            return furn["cabinet_" + (o.v || 1)];
+          }
+
+          // ── audio (step / collision) — unlock on first gesture ──
+          const SFX_VOLUME_MULTIPLIER = 6;
+          const SFX = {
+            step: new Audio("resources/audio/step.wav"),
+            collision: new Audio("resources/audio/collision.wav"),
+          };
+          Object.values(SFX).forEach((a) => {
+            a.volume = Math.min(1, 0.13 * SFX_VOLUME_MULTIPLIER);
+            a.preload = "auto";
+          });
+          let sfxUnlocked = false,
+            lastStep = 0,
+            lastColl = 0,
+            lastCollKey = "";
+          function unlockSfx() {
+            if (sfxUnlocked) return;
+            sfxUnlocked = true;
+            Object.values(SFX).forEach((a) => {
+              try {
+                a.muted = true;
+                const p = a.play();
+                if (p && p.then)
+                  p.then(() => {
+                    a.pause();
+                    a.currentTime = 0;
+                    a.muted = false;
+                  }).catch(() => {
+                    a.muted = false;
+                  });
+              } catch (e) {}
+            });
+          }
+          function playSfx(name) {
+            if (!sfxUnlocked) return;
+            const a = SFX[name];
+            if (!a) return;
+            try {
+              a.currentTime = 0;
+              a.play();
+            } catch (e) {}
+          }
+          function playStep(now) {
+            if (now - lastStep >= 70) {
+              lastStep = now;
+              playSfx("step");
+            }
+          }
+          function playCollision(key) {
+            const now = Date.now();
+            if (now - lastColl < 350 && key === lastCollKey) return;
+            lastColl = now;
+            lastCollKey = key;
+            playSfx("collision");
+          }
+
+          // ── actors (local player + simulated others) — positions in sub-cell coords ──
+          function makeActor(cx, cy) {
+            return {
+              cellX: cx,
+              cellY: cy,
+              pixelX: cx * STEP,
+              pixelY: cy * STEP,
+              direction: "down",
+              isMoving: false,
+              animationFrame: 0,
+              animationTime: 0,
+              moveAnim: null,
+              stepCount: 0,
+            };
+          }
+          function pickStart() {
+            const ccx = (MAP_CW / 2) | 0,
+              ccy = (MAP_CH / 2) | 0;
+            let best = null,
+              bestD = Infinity;
+            for (let y = 0; y < MAP_CH; y++)
+              for (let x = 0; x < MAP_CW; x++) {
+                if (blocked.has(x + "," + y)) continue;
+                const d = (x - ccx) * (x - ccx) + (y - ccy) * (y - ccy);
+                if (d < bestD) {
+                  bestD = d;
+                  best = [x, y];
+                }
+              }
+            return best || [ccx, ccy];
+          }
+          const _start = pickStart();
+          const player = makeActor(_start[0], _start[1]);
+          let npcs = [];
+          let actors = [player];
+          let npcsSpawned = false;
+          let pgName = "";
+          let lastMove = 0,
+            raf = null,
+            running = false,
+            lastT = 0;
+          const keys = { w: false, a: false, s: false, d: false };
+
+          function clamp(v, lo, hi) {
+            return v < lo ? lo : v > hi ? hi : v;
+          }
+
+          function theme() {
+            // The portfolio is a fixed dark theme — mirror asdasd.html's dark palette.
+            return {
+              grid: "rgba(240,240,245,0.09)",
+              name: "#f4f4f5",
+              npcName: "#a6a6ad",
+              nameShadow: "rgba(0,0,0,.85)",
+              objShadow: "rgba(0,0,0,0.32)",
+            };
+          }
+
+          function frame(actor) {
+            const d = actor.direction,
+              moving = actor.isMoving;
+            let rowY, count;
+            if (moving) {
+              rowY =
+                d === "up"
+                  ? ROW.WALK_UP
+                  : d === "down"
+                    ? ROW.WALK_DOWN
+                    : ROW.WALK_RIGHT;
+              count = 4;
+            } else {
+              rowY =
+                d === "up"
+                  ? ROW.IDLE_UP
+                  : d === "down"
+                    ? ROW.IDLE_DOWN
+                    : ROW.IDLE_RIGHT;
+              count = 2;
+            }
+            const cf = Math.floor(actor.animationFrame || 0) % count;
+            return { x: cf * CELL, y: rowY, flip: d === "left" };
+          }
+
+          function canMoveTo(cx, cy, mover) {
+            if (cx < 0 || cx >= MAP_CW || cy < 0 || cy >= MAP_CH) return false;
+            if (blocked.has(cx + "," + cy)) return false;
+            // sprites are 64px on an 18px sub-grid — keep actors ~1 tile apart
+            for (const a of actors) {
+              if (a === mover) continue;
+              if (Math.abs(a.cellX - cx) < SUB && Math.abs(a.cellY - cy) < SUB)
+                return false;
+            }
+            return true;
+          }
+          function startSlide(actor, tPX, tPY) {
+            const sX = actor.pixelX,
+              sY = actor.pixelY,
+              st = performance.now();
+            (function anim(t) {
+              const p = Math.min((t - st) / MOVE_SPEED, 1),
+                e = 1 - Math.pow(1 - p, 2);
+              actor.pixelX = sX + (tPX - sX) * e;
+              actor.pixelY = sY + (tPY - sY) * e;
+              if (p < 1) actor.moveAnim = requestAnimationFrame(anim);
+              else {
+                actor.pixelX = tPX;
+                actor.pixelY = tPY;
+                actor.moveAnim = null;
+              }
+            })(st);
+          }
+
+          // local player — keyboard driven
+          function handleMovement() {
+            let dir = null;
+            if (keys.s) dir = "down";
+            if (keys.d) dir = "right";
+            if (keys.w) dir = "up";
+            if (keys.a) dir = "left";
+            if (!dir) {
+              player.isMoving = false;
+              return;
+            }
+            if (player.moveAnim) {
+              player.isMoving = true;
+              return;
+            }
+            player.direction = dir;
+            const atTarget =
+              Math.abs(player.pixelX - player.cellX * STEP) < 0.5 &&
+              Math.abs(player.pixelY - player.cellY * STEP) < 0.5;
+            if (!atTarget) {
+              player.isMoving = true;
+              return;
+            }
+            const now = Date.now();
+            if (now - lastMove < MOVE_SPEED * 0.3) return;
+            let nx = player.cellX,
+              ny = player.cellY;
+            if (dir === "up") ny--;
+            else if (dir === "down") ny++;
+            else if (dir === "left") nx--;
+            else nx++;
+            if (!canMoveTo(nx, ny, player)) {
+              player.isMoving = false;
+              playCollision(dir);
+              return;
+            }
+            player.isMoving = true;
+            player.cellX = nx;
+            player.cellY = ny;
+            lastMove = now;
+            player.stepCount++;
+            if (player.stepCount % SUB === 0) playStep(now);
+            startSlide(player, nx * STEP, ny * STEP);
+          }
+
+          // simulated others — random wander AI (natural pauses + short bursts)
+          function npcStep(npc) {
+            if (npc.moveAnim) {
+              npc.isMoving = true;
+              return;
+            }
+            const atTarget =
+              Math.abs(npc.pixelX - npc.cellX * STEP) < 0.5 &&
+              Math.abs(npc.pixelY - npc.cellY * STEP) < 0.5;
+            if (!atTarget) {
+              npc.isMoving = true;
+              return;
+            }
+            const now = Date.now(),
+              b = npc.brain;
+            if (now < b.pauseUntil) {
+              npc.isMoving = false;
+              return;
+            }
+            if (b.steps <= 0 || !b.dir) {
+              if (Math.random() < 0.34) {
+                b.pauseUntil = now + 700 + Math.random() * 2600;
+                b.dir = null;
+                npc.isMoving = false;
+                return;
+              }
+              b.dir = DIRS[(Math.random() * 4) | 0];
+              b.steps = SUB * (1 + ((Math.random() * 4) | 0));
+            }
+            npc.direction = b.dir;
+            let nx = npc.cellX,
+              ny = npc.cellY;
+            if (b.dir === "up") ny--;
+            else if (b.dir === "down") ny++;
+            else if (b.dir === "left") nx--;
+            else nx++;
+            if (!canMoveTo(nx, ny, npc)) {
+              b.steps = 0;
+              b.dir = null;
+              b.pauseUntil = now + 250 + Math.random() * 800;
+              npc.isMoving = false;
+              return;
+            }
+            npc.isMoving = true;
+            npc.cellX = nx;
+            npc.cellY = ny;
+            b.steps--;
+            startSlide(npc, nx * STEP, ny * STEP);
+          }
+
+          function recentChatNames() {
+            const els = document.querySelectorAll(
+              "#chatMessages .chat-item .chat-name-txt",
+            );
+            const names = [];
+            for (let i = els.length - 1; i >= 0 && names.length < 5; i--) {
+              const n = (els[i].textContent || "").trim();
+              if (n && n !== pgName && !names.includes(n)) names.push(n);
+            }
+            return names;
+          }
+          function spawnNPCs() {
+            const names = recentChatNames();
+            const placed = [[player.cellX, player.cellY]];
+            const farEnough = (tx, ty) =>
+              placed.every(
+                ([px, py]) =>
+                  Math.abs(px - tx) >= SUB || Math.abs(py - ty) >= SUB,
+              );
+            npcs = [];
+            for (let i = 0; i < 5; i++) {
+              let tx = 1,
+                ty = 1,
+                tries = 0,
+                ok = false;
+              do {
+                tx = 1 + ((Math.random() * (MAP_CW - 2)) | 0);
+                ty = 1 + ((Math.random() * (MAP_CH - 2)) | 0);
+                tries++;
+                ok = !blocked.has(tx + "," + ty) && farEnough(tx, ty);
+              } while (!ok && tries < 300);
+              placed.push([tx, ty]);
+              const npc = makeActor(tx, ty);
+              npc.direction = DIRS[(Math.random() * 4) | 0];
+              npc.animationFrame = (Math.random() * 4) | 0;
+              npc.name = names[i] || "guest " + (i + 1);
+              npc.brain = {
+                dir: null,
+                steps: 0,
+                pauseUntil: Date.now() + Math.random() * 1800,
+              };
+              npcs.push(npc);
+            }
+            actors = [player, ...npcs];
+          }
+          function refreshNpcNames() {
+            const names = recentChatNames();
+            if (!names.length) return;
+            npcs.forEach((n, i) => {
+              if (names[i]) n.name = names[i];
+            });
+          }
+
+          function updateAnim(dt) {
+            for (const a of actors) {
+              a.animationTime += dt;
+              if (a.animationTime >= (a.isMoving ? WALK_SPEED : IDLE_SPEED)) {
+                a.animationFrame = (a.animationFrame || 0) + 1;
+                a.animationTime = 0;
+              }
+            }
+          }
+
+          function drawFrame(img, f, x, y, w, h) {
+            if (f.flip) {
+              ctx.save();
+              ctx.scale(-1, 1);
+              ctx.drawImage(img, f.x, f.y, CELL, CELL, -x - w, y, w, h);
+              ctx.restore();
+            } else ctx.drawImage(img, f.x, f.y, CELL, CELL, x, y, w, h);
+          }
+
+          // fallback avatar so the game is visible before the sprite sheet
+          // arrives (or when running fully offline)
+          function drawFallbackActor(x, y, w, h, alpha) {
+            const rr = x + w * 0.18,
+              ry = y + h * 0.14,
+              rw = w * 0.64,
+              rh = h * 0.7;
+            ctx.save();
+            ctx.globalAlpha = alpha;
+            ctx.fillStyle = "rgba(0,0,0,0.25)";
+            ctx.beginPath();
+            ctx.ellipse(
+              x + w / 2,
+              y + h - h * 0.12,
+              w * 0.3,
+              h * 0.08,
+              0,
+              0,
+              Math.PI * 2,
+            );
+            ctx.fill();
+            ctx.fillStyle = "rgba(255,255,255,0.46)";
+            if (ctx.roundRect) {
+              ctx.beginPath();
+              ctx.roundRect(rr, ry, rw, rh, w * 0.24);
+              ctx.fill();
+            } else ctx.fillRect(rr, ry, rw, rh);
+            ctx.fillStyle = "rgba(255,255,255,0.72)";
+            ctx.beginPath();
+            ctx.arc(x + w / 2, y + h * 0.3, w * 0.13, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+          }
+
+          function actorDraw(a, camX, camY) {
+            const isPlayer = a === player,
+              f = frame(a),
+              w = CELL * SCALE,
+              h = CELL * SCALE;
+            a._dx = Math.round(a.pixelX + (STEP - w) / 2 - camX);
+            a._dy = Math.round(a.pixelY + (STEP - h) / 2 - camY);
+            if (shadowImg.complete) {
+              ctx.save();
+              ctx.globalAlpha = isPlayer ? 0.9 : 0.45;
+              drawFrame(shadowImg, f, a._dx, a._dy, w, h);
+              ctx.restore();
+            }
+            if (charImg.complete) {
+              ctx.save();
+              ctx.globalAlpha = isPlayer ? 1 : NPC_ALPHA;
+              drawFrame(charImg, f, a._dx, a._dy, w, h);
+              ctx.restore();
+            } else {
+              drawFallbackActor(
+                a._dx,
+                a._dy,
+                w,
+                h,
+                isPlayer ? 1 : NPC_ALPHA * 0.9,
+              );
+            }
+          }
+          function actorName(a, c) {
+            if (!a.name) return;
+            const isPlayer = a === player,
+              w = CELL * SCALE;
+            ctx.save();
+            ctx.font = '600 11px "JetBrains Mono", ui-monospace, monospace';
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.shadowColor = c.nameShadow;
+            ctx.shadowBlur = 3;
+            ctx.shadowOffsetY = 1;
+            ctx.globalAlpha = isPlayer ? 1 : 0.9;
+            ctx.fillStyle = isPlayer ? c.name : c.npcName;
+            ctx.fillText(a.name, a._dx + w / 2, a._dy + 8);
+            ctx.restore();
+          }
+          function drawObject(o, camX, camY, c) {
+            const img = furnImg(o);
+            const f = FOOT[o.type];
+            const px = Math.round(o.x * TILE - camX),
+              py = Math.round(o.y * TILE - camY);
+            const w = f.w * TILE,
+              h = f.h * TILE;
+            ctx.fillStyle = c.objShadow;
+            ctx.fillRect(px + 2, py + 2, w, h);
+            if (img && img.complete) {
+              ctx.drawImage(img, px, py, w, h);
+            } else {
+              // fallback furniture block before sprites arrive
+              ctx.fillStyle = "rgba(255,255,255,0.05)";
+              ctx.fillRect(px, py, w, h);
+              ctx.strokeStyle = "rgba(255,255,255,0.12)";
+              ctx.lineWidth = 1;
+              ctx.strokeRect(px + 0.5, py + 0.5, w - 1, h - 1);
+            }
+            if (o.computer && furn.computer && furn.computer.complete)
+              ctx.drawImage(furn.computer, px, py - TILE / 2, 2 * TILE, TILE);
+          }
+
+          function render() {
+            const c = theme();
+            ctx.imageSmoothingEnabled = false;
+            const camX = clamp(
+              player.pixelX + STEP / 2 - VIEW_W / 2,
+              0,
+              MAP_W * TILE - VIEW_W,
+            );
+            const camY = clamp(
+              player.pixelY + STEP / 2 - VIEW_H / 2,
+              0,
+              MAP_H * TILE - VIEW_H,
+            );
+
+            ctx.clearRect(0, 0, VIEW_W, VIEW_H); // transparent — blends with the chat backdrop
+
+            ctx.strokeStyle = c.grid;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            for (
+              let x = Math.floor(camX / TILE) * TILE;
+              x <= camX + VIEW_W;
+              x += TILE
+            ) {
+              const sx = Math.round(x - camX) + 0.5;
+              ctx.moveTo(sx, 0);
+              ctx.lineTo(sx, VIEW_H);
+            }
+            for (
+              let y = Math.floor(camY / TILE) * TILE;
+              y <= camY + VIEW_H;
+              y += TILE
+            ) {
+              const sy = Math.round(y - camY) + 0.5;
+              ctx.moveTo(0, sy);
+              ctx.lineTo(VIEW_W, sy);
+            }
+            ctx.stroke();
+
+            // depth: interleave actors + furniture by their front-edge world Y, so an actor
+            // standing at/below a piece's base draws in FRONT of it, and behind it when north.
+            const drawables = [];
+            for (const a of actors)
+              drawables.push({
+                y: a.pixelY + STEP + 0.5,
+                run: () => actorDraw(a, camX, camY),
+              });
+            for (const o of OBJECTS)
+              drawables.push({
+                y: (o.y + FOOT[o.type].h) * TILE,
+                run: () => drawObject(o, camX, camY, c),
+              });
+            drawables.sort((p, q) => p.y - q.y);
+            for (const d of drawables) d.run();
+
+            // names always on top so a label is never hidden behind furniture
+            const order = actors.slice().sort((a, b) => a.pixelY - b.pixelY);
+            for (const a of order) actorName(a, c);
+          }
+
+          function loop(t) {
+            const dt = Math.min(64, t - lastT);
+            lastT = t;
+            handleMovement();
+            for (const npc of npcs) npcStep(npc);
+            updateAnim(dt);
+            render();
+            if (running) raf = requestAnimationFrame(loop);
+          }
+
+          function setupCanvas() {
+            const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+            const cw = canvas.clientWidth,
+              ch = canvas.clientHeight;
+            if (!cw || !ch) return false;
+            VIEW_W = cw;
+            VIEW_H = ch;
+            canvas.width = Math.round(cw * dpr);
+            canvas.height = Math.round(ch * dpr);
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            return true;
+          }
+
+          function start() {
+            ensureAssets();
+            if (!setupCanvas()) return;
+            if (pgName) player.name = pgName;
+            if (!npcsSpawned) {
+              spawnNPCs();
+              npcsSpawned = true;
+              setTimeout(refreshNpcNames, 1600);
+            } else refreshNpcNames();
+            if (running) return;
+            running = true;
+            lastT = performance.now();
+            raf = requestAnimationFrame(loop);
+          }
+          function stop() {
+            running = false;
+            if (raf) cancelAnimationFrame(raf);
+            raf = null;
+            keys.w = keys.a = keys.s = keys.d = false;
+            box.classList.remove("is-playing");
+          }
+
+          function keyFor(e) {
+            switch (e.key) {
+              case "w":
+              case "W":
+              case "ArrowUp":
+                return "w";
+              case "a":
+              case "A":
+              case "ArrowLeft":
+                return "a";
+              case "s":
+              case "S":
+              case "ArrowDown":
+                return "s";
+              case "d":
+              case "D":
+              case "ArrowRight":
+                return "d";
+            }
+            return null;
+          }
+          canvas.addEventListener("keydown", (e) => {
+            const k = keyFor(e);
+            if (k) {
+              e.preventDefault();
+              keys[k] = true;
+            }
+          });
+          canvas.addEventListener("keyup", (e) => {
+            const k = keyFor(e);
+            if (k) {
+              e.preventDefault();
+              keys[k] = false;
+            }
+          });
+          canvas.addEventListener("focus", () =>
+            box.classList.add("is-playing"),
+          );
+          canvas.addEventListener("blur", () => {
+            keys.w = keys.a = keys.s = keys.d = false;
+            box.classList.remove("is-playing");
+          });
+          canvas.addEventListener("click", () => {
+            unlockSfx();
+            canvas.focus();
+          });
+          window.addEventListener("resize", () => {
+            if (running) setupCanvas();
+          });
+
+          window.playgroundShow = function (name) {
+            if (typeof name === "string" && name.trim()) {
+              pgName = name.trim();
+              player.name = pgName;
+            }
+            wrap.classList.add("is-on");
+            wrap.setAttribute("aria-hidden", "false");
+            requestAnimationFrame(start);
+          };
+          window.playgroundHide = function () {
+            wrap.classList.remove("is-on");
+            wrap.setAttribute("aria-hidden", "true");
+            if (document.activeElement === canvas) canvas.blur();
+            stop();
+          };
+        })();
+      </script>
+    </div>
+
+    <script>
+      // ── Community Chat: name → message phases, live polling, message
+      // handling, moderation, cooldowns, rendering — logic ported 1:1 from
+      // asdasd.html. Opening this overlay never collapses, hides, or navigates
+      // away from the Identity Expanded View — the expanded view stays open
+      // and active behind the chat (same pattern as the Ask / Typing overlays).
+      (function () {
+        const overlay = document.getElementById("chatOverlay");
+        if (!overlay) return;
+        const messagesEl = document.getElementById("chatMessages");
+        const countEl = document.getElementById("chatCount");
+        const form = document.getElementById("chatForm");
+        const inputEl = document.getElementById("chatInput");
+        const promptEl = document.getElementById("chatPrompt");
+        const sendEl = document.getElementById("chatSend");
+        const CSRF = "3DH61Tz7oNGMG852QCCP67RNEtlkwUBOG5dMI9FU";
+        let lastId = 0;
+        let pollTimer = null;
+        let closeT1 = null,
+          closeT2 = null;
+        let phase = "name";
+        let clientId = "";
+        let chatName = "";
+        let myDevice = "";
+        let myLocation = "";
+        const MAX_VISIBLE = 60; // keep a scrollable history in the DOM (bounded)
+        let totalCount = 0; // total messages (for the count label)
+        const SEND_COOLDOWN = 8000; // min ms between a user's own messages (anti-spam)
+        const KIND_URL = "https://en.wikipedia.org/wiki/Netiquette";
+        const BAD_LOOSE = [
+          "fuck",
+          "motherfuck",
+          "shit",
+          "bullshit",
+          "bitch",
+          "asshole",
+          "cunt",
+          "faggot",
+          "nigger",
+          "nigga",
+          "dickhead",
+          "jackass",
+          "dumbass",
+          "cocksuck",
+          "dipshit",
+          "putangina",
+          "putanginamo",
+          "tangina",
+          "taena",
+          "tarantado",
+          "gago",
+          "gaga",
+          "ulol",
+          "kingina",
+          "kupal",
+          "pakshet",
+          "pakyu",
+          "hinayupak",
+          "hindot",
+          "hindut",
+          "buwiset",
+          "bwisit",
+          "putang ina",
+          "tang ina",
+          "walang hiya",
+          "hayop ka",
+          "gunggong",
+        ];
+        const BAD_STRICT = [
+          "ass",
+          "dick",
+          "cock",
+          "prick",
+          "slut",
+          "whore",
+          "twat",
+          "wank",
+          "piss",
+          "bastard",
+          "pussy",
+          "puta",
+          "tanga",
+          "bobo",
+          "tite",
+          "titi",
+          "puki",
+          "pekpek",
+          "jakol",
+          "leche",
+          "peste",
+          "lintik",
+          "ungas",
+          "inutil",
+        ];
+        const LINK_TLDS = [
+          "com",
+          "net",
+          "org",
+          "io",
+          "co",
+          "dev",
+          "app",
+          "ai",
+          "xyz",
+          "info",
+          "biz",
+          "link",
+          "site",
+          "online",
+          "store",
+          "shop",
+          "page",
+          "live",
+          "tech",
+          "cloud",
+          "click",
+          "me",
+          "ly",
+          "gg",
+          "gl",
+          "be",
+          "to",
+          "tv",
+          "fm",
+          "sh",
+          "cc",
+          "ws",
+          "ph",
+          "uk",
+          "ca",
+          "au",
+          "de",
+          "jp",
+          "eu",
+          "edu",
+          "gov",
+          "top",
+          "vip",
+          "pro",
+          "fun",
+          "icu",
+        ];
+        let lastSent = 0;
+        let hintTimer = null;
+        let timeTimer = null;
+        try {
+          clientId = localStorage.getItem("visitorId") || "";
+        } catch (e) {}
+        try {
+          chatName = localStorage.getItem("chatName") || "";
+        } catch (e) {}
+
+        function avatarUrl(name) {
+          return (
+            "https://api.dicebear.com/9.x/notionists/svg?seed=" +
+            encodeURIComponent(name || "anon") +
+            "&radius=50&backgroundColor=f1f1f1"
+          );
+        }
+
+        function detectDevice() {
+          const ua = navigator.userAgent || "";
+          const touch = navigator.maxTouchPoints || 0;
+          if (/iPad/.test(ua) || (/Macintosh/.test(ua) && touch > 1))
+            return "iPad";
+          if (/iPhone|iPod/.test(ua)) return "iPhone";
+          if (/Android/.test(ua))
+            return /Mobile/.test(ua) ? "Android" : "Android tablet";
+          if (/Macintosh|Mac OS X/.test(ua)) return "Mac";
+          if (/Windows/.test(ua)) return "Windows";
+          if (/CrOS/.test(ua)) return "Chromebook";
+          if (/Linux/.test(ua)) return "Linux";
+          return "device";
+        }
+
+        const DEV_ICONS = {
+          phone:
+            '<svg class="chat-dev" viewBox="0 0 24 24" fill="none"><rect x="7" y="2.5" width="10" height="19" rx="2.2" stroke="currentColor" stroke-width="1.6"/><line x1="10.5" y1="18.5" x2="13.5" y2="18.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
+          tablet:
+            '<svg class="chat-dev" viewBox="0 0 24 24" fill="none"><rect x="4" y="2.5" width="16" height="19" rx="2.2" stroke="currentColor" stroke-width="1.6"/><line x1="10.5" y1="18.5" x2="13.5" y2="18.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
+          laptop:
+            '<svg class="chat-dev" viewBox="0 0 24 24" fill="none"><rect x="4" y="5" width="16" height="11" rx="1.6" stroke="currentColor" stroke-width="1.6"/><path d="M2 19.5h20" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
+        };
+        function deviceIcon(label) {
+          if (label === "iPhone" || label === "Android") return DEV_ICONS.phone;
+          if (label === "iPad" || label === "Android tablet")
+            return DEV_ICONS.tablet;
+          return DEV_ICONS.laptop;
+        }
+
+        async function collectLocation() {
+          if (myLocation) return;
+          try {
+            const ctrl = new AbortController();
+            const to = setTimeout(() => ctrl.abort(), 3500);
+            const r = await fetch("https://ipwho.is/", {
+              signal: ctrl.signal,
+            });
+            clearTimeout(to);
+            const d = await r.json();
+            if (d && d.success !== false) {
+              myLocation =
+                [d.city, d.country_code].filter(Boolean).join(", ") ||
+                d.country ||
+                "";
+            }
+          } catch (e) {}
+        }
+
+        function messagePrompt() {
+          promptEl.innerHTML = "chatting as ";
+          const b = document.createElement("b");
+          b.textContent = chatName; // textContent => XSS-safe
+          promptEl.appendChild(b);
+        }
+
+        function cooldownHint() {
+          if (hintTimer) clearTimeout(hintTimer);
+          promptEl.textContent = "easy — give it a sec…";
+          hintTimer = setTimeout(messagePrompt, 1400);
+        }
+
+        function timeAgo(iso) {
+          const then = iso ? new Date(iso).getTime() : NaN;
+          if (isNaN(then)) return "";
+          const s = Math.max(0, Math.floor((Date.now() - then) / 1000));
+          if (s < 10) return "just now";
+          if (s < 60) return s + "s ago";
+          const m = Math.floor(s / 60);
+          if (m < 60) return m + "m ago";
+          const h = Math.floor(m / 60);
+          if (h < 24) return h + "h ago";
+          const d = Math.floor(h / 24);
+          if (d < 7) return d + "d ago";
+          const w = Math.floor(d / 7);
+          if (w < 5) return w + "w ago";
+          const mo = Math.floor(d / 30);
+          if (mo < 12) return mo + "mo ago";
+          return Math.floor(d / 365) + "y ago";
+        }
+        function updateTimes() {
+          messagesEl.querySelectorAll(".chat-time").forEach((el) => {
+            el.textContent = timeAgo(el.dataset.at);
+          });
+        }
+
+        function isOffensive(text) {
+          const t = (text || "").toLowerCase();
+          for (const w of BAD_LOOSE) {
+            if (t.indexOf(w) !== -1) return true;
+          }
+          for (const w of BAD_STRICT) {
+            try {
+              if (
+                new RegExp(
+                  "\\b" + w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "\\b",
+                  "u",
+                ).test(t)
+              )
+                return true;
+            } catch (e) {}
+          }
+          return false;
+        }
+        function containsLink(text) {
+          const t = (text || "").toLowerCase();
+          if (/https?:\/\//.test(t)) return true;
+          if (/(?:^|[^a-z0-9])www\.[a-z0-9]/.test(t)) return true;
+          try {
+            return new RegExp(
+              "[a-z0-9][a-z0-9-]*\\.(?:" + LINK_TLDS.join("|") + ")\\b",
+            ).test(t);
+          } catch (e) {
+            return false;
+          }
+        }
+        function linkHint() {
+          if (hintTimer) clearTimeout(hintTimer);
+          promptEl.textContent = "links aren't allowed in chat";
+          hintTimer = setTimeout(messagePrompt, 2400);
+        }
+
+        function openKindnessTab() {
+          window.open(KIND_URL, "_blank", "noopener");
+        }
+        function blockedHint() {
+          if (hintTimer) clearTimeout(hintTimer);
+          promptEl.textContent = "let's keep it kind — opening a guide for you";
+          hintTimer = setTimeout(messagePrompt, 2800);
+        }
+
+        function startCooldown() {
+          lastSent = Date.now();
+          sendEl.disabled = true;
+          setTimeout(() => {
+            sendEl.disabled = false;
+          }, SEND_COOLDOWN);
+        }
+
+        function updateFades() {
+          const el = messagesEl;
+          const canScroll = el.scrollHeight - el.clientHeight > 4;
+          el.classList.toggle("fade-top", canScroll && el.scrollTop > 4);
+          el.classList.toggle(
+            "fade-bottom",
+            canScroll && el.scrollHeight - el.scrollTop - el.clientHeight > 4,
+          );
+        }
+        const COUNT_ICON =
+          '<svg viewBox="0 0 24 24" fill="none"><path d="M4 5.5h16v10H10l-4.5 4v-4H4z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>';
+        function updateCount() {
+          countEl.innerHTML =
+            totalCount > 0
+              ? COUNT_ICON +
+                "<span>" +
+                totalCount +
+                (totalCount === 1 ? " message" : " messages") +
+                "</span>"
+              : "";
+        }
+        messagesEl.addEventListener("scroll", updateFades, {
+          passive: true,
+        });
+
+        function trimMessages() {
+          const items = messagesEl.querySelectorAll(".chat-item");
+          if (items.length > MAX_VISIBLE) {
+            for (let i = 0; i < items.length - MAX_VISIBLE; i++)
+              items[i].remove();
+          }
+          updateFades();
+        }
+
+        function setPhase(p) {
+          phase = p;
+          if (p === "name") {
+            promptEl.textContent = "what's your name?";
+            inputEl.placeholder = "your name";
+            inputEl.maxLength = 40;
+            sendEl.textContent = "next ↵";
+          } else {
+            messagePrompt();
+            inputEl.placeholder = "say something…";
+            inputEl.maxLength = 500;
+            sendEl.textContent = "send ↵";
+          }
+          if (p === "message") {
+            if (window.playgroundShow) window.playgroundShow(chatName);
+          } else if (window.playgroundHide) window.playgroundHide();
+          inputEl.value = "";
+          inputEl.focus();
+        }
+
+        function animateIn(item) {
+          const full = item.offsetHeight;
+          item.style.overflow = "hidden";
+          item.style.height = "0px";
+          item.style.marginTop = "-12px";
+          item.style.opacity = "0";
+          item.style.filter = "blur(7px)";
+          item.style.transform = "translateY(8px)";
+          void item.offsetHeight;
+          item.style.transition =
+            "height .42s cubic-bezier(.16,1,.3,1), margin-top .42s cubic-bezier(.16,1,.3,1), opacity .42s ease, filter .5s ease, transform .42s cubic-bezier(.16,1,.3,1)";
+          requestAnimationFrame(() => {
+            item.style.height = full + "px";
+            item.style.marginTop = "0px";
+            item.style.opacity = "1";
+            item.style.filter = "blur(0)";
+            item.style.transform = "translateY(0)";
+          });
+          const done = (e) => {
+            if (e.propertyName !== "height") return;
+            item.style.transition = "";
+            item.style.height = "";
+            item.style.overflow = "";
+            item.style.marginTop = "";
+            item.style.transform = "";
+            item.style.opacity = "";
+            item.style.filter = "";
+            updateFades();
+            item.removeEventListener("transitionend", done);
+          };
+          item.addEventListener("transitionend", done);
+        }
+
+        function addMessage(m, animate) {
+          const item = document.createElement("div");
+          item.className = "chat-item";
+          const img = document.createElement("img");
+          img.className = "chat-avatar";
+          img.alt = "";
+          img.loading = "lazy";
+          img.src = avatarUrl(m.name);
+          const body = document.createElement("div");
+          body.className = "chat-body";
+          const a = document.createElement("span");
+          a.className = "chat-author";
+          const nm = document.createElement("span");
+          nm.className = "chat-name-txt";
+          nm.textContent = m.name;
+          a.appendChild(nm);
+          if (m.location) {
+            const sep = document.createElement("span");
+            sep.className = "chat-sep";
+            sep.textContent = "·";
+            const loc = document.createElement("span");
+            loc.className = "chat-loc";
+            loc.textContent = m.location;
+            a.appendChild(sep);
+            a.appendChild(loc);
+          }
+          if (m.device) {
+            const dv = document.createElement("span");
+            dv.className = "chat-dev-wrap";
+            dv.title = m.device;
+            dv.innerHTML = deviceIcon(m.device); // fixed-set SVG, never user input
+            a.appendChild(dv);
+          }
+          if (m.at) {
+            const tsep = document.createElement("span");
+            tsep.className = "chat-sep";
+            tsep.textContent = "·";
+            const tm = document.createElement("span");
+            tm.className = "chat-time";
+            tm.dataset.at = m.at;
+            tm.textContent = timeAgo(m.at);
+            a.appendChild(tsep);
+            a.appendChild(tm);
+          }
+          const bub = document.createElement("div");
+          bub.className = "chat-bubble";
+          bub.textContent = m.message; // textContent keeps it XSS-safe
+          body.appendChild(a);
+          body.appendChild(bub);
+          item.appendChild(img);
+          item.appendChild(body);
+          messagesEl.appendChild(item);
+          lastId = Math.max(lastId, m.id);
+          if (animate) animateIn(item);
+        }
+
+        function scrollBottom() {
+          messagesEl.scrollTop = messagesEl.scrollHeight;
+        }
+        let scrollAnim = null;
+        function smoothScrollBottom(maxMs) {
+          const el = messagesEl;
+          if (scrollAnim) cancelAnimationFrame(scrollAnim);
+          const startT = performance.now(),
+            limit = maxMs || 1500;
+          let settled = 0;
+          const step = (now) => {
+            const target = Math.max(0, el.scrollHeight - el.clientHeight);
+            const dist = target - el.scrollTop;
+            if (dist > 0.5) {
+              el.scrollTop += dist * 0.2;
+              settled = 0;
+            } else {
+              el.scrollTop = target;
+              settled++;
+            }
+            updateFades();
+            if (settled < 3 && now - startT < limit) {
+              scrollAnim = requestAnimationFrame(step);
+            } else {
+              el.scrollTop = Math.max(0, el.scrollHeight - el.clientHeight);
+              scrollAnim = null;
+              updateFades();
+            }
+          };
+          scrollAnim = requestAnimationFrame(step);
+        }
+
+        async function load(initial) {
+          try {
+            const res = await fetch(
+              "/chat" + (lastId ? "?after=" + lastId : ""),
+              { cache: "no-store" },
+            );
+            const data = await res.json();
+            if (initial && typeof data.total === "number") {
+              totalCount = data.total;
+              updateCount();
+            }
+            if (
+              initial &&
+              data.messages.length === 0 &&
+              messagesEl.children.length === 0
+            ) {
+              messagesEl.innerHTML =
+                '<p class="chat-empty">no messages yet — say hi 👋</p>';
+              return;
+            }
+            if (data.messages.length) {
+              const empty = messagesEl.querySelector(".chat-empty");
+              if (empty) empty.remove();
+              const nearBottom =
+                messagesEl.scrollHeight -
+                  messagesEl.scrollTop -
+                  messagesEl.clientHeight <
+                90;
+              data.messages.forEach((m) => addMessage(m, !initial));
+              if (!initial) {
+                totalCount += data.messages.length;
+                updateCount();
+              }
+              trimMessages();
+              updateTimes();
+              if (initial) scrollBottom();
+              else if (nearBottom) smoothScrollBottom();
+              requestAnimationFrame(updateFades);
+            }
+          } catch (e) {}
+        }
+
+        async function send(e) {
+          e.preventDefault();
+          const val = inputEl.value.trim();
+          if (!val) return;
+
+          if (phase === "name") {
+            if (containsLink(val)) {
+              if (hintTimer) clearTimeout(hintTimer);
+              promptEl.textContent = "name can't contain a link";
+              hintTimer = setTimeout(() => {
+                promptEl.textContent = "what's your name?";
+              }, 2400);
+              return;
+            }
+            chatName = val;
+            try {
+              localStorage.setItem("chatName", chatName);
+            } catch (e2) {}
+            setPhase("message");
+            return;
+          }
+
+          if (isOffensive(val) || isOffensive(chatName)) {
+            inputEl.value = "";
+            blockedHint();
+            openKindnessTab();
+            return;
+          }
+
+          if (containsLink(val) || containsLink(chatName)) {
+            linkHint();
+            return;
+          }
+
+          if (Date.now() - lastSent < SEND_COOLDOWN) {
+            cooldownHint();
+            return;
+          }
+
+          inputEl.value = "";
+          try {
+            const res = await fetch("/chat", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": CSRF,
+                Accept: "application/json",
+              },
+              body: JSON.stringify({
+                name: chatName,
+                message: val,
+                client_id: clientId,
+                location: myLocation,
+                device: myDevice,
+              }),
+            });
+            if (res.ok) {
+              const data = await res.json();
+              const empty = messagesEl.querySelector(".chat-empty");
+              if (empty) empty.remove();
+              addMessage(data.message, true);
+              totalCount += 1;
+              updateCount();
+              trimMessages();
+              startCooldown();
+              smoothScrollBottom(); // always glide the user's own message into view
+              requestAnimationFrame(updateFades);
+              inputEl.focus();
+            } else if (res.status === 422) {
+              const d = await res.json().catch(() => ({})); // server-side backstop
+              if (d.reason === "link") {
+                linkHint();
+              } else {
+                blockedHint();
+                openKindnessTab();
+              }
+            } else {
+              inputEl.value = val; // other failure — let them retry
+            }
+          } catch (e3) {
+            inputEl.value = val;
+          }
+        }
+        form.addEventListener("submit", send);
+
+        window.openChat = function () {
+          clearTimeout(closeT1);
+          clearTimeout(closeT2);
+          overlay.classList.remove("is-closing");
+          overlay.classList.add("is-visible");
+          document.documentElement.style.overflow = "hidden";
+          requestAnimationFrame(() => overlay.classList.add("is-open"));
+          myDevice = detectDevice();
+          collectLocation();
+          load(lastId === 0 && messagesEl.children.length === 0);
+          setPhase(chatName ? "message" : "name");
+          setTimeout(() => inputEl.focus(), 90);
+          if (pollTimer) clearInterval(pollTimer);
+          pollTimer = setInterval(() => load(false), 8000);
+          if (timeTimer) clearInterval(timeTimer);
+          timeTimer = setInterval(updateTimes, 20000);
+        };
+        window.closeChat = function () {
+          if (
+            !overlay.classList.contains("is-visible") ||
+            overlay.classList.contains("is-closing")
+          )
+            return;
+          document.documentElement.style.overflow = "";
+          if (pollTimer) {
+            clearInterval(pollTimer);
+            pollTimer = null;
+          }
+          if (timeTimer) {
+            clearInterval(timeTimer);
+            timeTimer = null;
+          }
+          if (window.playgroundHide) window.playgroundHide();
+          overlay.classList.add("is-closing");
+          closeT1 = setTimeout(() => {
+            overlay.classList.remove("is-open");
+            closeT2 = setTimeout(() => {
+              overlay.classList.remove("is-visible", "is-closing");
+            }, 380);
+          }, 280);
+        };
+        window.chatIsOpen = function () {
+          return (
+            overlay.classList.contains("is-visible") ||
+            overlay.classList.contains("is-closing")
+          );
+        };
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && overlay.classList.contains("is-visible"))
+            closeChat();
+        });
+      })();
+    </script>
+
     <script>
       function hydrateIcons(root) {
         const icons = {
@@ -3219,6 +6620,12 @@
           x: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>',
           trophy:
             '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M17 4H7v3a5 5 0 0 0 10 0V4Z"/><path d="M5 6H3a2 2 0 0 0 2 2"/><path d="M19 6h2a2 2 0 0 1-2 2"/></svg>',
+          sparkles:
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>',
+          keyboard:
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="M6 8h.01"/><path d="M10 8h.01"/><path d="M14 8h.01"/><path d="M18 8h.01"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/><path d="M7 16h10"/></svg>',
+          users:
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
         };
         const scope = root || document;
         scope.querySelectorAll("[data-lucide]").forEach(function (el) {
@@ -3289,31 +6696,58 @@
 
       var competitions = [
         {
-          name: "ICPC Regionals",
-          rank: "Gold Medal",
-          scope: "Asia-Pacific Regional",
-          percentile: "Top 5%",
-          year: "2022",
+          name: "Dean's Lister",
+          rank: "Rank 1",
+          scope: "1st Year • 1st Semester",
+          percentile: "GWA 1.23",
+          year: "",
           summary:
-            "Solved advanced algorithm and systems optimization problems under intense timed contest pressure.",
+            "Achieved the highest academic standing through outstanding performance in foundational information technology courses.",
         },
         {
-          name: "HackMIT",
-          rank: "1st Place",
-          scope: "Global Finals",
-          percentile: "Top 2%",
-          year: "2023",
+          name: "Dean's Lister",
+          rank: "Rank 1",
+          scope: "1st Year • 2nd Semester",
+          percentile: "GWA 1.18",
+          year: "",
           summary:
-            "Delivered a secure full-stack solution in a high-pressure hackathon that emphasized exploitation mitigation and rapid prototyping.",
+            "Maintained exceptional academic excellence with consistent performance across programming and core IT subjects.",
         },
         {
-          name: "Google Code Jam",
-          rank: "Round 3",
-          scope: "Global",
-          percentile: "Top 8%",
-          year: "2023",
+          name: "Dean's Lister",
+          rank: "Rank 1",
+          scope: "2nd Year • 1st Semester",
+          percentile: "GWA 1.20",
+          year: "",
           summary:
-            "Navigated complex reverse-engineering and cryptographic challenge sets while preserving performance and accuracy.",
+            "Demonstrated strong academic consistency while completing more advanced technical coursework and laboratory projects.",
+        },
+        {
+          name: "Dean's Lister",
+          rank: "Rank 1",
+          scope: "2nd Year • 2nd Semester",
+          percentile: "GWA 1.16",
+          year: "",
+          summary:
+            "Earned the highest academic distinction through outstanding achievement in database systems, networking, and software development.",
+        },
+        {
+          name: "Dean's Lister",
+          rank: "Rank 1",
+          scope: "3rd Year • 1st Semester",
+          percentile: "GWA 1.14",
+          year: "",
+          summary:
+            "Sustained top academic performance while balancing leadership responsibilities and complex technical projects.",
+        },
+        {
+          name: "Dean's Lister",
+          rank: "Rank 1",
+          scope: "3rd Year • 2nd Semester",
+          percentile: "GWA 1.11",
+          year: "",
+          summary:
+            "Finished the semester with continued academic excellence, reflecting dedication, discipline, and consistent high achievement.",
         },
       ];
 
@@ -3396,6 +6830,17 @@
           Math.max(singleLapWidth / pxPerSecond, 8) + "s";
       }
 
+      // Vertical equivalent used by the achievement scroll — same px/s pacing
+      // as syncMarqueeSpeed (used for the tech stack), but measured by track
+      // height instead of width.
+      function syncVerticalMarqueeSpeed(track, pxPerSecond) {
+        if (!track) return;
+        var singleLapHeight = track.scrollHeight / 2;
+        if (!singleLapHeight) return;
+        track.style.animationDuration =
+          Math.max(singleLapHeight / pxPerSecond, 8) + "s";
+      }
+
       // Render tech marquee
       function renderTech() {
         var track = document.getElementById("techMarqueeTrack");
@@ -3428,14 +6873,11 @@
           .map(function (c, i) {
             return (
               '<div class="achievement-item" onclick="openExpand(\'competitions\')">' +
-              '<div class="achievement-icon"><i data-lucide="trophy" style="width:18px;height:18px;"></i></div>' +
               '<div class="achievement-details">' +
               '<div class="achievement-name">' +
               c.name +
               "</div>" +
               '<div class="achievement-result"><span>' +
-              c.rank +
-              "</span><span>" +
               c.scope +
               '</span><span class="achievement-year">' +
               c.year +
@@ -3446,6 +6888,7 @@
           .join("");
         scrollTrack.innerHTML = html + html;
         hydrateIcons(scrollTrack);
+        syncVerticalMarqueeSpeed(scrollTrack, 50);
       }
 
       // startAchievementMarquee - pause/resume on hover
@@ -3544,9 +6987,6 @@
               c.name +
               "</div>" +
               '<div class="competitions-card-meta">' +
-              '<span class="competitions-card-rank">' +
-              c.rank +
-              "</span>" +
               '<span class="competitions-card-scope">' +
               c.scope +
               "</span>" +
@@ -3668,6 +7108,65 @@
           navigator.clipboard.writeText(value);
         }
       }
+
+      // Quick Actions (Identity Expanded View)
+      function openQuickAction(action) {
+        // Hook real destinations up here as they become available.
+        switch (action) {
+          case "ask":
+            // Keep the Identity Expanded View open and active — only trigger
+            // the Ask Anything overlay, never collapse or navigate away.
+            // Mirrors the Typing Test / Community Chat cases (and the Alt+K
+            // shortcut) so the button and shortcut share the same logic.
+            if (typeof askIsOpen === "function" && askIsOpen()) {
+              closeAsk();
+            } else {
+              openAsk();
+            }
+            break;
+          case "typing":
+            // Keep the Identity Expanded View open and active — only trigger
+            // the Typing Test overlay, never collapse or navigate away.
+            if (typeof typingIsOpen === "function" && typingIsOpen()) {
+              closeTyping();
+            } else {
+              openTyping();
+            }
+            break;
+          case "community":
+            // Keep the Identity Expanded View open and active — only trigger
+            // the Community Chat overlay, never collapse or navigate away.
+            if (typeof chatIsOpen === "function" && chatIsOpen()) {
+              closeChat();
+            } else {
+              openChat();
+            }
+            break;
+        }
+      }
+
+      // Alt+J opens the Typing Test quick action, Alt+L opens the Community
+      // Chat quick action. Alt+K / ⌘K is owned by the Ask Anything overlay
+      // (see its ported script block above) so the two handlers never
+      // double-fire on the same keypress.
+      document.addEventListener("keydown", function (e) {
+        if (!e.altKey) return;
+        var shortcutCard = document.querySelector(".portfolio-card");
+        if (
+          !shortcutCard ||
+          !shortcutCard.classList.contains("identity-expanded")
+        ) {
+          return;
+        }
+        var key = e.key.toLowerCase();
+        if (key === "j") {
+          e.preventDefault();
+          openQuickAction("typing");
+        } else if (key === "l") {
+          e.preventDefault();
+          openQuickAction("community");
+        }
+      });
 
       // Identity Overlay (used by the separate overlay below page-shell)
       function closeIdentityOverlay(e) {
@@ -3864,6 +7363,10 @@
         marqueeResizeTimer = setTimeout(function () {
           syncMarqueeSpeed(document.getElementById("marqueeTrack"), 60);
           syncMarqueeSpeed(document.getElementById("techMarqueeTrack"), 50);
+          syncVerticalMarqueeSpeed(
+            document.getElementById("achievementScrollTrack"),
+            50,
+          );
         }, 200);
       });
 
@@ -3880,6 +7383,15 @@
       // Keyboard close
       document.addEventListener("keydown", function (e) {
         if (e.key === "Escape") {
+          // While Ask Anything is open, Escape only closes the Ask overlay —
+          // it must never collapse the expanded view underneath it.
+          if (typeof askIsOpen === "function" && askIsOpen()) return;
+          // While the Typing Test is open, Escape only closes the Typing Test —
+          // it must never collapse the expanded view underneath it.
+          if (typeof typingIsOpen === "function" && typingIsOpen()) return;
+          // While the Community Chat is open, Escape only closes the chat — it
+          // must never collapse the expanded view underneath it.
+          if (typeof chatIsOpen === "function" && chatIsOpen()) return;
           var card = document.querySelector(".portfolio-card");
           var expandOverlay = document.getElementById("expandOverlay");
           var identityOverlay = document.getElementById("identityOverlay");
