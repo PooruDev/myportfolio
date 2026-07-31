@@ -1,0 +1,376 @@
+      #typingOverlay {
+        position: fixed;
+        inset: 0;
+        z-index: 135;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+      }
+      #typingOverlay.is-visible {
+        display: flex;
+      }
+      .tt-backdrop {
+        position: absolute;
+        inset: 0;
+        background: rgba(10, 10, 10, 0.72);
+        -webkit-backdrop-filter: blur(16px);
+        backdrop-filter: blur(16px);
+        opacity: 0;
+        transition: opacity 0.35s ease;
+      }
+      #typingOverlay.is-open .tt-backdrop {
+        opacity: 1;
+      }
+      .tt-content {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        max-width: 880px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.7rem;
+        opacity: 0;
+        transform: translateY(16px) scale(0.99);
+        transition:
+          opacity 0.45s ease 0.05s,
+          transform 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.05s;
+      }
+      #typingOverlay.is-open .tt-content {
+        opacity: 1;
+        transform: none;
+      }
+      #typingOverlay.is-open.is-closing .tt-content {
+        opacity: 0;
+        transform: translateY(10px) scale(0.99);
+        transition:
+          opacity 0.26s ease,
+          transform 0.3s cubic-bezier(0.4, 0, 1, 1);
+      }
+
+      .tt-stats {
+        display: flex;
+        align-items: flex-start;
+        gap: 2.6rem;
+        font-family: "JetBrains Mono", monospace;
+      }
+      .tt-stat {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.3rem;
+      }
+      .tt-stat-val {
+        font-size: 1.8rem;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.92);
+        line-height: 1;
+        font-variant-numeric: tabular-nums;
+      }
+      .tt-stat-val i {
+        font-style: normal;
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.4);
+        margin-left: 1px;
+      }
+      .tt-stat-val .tt-num {
+        display: inline-block;
+        min-width: 3ch;
+        text-align: center;
+      }
+      .tt-stat-label {
+        font-size: 9.5px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.4);
+      }
+
+      .tt-words-wrap {
+        width: 100%;
+      }
+      .tt-words {
+        position: relative;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 1.5rem;
+        line-height: 2.5rem;
+        min-height: 5rem;
+        color: rgba(255, 255, 255, 0.3);
+        user-select: none;
+        letter-spacing: 0.02em;
+      }
+      .tt-word {
+        display: inline-block;
+        margin: 0 0.55rem 0.15rem 0;
+        white-space: nowrap;
+      }
+      .tt-char {
+        transition: color 0.09s ease;
+      }
+      .tt-char.correct {
+        color: rgba(255, 255, 255, 0.92);
+      }
+      .tt-char.incorrect {
+        color: #e0584f;
+      }
+      .tt-char.extra {
+        color: #e0584f;
+        opacity: 0.55;
+      }
+      .tt-caret {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 2px;
+        height: 1.5rem;
+        background: rgba(255, 255, 255, 0.92);
+        border-radius: 2px;
+        transform: translateY(0.19rem);
+        transition:
+          left 0.11s cubic-bezier(0.16, 1, 0.3, 1),
+          top 0.11s ease;
+        animation: tt-blink 1.05s ease-in-out infinite;
+      }
+      @keyframes tt-blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.12;
+        }
+      }
+
+      .tt-keyboard {
+        display: flex;
+        flex-direction: column;
+        gap: 0.42rem;
+        align-items: center;
+      }
+      .tt-krow {
+        display: flex;
+        gap: 0.42rem;
+      }
+      .tt-key {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 2.4rem;
+        height: 2.4rem;
+        padding: 0 0.45rem;
+        border-radius: 0.62rem;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 2px 0 rgba(255, 255, 255, 0.06);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.5);
+        transition:
+          transform 0.07s ease,
+          background 0.14s ease,
+          color 0.14s ease,
+          box-shadow 0.1s ease,
+          border-color 0.14s ease;
+      }
+      .tt-key.space {
+        min-width: 15rem;
+        font-size: 10px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.4);
+      }
+      .tt-key.next {
+        border-color: rgba(255, 255, 255, 0.14);
+        color: rgba(255, 255, 255, 0.92);
+        box-shadow:
+          0 0 0 3px rgba(255, 255, 255, 0.06),
+          0 2px 0 rgba(255, 255, 255, 0.06);
+      }
+      .tt-key.active {
+        background: rgba(255, 255, 255, 0.12);
+        color: rgba(255, 255, 255, 0.92);
+        border-color: rgba(255, 255, 255, 0.14);
+        transform: translateY(2px);
+        box-shadow: 0 0 0 rgba(255, 255, 255, 0.14);
+      }
+      #typingOverlay.is-open .tt-key {
+        animation: tt-keyin 0.42s both cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      @keyframes tt-keyin {
+        from {
+          opacity: 0;
+          transform: translateY(7px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+
+      .tt-hint {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.4);
+        display: flex;
+        gap: 1.1rem;
+      }
+      .tt-hint kbd {
+        padding: 1px 6px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 5px;
+        background: rgba(255, 255, 255, 0.03);
+        color: rgba(255, 255, 255, 0.5);
+      }
+
+      /* results */
+      .tt-results {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.4rem;
+      }
+      #typingOverlay.show-results .tt-results {
+        display: flex;
+        animation: tt-keyin 0.5s both;
+      }
+      #typingOverlay.show-results .tt-stats,
+      #typingOverlay.show-results .tt-words-wrap,
+      #typingOverlay.show-results .tt-keyboard {
+        display: none;
+      }
+      .tt-res-main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.3rem;
+      }
+      .tt-res-wpm {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 5rem;
+        line-height: 1;
+        color: rgba(255, 255, 255, 0.92);
+        font-variant-numeric: tabular-nums;
+      }
+      .tt-res-cap {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.4);
+      }
+      .tt-res-grid {
+        display: flex;
+        gap: 2.6rem;
+        font-family: "JetBrains Mono", monospace;
+      }
+      .tt-res-grid > div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.35rem;
+      }
+      .tt-res-grid b {
+        font-weight: 500;
+        font-size: 1.5rem;
+        color: rgba(255, 255, 255, 0.78);
+        font-variant-numeric: tabular-nums;
+      }
+      .tt-res-grid b i {
+        font-style: normal;
+        font-size: 0.85rem;
+        color: rgba(255, 255, 255, 0.4);
+      }
+      .tt-res-grid label {
+        font-size: 9.5px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.4);
+      }
+      .tt-restart {
+        margin-top: 0.4rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1.1rem;
+        border-radius: 0.7rem;
+        background: rgba(255, 255, 255, 0.92);
+        color: #0a0a0a;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px;
+        transition:
+          background 0.2s,
+          transform 0.2s;
+        cursor: pointer;
+      }
+      .tt-restart:hover {
+        background: #ffffff;
+        transform: translateY(-1px);
+      }
+      .tt-verdict {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12.5px;
+        letter-spacing: 0.03em;
+        color: rgba(255, 255, 255, 0.4);
+      }
+      .tt-verdict .tt-vicon {
+        width: 14px;
+        height: 14px;
+        flex: none;
+        color: rgba(255, 255, 255, 0.3);
+      }
+      .tt-verdict.beat {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 15px;
+        letter-spacing: 0.01em;
+        color: rgba(255, 255, 255, 0.92);
+        animation: tt-beatpop 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+      }
+      .tt-verdict.beat .tt-vicon {
+        color: rgba(255, 255, 255, 0.92);
+        width: 15px;
+        height: 15px;
+      }
+      @keyframes tt-beatpop {
+        0% {
+          opacity: 0;
+          transform: scale(0.7);
+        }
+        60% {
+          transform: scale(1.08);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .tt-confirm {
+        display: none;
+        align-items: center;
+        gap: 0.55rem;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.92);
+        padding: 0.5rem 0.95rem;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 0.7rem;
+        background: rgba(255, 255, 255, 0.04);
+        box-shadow: 0 10px 28px -14px rgba(0, 0, 0, 0.3);
+        animation: tt-keyin 0.28s both;
+      }
+      .tt-confirm kbd {
+        padding: 1px 6px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 5px;
+        background: rgba(255, 255, 255, 0.03);
+        color: rgba(255, 255, 255, 0.5);
+      }
+      #typingOverlay.is-confirming .tt-confirm {
+        display: inline-flex;
+      }
+      #typingOverlay.is-confirming .tt-hint {
+        display: none;
+      }

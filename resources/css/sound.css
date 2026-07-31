@@ -1,0 +1,6 @@
+      .sfx-hover {
+        transition: transform 0.12s ease !important;
+      }
+      .sfx-hover:active {
+        transform: scale(0.96) !important;
+      }
