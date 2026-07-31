@@ -147,6 +147,24 @@ body {
     min-height: 760px !important;
     max-height: calc(100vh - 3rem) !important;
   }
+
+  /* Give the gallery a slightly bigger share of the top row's height... */
+  #topRow {
+    flex: 1.3 !important;
+  }
+
+  #bottomRow {
+    flex: 0.9 !important;
+  }
+
+  /* ...and a bigger share of its row's width vs the projects card. */
+  #galleryCard {
+    flex: 2.4 !important;
+  }
+
+  #projectCard {
+    flex: 1 !important;
+  }
 }
 
 .glass-card {
@@ -184,13 +202,19 @@ body {
   .marquee-item {
     min-width: 180px;
     width: 180px;
-    min-height: 160px;
+    min-height: 175px;
     padding: 12px;
   }
 
   .achievement-item {
     padding: 10px;
     font-size: 11px;
+    gap: 10px;
+  }
+
+  .achievement-icon {
+    width: 32px;
+    height: 32px;
   }
 
   .achievement-name {
@@ -199,7 +223,7 @@ body {
   }
 
   .achievement-result {
-    font-size: 11px;
+    font-size: 10.5px;
     flex-wrap: wrap;
   }
 
@@ -241,7 +265,7 @@ body {
   .marquee-item {
     min-width: 160px;
     width: 160px;
-    min-height: 140px;
+    min-height: 155px;
     padding: 10px;
   }
 
@@ -252,12 +276,12 @@ body {
 
   .achievement-item {
     padding: 8px;
-    gap: 10px;
+    gap: 8px;
   }
 
   .achievement-icon {
-    width: 32px;
-    height: 32px;
+    width: 26px;
+    height: 26px;
   }
 
   .social-btn {
@@ -379,7 +403,7 @@ body {
   min-width: 240px;
   width: 240px;
   height: auto;
-  min-height: 170px;
+  min-height: 195px;
   max-height: 100%;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.06);
