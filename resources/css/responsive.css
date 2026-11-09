@@ -1,0 +1,239 @@
+/* =====================================================================
+   responsive.css — load AFTER base.css (see index.html edits).
+   Only fixes layout/viewport bugs. No visual redesign.
+   Overlay rules use #id prefixes so they win over the stylesheets that
+   are linked later in <body> (ask-anything, typing-test, community-chat,
+   playground) without needing !important.
+   ===================================================================== */
+
+/* ---------- 0. Document / viewport (Android URL bar, double scroll) ---------- */
+html {
+  -webkit-text-size-adjust: 100%; /* stop Android font boosting */
+  text-size-adjust: 100%;
+}
+/* html is the single scroller; body grows with content instead of
+   being its own 100%-high scroll box */
+body.h-full {
+  height: auto;
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-x: clip;
+  overflow-y: visible;
+}
+.page-shell {
+  --pp: 1rem; /* page padding used by the expanded-height math */
+  min-height: 100vh; /* fallback: old Android WebView has no dvh */
+  min-height: 100dvh;
+}
+img {
+  max-width: 100%;
+}
+
+/* ---------- 1. Touch: whole card shrinking on press / sticky hover ---------- */
+.glass-parent.sfx-hover:active,
+.expand-overlay.sfx-hover:active,
+.expand-content.sfx-hover:active {
+  transform: none !important;
+}
+@media (hover: none) {
+  .glass-card:hover,
+  .gallery-item:hover {
+    transform: none;
+  }
+}
+
+/* ---------- 2. Achievements marquee loop (-50% must be of full content) ---------- */
+.achievement-scroll-track {
+  flex: 0 0 auto;
+}
+
+/* ---------- 3. Tablet and below (stacked layout) ---------- */
+@media (max-width: 1024px) {
+  .page-shell {
+    padding-top: calc(var(--pp) + env(safe-area-inset-top, 0px));
+    padding-right: calc(var(--pp) + env(safe-area-inset-right, 0px));
+    padding-bottom: calc(var(--pp) + env(safe-area-inset-bottom, 0px));
+    padding-left: calc(var(--pp) + env(safe-area-inset-left, 0px));
+  }
+
+  /* inline flex:* on the cards was beating the media-query flex:0 0 auto */
+  #galleryCard,
+  #identityCard,
+  #projectCard,
+  #compCard,
+  #techCard {
+    flex: 0 0 auto !important;
+  }
+  #galleryCard {
+    max-height: 70vh;
+    max-height: 70dvh; /* landscape phones */
+  }
+  #identityCard > div:first-child {
+    margin-right: 0 !important; /* inline 20px; not needed when stacked */
+    min-height: 0 !important;
+  }
+  /* uncapped on 769–1024 before: rendered the full ~700px list */
+  #compCard .achievement-nested-container {
+    flex: 0 0 auto;
+    height: 260px;
+  }
+
+  /* expanded panels: fit the viewport exactly (page padding + safe areas) */
+  .portfolio-card:is(
+      .tech-expanded,
+      .competitions-expanded,
+      .gallery-expanded,
+      .projects-expanded,
+      .identity-expanded
+    ) {
+    height: calc(100vh - 2 * var(--pp));
+    height: calc(
+      100dvh - 2 * var(--pp) - env(safe-area-inset-top, 0px) -
+        env(safe-area-inset-bottom, 0px)
+    );
+    max-height: none;
+  }
+}
+
+@media (max-width: 767px) {
+  /* 2 columns crushed the email/handle text */
+  .identity-profile-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-shell {
+    --pp: 0.5rem;
+  }
+  .identity-profile-card {
+    padding: 14px;
+    gap: 12px;
+  }
+  .identity-action-btn {
+    min-width: 64px;
+  }
+}
+
+/* ---------- 4. Laptop band 1025–1279: identity card text clipped ---------- */
+@media (min-width: 1025px) and (max-width: 1279px) {
+  #identityCard {
+    padding: 1rem;
+  }
+  #devRole {
+    margin-bottom: 12px !important;
+  }
+  #devBio {
+    line-height: 1.55 !important;
+    margin-bottom: 12px !important;
+  }
+}
+
+/* ---------- 5. Desktop, short viewports (e.g. 1366×768) ---------- */
+/* min-height:760 beat max-height, so expanded panels overflowed the screen */
+@media (min-width: 1025px) {
+  .portfolio-card:is(
+      .tech-expanded,
+      .competitions-expanded,
+      .gallery-expanded,
+      .projects-expanded,
+      .identity-expanded
+    ) {
+    min-height: 0 !important;
+    height: min(760px, calc(100vh - 3rem)) !important;
+    height: min(760px, calc(100dvh - 3rem)) !important;
+  }
+}
+
+/* ---------- 6. Overlays (Ask / Typing / Chat) ---------- */
+#askOverlay,
+#chatOverlay,
+#typingOverlay {
+  align-items: flex-start; /* + margin-block:auto below = centred, but scrollable */
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-top: max(1.5rem, env(safe-area-inset-top, 0px));
+  padding-bottom: max(1.5rem, env(safe-area-inset-bottom, 0px));
+  padding-left: max(1.5rem, env(safe-area-inset-left, 0px));
+  padding-right: max(1.5rem, env(safe-area-inset-right, 0px));
+}
+#askOverlay .ask-content,
+#chatOverlay .chat-content,
+#typingOverlay .tt-content {
+  margin-block: auto;
+}
+/* backdrops must stay put while the overlay scrolls */
+#askOverlay .ask-backdrop,
+#chatOverlay .chat-backdrop,
+#typingOverlay .tt-backdrop {
+  position: fixed;
+}
+#chatOverlay .chat-messages {
+  height: min(340px, 50vh);
+  height: min(340px, 50dvh);
+}
+
+/* playground canvas (460px) overlaps the chat below ~1200px, and is
+   taller than short landscape screens */
+@media (max-width: 1199px), (max-height: 520px) {
+  #chatOverlay .pg-wrap {
+    display: none;
+  }
+}
+
+/* typing-test keyboard: shrink keys instead of overflowing (no-op ≥ ~550px) */
+#typingOverlay .tt-keyboard,
+#typingOverlay .tt-krow {
+  gap: clamp(0.2rem, 1.1vw, 0.42rem);
+}
+#typingOverlay .tt-key {
+  min-width: clamp(1.5rem, 7vw, 2.4rem);
+  height: clamp(1.9rem, 8.6vw, 2.4rem);
+}
+#typingOverlay .tt-key.space {
+  min-width: min(15rem, 60vw);
+}
+#typingOverlay .tt-hint {
+  flex-wrap: wrap;
+  justify-content: center;
+}
+#typingOverlay .tt-confirm {
+  flex-wrap: wrap;
+  justify-content: center;
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  #askOverlay,
+  #chatOverlay,
+  #typingOverlay {
+    padding-top: max(1rem, env(safe-area-inset-top, 0px));
+    padding-bottom: max(1rem, env(safe-area-inset-bottom, 0px));
+    padding-left: max(1rem, env(safe-area-inset-left, 0px));
+    padding-right: max(1rem, env(safe-area-inset-right, 0px));
+  }
+  #askOverlay .ask-content,
+  #chatOverlay .chat-content {
+    padding-left: clamp(0.25rem, 3vw, 1rem);
+  }
+  #typingOverlay .tt-content {
+    gap: 1.2rem;
+  }
+  #typingOverlay .tt-stats,
+  #typingOverlay .tt-res-grid {
+    gap: 1.6rem;
+  }
+  #typingOverlay .tt-words {
+    --tt-fs: 1.15rem;
+    font-size: var(--tt-fs);
+    line-height: 1.9rem;
+    min-height: 4rem;
+  }
+  #typingOverlay .tt-caret {
+    height: var(--tt-fs);
+    transform: translateY(calc(var(--tt-fs) * 0.127));
+  }
+  #typingOverlay .tt-res-wpm {
+    font-size: 3.6rem;
+  }
+}

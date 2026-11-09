@@ -838,7 +838,14 @@
         align-items: flex-start;
         justify-content: space-between;
         gap: 16px;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
+      }
+      .gallery-header-top > div:first-child {
+        flex: 1 1 auto;
+        min-width: 0;
+      }
+      .gallery-close-btn {
+        flex: 0 0 auto;
       }
       .gallery-panel-note {
         margin-top: 8px;
@@ -1472,5 +1479,317 @@
         }
         .identity-profile-grid {
           grid-template-columns: 1fr;
+        }
+      }
+
+
+      /* ===== responsive audit fixes ===== */
+      html {
+        -webkit-text-size-adjust: 100%;
+        text-size-adjust: 100%;
+      }
+      body.h-full {
+        height: auto;
+        min-height: 100%;
+        overflow-x: hidden;
+        overflow-x: clip;
+        overflow-y: visible;
+      }
+      .page-shell {
+        --pp: 1rem;
+        min-height: 100vh;
+        min-height: 100dvh;
+      }
+      img {
+        max-width: 100%;
+      }
+      .glass-parent.sfx-hover:active,
+      .expand-overlay.sfx-hover:active,
+      .expand-content.sfx-hover:active {
+        transform: none !important;
+      }
+      @media (hover: none) {
+        .glass-card:hover,
+        .gallery-item:hover {
+          transform: none;
+        }
+      }
+      .achievement-scroll-track {
+        flex: 0 0 auto;
+      }
+
+      @media (max-width: 1024px) {
+        .page-shell {
+          padding-top: calc(var(--pp) + env(safe-area-inset-top, 0px));
+          padding-right: calc(var(--pp) + env(safe-area-inset-right, 0px));
+          padding-bottom: calc(var(--pp) + env(safe-area-inset-bottom, 0px));
+          padding-left: calc(var(--pp) + env(safe-area-inset-left, 0px));
+        }
+        #galleryCard,
+        #identityCard,
+        #projectCard,
+        #compCard,
+        #techCard {
+          flex: 0 0 auto !important;
+        }
+        #galleryCard {
+          max-height: 70vh;
+          max-height: 70dvh;
+        }
+        #identityCard > div:first-child {
+          margin-right: 0 !important;
+          min-height: 0 !important;
+        }
+        #compCard .achievement-nested-container {
+          flex: 0 0 auto;
+          height: 260px;
+        }
+        .portfolio-card:is(
+            .tech-expanded,
+            .competitions-expanded,
+            .gallery-expanded,
+            .projects-expanded,
+            .identity-expanded
+          ) {
+          height: calc(100vh - 2 * var(--pp));
+          height: calc(
+            100dvh - 2 * var(--pp) - env(safe-area-inset-top, 0px) -
+              env(safe-area-inset-bottom, 0px)
+          );
+          max-height: none;
+        }
+      }
+
+      @media (max-width: 767px) {
+        .identity-profile-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .page-shell {
+          --pp: 0.5rem;
+        }
+        /* gallery header: title/note left, close button pinned right */
+        .gallery-panel-header {
+          padding: 14px 16px;
+        }
+        .gallery-header-top {
+          gap: 12px;
+        }
+        .gallery-panel-note {
+          margin-top: 6px;
+          font-size: 12px;
+          line-height: 1.5;
+        }
+        /* identity: reclaim width inside the panel */
+        .identity-expanded-scroll > div:not(.identity-panel-header) {
+          padding: 16px !important;
+        }
+        .identity-expanded-scroll .identity-card-shell[style*="padding: 14px"] {
+          padding: 10px !important;
+        }
+        /* profile cards: icon | name | button on row 1, handle/email on row 2 */
+        .identity-profile-card {
+          display: grid;
+          grid-template-columns: auto minmax(0, 1fr) auto;
+          align-items: center;
+          column-gap: 12px;
+          row-gap: 10px;
+          min-height: 0;
+          padding: 14px;
+        }
+        .identity-card-meta {
+          display: contents;
+        }
+        .identity-platform-icon {
+          grid-column: 1;
+          grid-row: 1;
+          width: 36px;
+          height: 36px;
+        }
+        .identity-card-name {
+          grid-column: 2;
+          grid-row: 1;
+          margin: 0;
+          min-width: 0;
+          overflow-wrap: anywhere;
+        }
+        .identity-action-btn {
+          grid-column: 3;
+          grid-row: 1;
+          min-width: 64px;
+          height: 32px;
+          padding: 0 12px;
+        }
+        .identity-card-id {
+          grid-column: 1 / -1;
+          grid-row: 2;
+          margin: 0;
+          min-width: 0;
+          overflow-wrap: anywhere;
+        }
+      }
+
+      @media (min-width: 1025px) and (max-width: 1279px) {
+        #identityCard {
+          padding: 1rem;
+        }
+        #devRole {
+          margin-bottom: 12px !important;
+        }
+        #devBio {
+          line-height: 1.55 !important;
+          margin-bottom: 12px !important;
+        }
+      }
+
+      @media (min-width: 1025px) {
+        .portfolio-card:is(
+            .tech-expanded,
+            .competitions-expanded,
+            .gallery-expanded,
+            .projects-expanded,
+            .identity-expanded
+          ) {
+          min-height: 0 !important;
+          height: min(760px, calc(100vh - 3rem)) !important;
+          height: min(760px, calc(100dvh - 3rem)) !important;
+        }
+      }
+
+      /* overlays */
+      #askOverlay,
+      #chatOverlay,
+      #typingOverlay {
+        align-items: flex-start;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        padding-top: max(1.5rem, env(safe-area-inset-top, 0px));
+        padding-bottom: max(1.5rem, env(safe-area-inset-bottom, 0px));
+        padding-left: max(1.5rem, env(safe-area-inset-left, 0px));
+        padding-right: max(1.5rem, env(safe-area-inset-right, 0px));
+      }
+      #askOverlay .ask-content,
+      #chatOverlay .chat-content,
+      #typingOverlay .tt-content {
+        margin-block: auto;
+      }
+      #askOverlay .ask-backdrop,
+      #chatOverlay .chat-backdrop,
+      #typingOverlay .tt-backdrop {
+        position: fixed;
+      }
+      #chatOverlay .chat-messages {
+        height: min(340px, 50vh);
+        height: min(340px, 50dvh);
+      }
+      @media (max-width: 1199px), (max-height: 520px) {
+        #chatOverlay .pg-wrap {
+          display: none;
+        }
+      }
+      #typingOverlay .tt-keyboard,
+      #typingOverlay .tt-krow {
+        gap: clamp(0.2rem, 1.1vw, 0.42rem);
+      }
+      #typingOverlay .tt-key {
+        min-width: clamp(1.5rem, 7vw, 2.4rem);
+        height: clamp(1.9rem, 8.6vw, 2.4rem);
+      }
+      #typingOverlay .tt-key.space {
+        min-width: min(15rem, 60vw);
+      }
+      #typingOverlay .tt-hint {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      #typingOverlay .tt-confirm {
+        flex-wrap: wrap;
+        justify-content: center;
+        text-align: center;
+      }
+      @media (max-width: 640px) {
+        #askOverlay,
+        #chatOverlay,
+        #typingOverlay {
+          padding-top: max(1rem, env(safe-area-inset-top, 0px));
+          padding-bottom: max(1rem, env(safe-area-inset-bottom, 0px));
+          padding-left: max(1rem, env(safe-area-inset-left, 0px));
+          padding-right: max(1rem, env(safe-area-inset-right, 0px));
+        }
+        #askOverlay .ask-content,
+        #chatOverlay .chat-content {
+          padding-left: clamp(0.25rem, 3vw, 1rem);
+        }
+        #typingOverlay .tt-content {
+          gap: 1.2rem;
+        }
+        #typingOverlay .tt-stats,
+        #typingOverlay .tt-res-grid {
+          gap: 1.6rem;
+        }
+        #typingOverlay .tt-words {
+          --tt-fs: 1.15rem;
+          font-size: var(--tt-fs);
+          line-height: 1.9rem;
+          min-height: 4rem;
+        }
+        #typingOverlay .tt-caret {
+          height: var(--tt-fs);
+          transform: translateY(calc(var(--tt-fs) * 0.127));
+        }
+        #typingOverlay .tt-res-wpm {
+          font-size: 3.6rem;
+        }
+      }
+
+
+      /* ===== tablet / iPad / iPad Pro (640–1024px): keep the desktop identity
+         layout (social buttons beside the profile, not underneath) ===== */
+      @media (min-width: 640px) and (max-width: 1024px) {
+        #identityCard {
+          flex-direction: row;
+          padding: clamp(1.25rem, 2.6vw, 1.75rem);
+        }
+        #identityCard > div:first-child {
+          margin-right: clamp(12px, 2vw, 20px) !important;
+        }
+        #socialIcons {
+          flex-direction: column !important;
+          flex-wrap: nowrap !important;
+          justify-content: center !important;
+          display: flex !important; /* undo the <=768px display:none */
+        }
+        /* identity content scales with the (taller) card; !important is
+           needed to beat the inline sizes/margins on these elements */
+        #identityCard > div:first-child {
+          min-width: 0;
+        }
+        #identityCard > div:first-child > div:first-child {
+          margin-bottom: clamp(16px, 2.6vw, 28px) !important;
+        }
+        #devName {
+          font-size: clamp(30px, 4.6vw, 48px) !important;
+          margin-bottom: clamp(8px, 1.2vw, 12px) !important;
+        }
+        #devRole {
+          font-size: clamp(12px, 1.5vw, 16px) !important;
+          margin-bottom: clamp(16px, 2.4vw, 26px) !important;
+        }
+        #devBio {
+          font-size: clamp(14px, 1.7vw, 18px) !important;
+          line-height: 1.7 !important;
+          margin-bottom: clamp(16px, 2.4vw, 26px) !important;
+        }
+        #identityCard .flex-wrap {
+          gap: clamp(8px, 1vw, 12px);
+        }
+        #identityCard .tag {
+          font-size: clamp(10.5px, 1.2vw, 13px);
+          padding: 5px clamp(9px, 1.2vw, 12px);
+        }
+        #compCard .achievement-nested-container {
+          height: 150px;
         }
       }
