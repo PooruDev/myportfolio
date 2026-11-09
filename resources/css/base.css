@@ -1482,12 +1482,18 @@
         }
       }
 
+      /* =====================================================================
+         RESPONSIVE LAYER
+         Everything below was added by the responsive audit. Selectors use
+         #ids where they must beat inline styles or later-linked stylesheets.
+         ===================================================================== */
 
-      /* ===== responsive audit fixes ===== */
+      /* ---------- document / viewport ---------- */
       html {
-        -webkit-text-size-adjust: 100%;
+        -webkit-text-size-adjust: 100%; /* stop Android font boosting */
         text-size-adjust: 100%;
       }
+      /* html is the single scroller; body grows instead of being its own box */
       body.h-full {
         height: auto;
         min-height: 100%;
@@ -1496,13 +1502,14 @@
         overflow-y: visible;
       }
       .page-shell {
-        --pp: 1rem;
-        min-height: 100vh;
+        --pp: 1rem; /* page padding, used by the expanded-view height math */
+        min-height: 100vh; /* fallback: old Android WebView has no dvh */
         min-height: 100dvh;
       }
       img {
         max-width: 100%;
       }
+      /* touch: the card must not shrink on press; no sticky hover lift */
       .glass-parent.sfx-hover:active,
       .expand-overlay.sfx-hover:active,
       .expand-content.sfx-hover:active {
@@ -1514,10 +1521,12 @@
           transform: none;
         }
       }
+      /* achievements marquee: -50% must be half of the FULL list */
       .achievement-scroll-track {
         flex: 0 0 auto;
       }
 
+      /* ---------- tablet and below: stacked cards ---------- */
       @media (max-width: 1024px) {
         .page-shell {
           padding-top: calc(var(--pp) + env(safe-area-inset-top, 0px));
@@ -1525,6 +1534,7 @@
           padding-bottom: calc(var(--pp) + env(safe-area-inset-bottom, 0px));
           padding-left: calc(var(--pp) + env(safe-area-inset-left, 0px));
         }
+        /* inline flex:* on the cards beat the plain flex:0 0 auto above */
         #galleryCard,
         #identityCard,
         #projectCard,
@@ -1534,16 +1544,14 @@
         }
         #galleryCard {
           max-height: 70vh;
-          max-height: 70dvh;
+          max-height: 70dvh; /* landscape phones */
         }
-        #identityCard > div:first-child {
-          margin-right: 0 !important;
-          min-height: 0 !important;
-        }
+        /* achievements holder: a compact scrolling window, items keep size */
         #compCard .achievement-nested-container {
           flex: 0 0 auto;
-          height: 260px;
+          height: 150px;
         }
+        /* expanded panels fit the viewport (page padding + safe areas) */
         .portfolio-card:is(
             .tech-expanded,
             .competitions-expanded,
@@ -1560,12 +1568,90 @@
         }
       }
 
+      /* ---------- identity card, phones (<640px): stacked, content-sized ---------- */
+      @media (max-width: 639px) {
+        #identityCard {
+          padding: clamp(1.25rem, 5vw, 1.75rem);
+        }
+        #identityCard > div:first-child {
+          margin-right: 0 !important; /* inline 20px, not needed when stacked */
+          min-height: 0 !important;
+          min-width: 0;
+        }
+        #identityCard > div:first-child > div:first-child {
+          margin-bottom: clamp(16px, 4.4vw, 24px) !important;
+        }
+        #devName {
+          font-size: clamp(28px, 7vw, 34px) !important;
+          margin-bottom: clamp(8px, 2vw, 12px) !important;
+        }
+        #devRole {
+          font-size: clamp(12px, 3.2vw, 14px) !important;
+          margin-bottom: clamp(16px, 4.2vw, 24px) !important;
+        }
+        #devBio {
+          font-size: clamp(14px, 3.4vw, 15px) !important;
+          line-height: 1.7 !important;
+          margin-bottom: clamp(16px, 4.2vw, 24px) !important;
+        }
+        #identityCard .flex-wrap {
+          gap: 8px;
+        }
+        #identityCard .tag {
+          font-size: clamp(10.5px, 2.8vw, 12px);
+          padding: 5px clamp(9px, 2.4vw, 12px);
+        }
+      }
+
+      /* ---------- identity card, tablets (640-1024px): profile left,
+         social buttons in a vertical column on the right (desktop layout) ---------- */
+      @media (min-width: 640px) and (max-width: 1024px) {
+        #identityCard {
+          flex-direction: row;
+          padding: clamp(1.25rem, 3vw, 1.75rem);
+        }
+        #identityCard > div:first-child {
+          margin-right: clamp(12px, 2vw, 20px) !important;
+          min-height: 0 !important;
+          min-width: 0;
+        }
+        #identityCard > div:first-child > div:first-child {
+          margin-bottom: clamp(16px, 2.6vw, 28px) !important;
+        }
+        #socialIcons {
+          display: flex !important; /* undo the <=768px display:none */
+          flex-direction: column !important;
+          flex-wrap: nowrap !important;
+          justify-content: center !important;
+        }
+        #devName {
+          font-size: clamp(32px, 4.6vw, 48px) !important;
+          margin-bottom: clamp(8px, 1.2vw, 12px) !important;
+        }
+        #devRole {
+          font-size: clamp(12px, 1.5vw, 16px) !important;
+          margin-bottom: clamp(16px, 2.4vw, 26px) !important;
+        }
+        #devBio {
+          font-size: clamp(14px, 1.7vw, 18px) !important;
+          line-height: 1.7 !important;
+          margin-bottom: clamp(16px, 2.4vw, 26px) !important;
+        }
+        #identityCard .flex-wrap {
+          gap: clamp(8px, 1vw, 12px);
+        }
+        #identityCard .tag {
+          font-size: clamp(10.5px, 1.2vw, 13px);
+          padding: 5px clamp(9px, 1.2vw, 12px);
+        }
+      }
+
+      /* ---------- identity panel + gallery header, small screens ---------- */
       @media (max-width: 767px) {
         .identity-profile-grid {
           grid-template-columns: 1fr;
         }
       }
-
       @media (max-width: 480px) {
         .page-shell {
           --pp: 0.5rem;
@@ -1582,14 +1668,13 @@
           font-size: 12px;
           line-height: 1.5;
         }
-        /* identity: reclaim width inside the panel */
         .identity-expanded-scroll > div:not(.identity-panel-header) {
           padding: 16px !important;
         }
         .identity-expanded-scroll .identity-card-shell[style*="padding: 14px"] {
           padding: 10px !important;
         }
-        /* profile cards: icon | name | button on row 1, handle/email on row 2 */
+        /* profile cards: icon | name | button, handle/email on row 2 */
         .identity-profile-card {
           display: grid;
           grid-template-columns: auto minmax(0, 1fr) auto;
@@ -1631,6 +1716,7 @@
         }
       }
 
+      /* ---------- laptops / desktops ---------- */
       @media (min-width: 1025px) and (max-width: 1279px) {
         #identityCard {
           padding: 1rem;
@@ -1643,7 +1729,7 @@
           margin-bottom: 12px !important;
         }
       }
-
+      /* min-height:760 beat max-height, so expanded panels overflowed short screens */
       @media (min-width: 1025px) {
         .portfolio-card:is(
             .tech-expanded,
@@ -1658,11 +1744,30 @@
         }
       }
 
-      /* overlays */
+      /* ---------- laptop / desktop (>= 1366px): project cards fill the
+         Projects container. The container centred a 260px-tall track
+         (align-items:center + fixed item height), leaving dead space. ---------- */
+      @media (min-width: 1366px) {
+        #projectCard > div:last-child {
+          align-items: stretch !important; /* beats the inline align-items:center */
+        }
+        #projectCard .marquee-track {
+          align-self: stretch; /* track takes the container's full height */
+        }
+        #projectCard .marquee-item {
+          height: auto; /* stretch to the track; was a fixed 260px */
+        }
+        /* description may use the extra height before it truncates */
+        #projectCard .marquee-item p {
+          -webkit-line-clamp: 4 !important;
+        }
+      }
+
+      /* ---------- overlays (Ask / Typing / Chat) ---------- */
       #askOverlay,
       #chatOverlay,
       #typingOverlay {
-        align-items: flex-start;
+        align-items: flex-start; /* + margin-block:auto = centred but scrollable */
         overflow-y: auto;
         overscroll-behavior: contain;
         padding-top: max(1.5rem, env(safe-area-inset-top, 0px));
@@ -1675,6 +1780,7 @@
       #typingOverlay .tt-content {
         margin-block: auto;
       }
+      /* backdrops stay put while an overlay scrolls */
       #askOverlay .ask-backdrop,
       #chatOverlay .chat-backdrop,
       #typingOverlay .tt-backdrop {
@@ -1684,35 +1790,15 @@
         height: min(340px, 50vh);
         height: min(340px, 50dvh);
       }
+      /* playground canvas (460px) overlaps the chat below ~1200px */
       @media (max-width: 1199px), (max-height: 520px) {
         #chatOverlay .pg-wrap {
           display: none;
         }
       }
-      #typingOverlay .tt-keyboard,
-      #typingOverlay .tt-krow {
-        gap: clamp(0.2rem, 1.1vw, 0.42rem);
-      }
-      #typingOverlay .tt-key {
-        min-width: clamp(1.5rem, 7vw, 2.4rem);
-        height: clamp(1.9rem, 8.6vw, 2.4rem);
-      }
-      #typingOverlay .tt-key.space {
-        min-width: min(15rem, 60vw);
-      }
-      #typingOverlay .tt-hint {
-        flex-wrap: wrap;
-        justify-content: center;
-      }
-      #typingOverlay .tt-confirm {
-        flex-wrap: wrap;
-        justify-content: center;
-        text-align: center;
-      }
       @media (max-width: 640px) {
         #askOverlay,
-        #chatOverlay,
-        #typingOverlay {
+        #chatOverlay {
           padding-top: max(1rem, env(safe-area-inset-top, 0px));
           padding-bottom: max(1rem, env(safe-area-inset-bottom, 0px));
           padding-left: max(1rem, env(safe-area-inset-left, 0px));
@@ -1722,74 +1808,14 @@
         #chatOverlay .chat-content {
           padding-left: clamp(0.25rem, 3vw, 1rem);
         }
-        #typingOverlay .tt-content {
-          gap: 1.2rem;
-        }
-        #typingOverlay .tt-stats,
-        #typingOverlay .tt-res-grid {
-          gap: 1.6rem;
-        }
-        #typingOverlay .tt-words {
-          --tt-fs: 1.15rem;
-          font-size: var(--tt-fs);
-          line-height: 1.9rem;
-          min-height: 4rem;
-        }
-        #typingOverlay .tt-caret {
-          height: var(--tt-fs);
-          transform: translateY(calc(var(--tt-fs) * 0.127));
-        }
-        #typingOverlay .tt-res-wpm {
-          font-size: 3.6rem;
-        }
       }
 
-
-      /* ===== tablet / iPad / iPad Pro (640–1024px): keep the desktop identity
-         layout (social buttons beside the profile, not underneath) ===== */
-      @media (min-width: 640px) and (max-width: 1024px) {
-        #identityCard {
-          flex-direction: row;
-          padding: clamp(1.25rem, 2.6vw, 1.75rem);
-        }
-        #identityCard > div:first-child {
-          margin-right: clamp(12px, 2vw, 20px) !important;
-        }
-        #socialIcons {
-          flex-direction: column !important;
-          flex-wrap: nowrap !important;
-          justify-content: center !important;
-          display: flex !important; /* undo the <=768px display:none */
-        }
-        /* identity content scales with the (taller) card; !important is
-           needed to beat the inline sizes/margins on these elements */
-        #identityCard > div:first-child {
-          min-width: 0;
-        }
-        #identityCard > div:first-child > div:first-child {
-          margin-bottom: clamp(16px, 2.6vw, 28px) !important;
-        }
-        #devName {
-          font-size: clamp(30px, 4.6vw, 48px) !important;
-          margin-bottom: clamp(8px, 1.2vw, 12px) !important;
-        }
-        #devRole {
-          font-size: clamp(12px, 1.5vw, 16px) !important;
-          margin-bottom: clamp(16px, 2.4vw, 26px) !important;
-        }
-        #devBio {
-          font-size: clamp(14px, 1.7vw, 18px) !important;
-          line-height: 1.7 !important;
-          margin-bottom: clamp(16px, 2.4vw, 26px) !important;
-        }
-        #identityCard .flex-wrap {
-          gap: clamp(8px, 1vw, 12px);
-        }
-        #identityCard .tag {
-          font-size: clamp(10.5px, 1.2vw, 13px);
-          padding: 5px clamp(9px, 1.2vw, 12px);
-        }
-        #compCard .achievement-nested-container {
-          height: 150px;
+      /* ---------- Typing Test: laptop-sized viewports only (>= 1366px) ----------
+         Mirrors window.matchMedia("(min-width: 1366px)") in typing-test.js.
+         Below that the quick action and the overlay are removed from layout. */
+      @media not all and (min-width: 1366px) {
+        .typing-quick-action,
+        #typingOverlay {
+          display: none !important;
         }
       }
