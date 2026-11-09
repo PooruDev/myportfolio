@@ -521,6 +521,9 @@
             }
             break;
           case "typing":
+            // Typing Test is only offered at >= 1366px (physical keyboard);
+            // typing-test.js enforces this too, this keeps the action inert.
+            if (!(window.typingAllowed && window.typingAllowed())) break;
             // Keep the Identity Expanded View open and active — only trigger
             // the Typing Test overlay, never collapse or navigate away.
             if (typeof typingIsOpen === "function" && typingIsOpen()) {
@@ -556,6 +559,8 @@
         }
         var key = e.key.toLowerCase();
         if (key === "j") {
+          // Alt+J does nothing below 1366px (leave the key to the browser).
+          if (!(window.typingAllowed && window.typingAllowed())) return;
           e.preventDefault();
           openQuickAction("typing");
         } else if (key === "l") {

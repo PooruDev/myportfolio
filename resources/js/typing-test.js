@@ -47,6 +47,34 @@
           overlay.classList.toggle("is-confirming", on);
         }
 
+        // ── Viewport gate: the Typing Test needs a physical keyboard, so it is
+        // only available at >= 1366px. Mirrors the CSS media query in base.css.
+        const ttMq = window.matchMedia("(min-width: 1366px)");
+        window.typingAllowed = function () {
+          return ttMq.matches;
+        };
+        // Immediate close (no animation) used when the viewport shrinks.
+        function ttForceClose() {
+          clearTimeout(closeT1);
+          clearTimeout(closeT2);
+          cancelAnimationFrame(rafId);
+          const wasShown = isOpen || overlay.classList.contains("is-visible");
+          isOpen = false;
+          setConfirm(false);
+          overlay.classList.remove(
+            "is-open",
+            "is-closing",
+            "is-visible",
+            "show-results",
+          );
+          if (wasShown) document.documentElement.style.overflow = "";
+        }
+        function ttOnViewportChange(e) {
+          if (!e.matches) ttForceClose();
+        }
+        if (ttMq.addEventListener) ttMq.addEventListener("change", ttOnViewportChange);
+        else if (ttMq.addListener) ttMq.addListener(ttOnViewportChange);
+
         function rand(n) {
           return Math.floor(Math.random() * n);
         }
@@ -297,6 +325,7 @@
         window.ttRestart = reset;
 
         window.openTyping = function () {
+          if (!ttMq.matches) return; // viewport < 1366px: not available
           clearTimeout(closeT1);
           clearTimeout(closeT2);
           overlay.classList.remove("is-closing");
