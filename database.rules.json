@@ -35,7 +35,7 @@
     "rateLimit": {
       "$uid": {
         ".write": "auth != null && auth.uid === $uid && newData.exists()",
-        ".validate": "newData.isNumber() && newData.val() === now && (!data.exists() || data.val() <= now - 2500)"
+        ".validate": "newData.isNumber() && newData.val() === now && (!data.exists() || data.val() <= now - 3000)"
       }
     }
   }
