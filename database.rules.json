@@ -1,0 +1,42 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+
+    "messages": {
+      ".read": "auth != null",
+      "$id": {
+        ".write": "auth != null && !data.exists() && newData.exists()",
+        ".validate": "newData.hasChildren(['uid', 'name', 'message', 'at']) && newData.child('uid').val() === auth.uid && newData.child('at').val() === now && newData.parent().parent().child('rateLimit').child(auth.uid).val() === now",
+        "uid": {
+          ".validate": "newData.isString()"
+        },
+        "name": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 40 && !newData.val().matches(/.*([hH][tT][tT][pP][sS]?:\\/\\/|[wW][wW][wW]\\.).*/)"
+        },
+        "message": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 500 && !newData.val().matches(/.*([hH][tT][tT][pP][sS]?:\\/\\/|[wW][wW][wW]\\.).*/)"
+        },
+        "location": {
+          ".validate": "newData.isString() && newData.val().length <= 60"
+        },
+        "device": {
+          ".validate": "newData.isString() && newData.val().length <= 20"
+        },
+        "at": {
+          ".validate": "newData.isNumber() && newData.val() === now"
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
+    },
+
+    "rateLimit": {
+      "$uid": {
+        ".write": "auth != null && auth.uid === $uid && newData.exists()",
+        ".validate": "newData.isNumber() && newData.val() === now && (!data.exists() || data.val() <= now - 2500)"
+      }
+    }
+  }
+}
