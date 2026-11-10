@@ -386,19 +386,6 @@ body {
   border-color: rgba(255, 255, 255, 0.14);
 }
 
-.marquee-track {
-  animation: marquee 45s linear infinite;
-}
-
-@keyframes marquee {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
-}
-
 .marquee-item {
   min-width: 240px;
   width: 240px;
@@ -584,17 +571,6 @@ body {
   gap: 12px;
   width: 100%;
   min-height: 0;
-  will-change: transform;
-  animation: achievementVerticalMarquee 18s linear infinite;
-}
-
-@keyframes achievementVerticalMarquee {
-  0% {
-    transform: translate3d(0, 0, 0);
-  }
-  100% {
-    transform: translate3d(0, -50%, 0);
-  }
 }
 
 .achievement-item {

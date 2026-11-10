@@ -91,15 +91,21 @@
         opacity: 1;
       }
 
+      /* One shared loop for the Projects and Tech Stack strips. --loop-end is
+         the exact pitch of one item set (measured in main.js), so the last
+         frame is pixel-identical to the first. -50% is only a no-JS fallback. */
       .marquee-track {
+        width: max-content;
+        flex: none;
+        will-change: transform;
         animation: marquee 45s linear infinite;
       }
       @keyframes marquee {
         0% {
-          transform: translateX(0);
+          transform: translate3d(0, 0, 0);
         }
         100% {
-          transform: translateX(-50%);
+          transform: translate3d(var(--loop-end, -50%), 0, 0);
         }
       }
       .marquee-item {
@@ -128,15 +134,8 @@
         gap: 8px;
         width: max-content;
         white-space: nowrap;
-        animation: techMarquee 40s linear infinite;
-      }
-      @keyframes techMarquee {
-        0% {
-          transform: translate3d(0, 0, 0);
-        }
-        100% {
-          transform: translate3d(-50%, 0, 0);
-        }
+        will-change: transform;
+        animation: marquee 40s linear infinite;
       }
       .tech-item {
         min-width: fit-content;
@@ -1081,14 +1080,15 @@
         display: flex;
         flex-direction: column;
         gap: 10px;
+        will-change: transform;
         animation: achievementMarquee 40s linear infinite;
       }
       @keyframes achievementMarquee {
         0% {
-          transform: translateY(0);
+          transform: translate3d(0, 0, 0);
         }
         100% {
-          transform: translateY(-50%);
+          transform: translate3d(0, var(--loop-end, -50%), 0);
         }
       }
       .achievement-item {
@@ -1521,7 +1521,7 @@
           transform: none;
         }
       }
-      /* achievements marquee: -50% must be half of the FULL list */
+      /* achievements marquee: track must keep its full height so the loop distance is the real list pitch */
       .achievement-scroll-track {
         flex: 0 0 auto;
       }

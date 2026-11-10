@@ -239,3 +239,15 @@
       .chat-send:disabled {
         opacity: 0.35;
       }
+      .chat-empty[data-kind="error"],
+      .chat-conn,
+      .chat-prompt.is-error {
+        color: #e0584f;
+      }
+      .chat-item,
+      .chat-author {
+        min-width: 0;
+      }
+      .chat-bubble {
+        overflow-wrap: anywhere;
+      }
