@@ -12,8 +12,26 @@
         const inputEl = document.getElementById("chatInput");
         const promptEl = document.getElementById("chatPrompt");
         const sendEl = document.getElementById("chatSend");
-        const CSRF = "3DH61Tz7oNGMG852QCCP67RNEtlkwUBOG5dMI9FU";
+        // Chat API: GET {API}?after=ID and POST {API}. Defaults to /chat; point it
+        // at another origin with <meta name="chat-api" content="https://…/chat">
+        // or window.CHAT_API_URL. (The old build hard-coded a CSRF token from a
+        // different session, which every POST was rejected for.)
+        const metaApi = document.querySelector('meta[name="chat-api"]');
+        const API = String(
+          window.CHAT_API_URL || (metaApi && metaApi.content) || "/chat",
+        ).replace(/\/+$/, "");
+        function csrfHeaders() {
+          const meta = document.querySelector('meta[name="csrf-token"]');
+          if (meta && meta.content) return { "X-CSRF-TOKEN": meta.content };
+          const m = document.cookie.match(/(?:^|; )XSRF-TOKEN=([^;]*)/);
+          return m ? { "X-XSRF-TOKEN": decodeURIComponent(m[1]) } : {};
+        }
         let lastId = 0;
+        const seen = new Set(); // message ids already rendered (de-dupe poll vs POST)
+        let sending = false; // true while a POST is in flight (no duplicate submits)
+        let loading = false; // true while a GET is in flight
+        let initialLoaded = false;
+        let connText = ""; // connection problem shown next to the message count
         let pollTimer = null;
         let closeT1 = null,
           closeT2 = null;
@@ -24,7 +42,7 @@
         let myLocation = "";
         const MAX_VISIBLE = 60; // keep a scrollable history in the DOM (bounded)
         let totalCount = 0; // total messages (for the count label)
-        const SEND_COOLDOWN = 8000; // min ms between a user's own messages (anti-spam)
+        const SEND_COOLDOWN = 3000; // min ms between a user's own messages (anti-spam)
         const KIND_URL = "https://en.wikipedia.org/wiki/Netiquette";
         const BAD_LOOSE = [
           "fuck",
@@ -145,6 +163,14 @@
         try {
           clientId = localStorage.getItem("visitorId") || "";
         } catch (e) {}
+        if (!clientId) {
+          clientId =
+            (window.crypto && crypto.randomUUID && crypto.randomUUID()) ||
+            "v-" + Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
+          try {
+            localStorage.setItem("visitorId", clientId);
+          } catch (e) {}
+        }
         try {
           chatName = localStorage.getItem("chatName") || "";
         } catch (e) {}
@@ -207,6 +233,7 @@
         }
 
         function messagePrompt() {
+          promptEl.classList.remove("is-error");
           promptEl.innerHTML = "chatting as ";
           const b = document.createElement("b");
           b.textContent = chatName; // textContent => XSS-safe
@@ -290,10 +317,6 @@
 
         function startCooldown() {
           lastSent = Date.now();
-          sendEl.disabled = true;
-          setTimeout(() => {
-            sendEl.disabled = false;
-          }, SEND_COOLDOWN);
         }
 
         function updateFades() {
@@ -316,6 +339,96 @@
                 (totalCount === 1 ? " message" : " messages") +
                 "</span>"
               : "";
+          if (connText) {
+            const c = document.createElement("span");
+            c.className = "chat-conn";
+            c.textContent = (totalCount > 0 ? "· " : "") + connText;
+            countEl.appendChild(c);
+          }
+        }
+        function setConn(t) {
+          if (connText === t) return;
+          connText = t;
+          updateCount();
+        }
+        function showStatus(text, kind) {
+          clearStatus();
+          const p = document.createElement("p");
+          p.className = "chat-empty";
+          p.dataset.kind = kind;
+          p.textContent = text;
+          messagesEl.appendChild(p);
+        }
+        function clearStatus() {
+          const el = messagesEl.querySelector(".chat-empty");
+          if (el) el.remove();
+        }
+        function describeError(err) {
+          switch (err && err.kind) {
+            case "offline":
+              return "you're offline";
+            case "timeout":
+              return "the server took too long to respond";
+            case "network":
+              return "couldn't reach the chat server";
+            case "parse":
+              return "the chat server sent an unexpected response";
+            case "http":
+              if (err.status === 404) return "chat server not found (404)";
+              if (err.status === 419) return "session expired, refresh the page";
+              if (err.status === 429) return "too many requests, slow down";
+              return "server error (" + err.status + ")";
+          }
+          return "something went wrong";
+        }
+        // One place for every network call: timeout, JSON check, typed errors.
+        async function request(method, query, body) {
+          const ctrl = new AbortController();
+          const to = setTimeout(() => ctrl.abort(), 10000);
+          let res;
+          try {
+            res = await fetch(API + (query || ""), {
+              method: method,
+              cache: "no-store",
+              signal: ctrl.signal,
+              headers: Object.assign(
+                { Accept: "application/json" },
+                body ? { "Content-Type": "application/json" } : {},
+                body ? csrfHeaders() : {},
+              ),
+              body: body ? JSON.stringify(body) : undefined,
+            });
+          } catch (err) {
+            const e = new Error("network");
+            e.kind =
+              navigator.onLine === false
+                ? "offline"
+                : err && err.name === "AbortError"
+                  ? "timeout"
+                  : "network";
+            throw e;
+          } finally {
+            clearTimeout(to);
+          }
+          let data = null;
+          if ((res.headers.get("content-type") || "").indexOf("json") !== -1) {
+            try {
+              data = await res.json();
+            } catch (e2) {}
+          }
+          if (!res.ok) {
+            const e = new Error("http");
+            e.kind = "http";
+            e.status = res.status;
+            e.data = data;
+            throw e;
+          }
+          if (data === null) {
+            const e = new Error("parse");
+            e.kind = "parse";
+            throw e;
+          }
+          return data;
         }
         messagesEl.addEventListener("scroll", updateFades, {
           passive: true,
@@ -384,12 +497,21 @@
         }
 
         function addMessage(m, animate) {
+          const id = Number(m.id);
+          if (!isFinite(id) || seen.has(id)) return false;
+          seen.add(id);
+          m = Object.assign({}, m, { id: id });
           const item = document.createElement("div");
           item.className = "chat-item";
           const img = document.createElement("img");
           img.className = "chat-avatar";
           img.alt = "";
           img.loading = "lazy";
+          // if the avatar service is unreachable show the empty ring, not a broken-image icon
+          img.onerror = function () {
+            this.onerror = null;
+            this.removeAttribute("src");
+          };
           img.src = avatarUrl(m.name);
           const body = document.createElement("div");
           body.className = "chat-body";
@@ -437,6 +559,7 @@
           messagesEl.appendChild(item);
           lastId = Math.max(lastId, m.id);
           if (animate) animateIn(item);
+          return true;
         }
 
         function scrollBottom() {
@@ -471,52 +594,67 @@
           scrollAnim = requestAnimationFrame(step);
         }
 
-        async function load(initial) {
+        async function load() {
+          if (loading) return;
+          loading = true;
+          if (!initialLoaded && !messagesEl.querySelector(".chat-item"))
+            showStatus("loading messages…", "loading");
           try {
-            const res = await fetch(
-              "/chat" + (lastId ? "?after=" + lastId : ""),
-              { cache: "no-store" },
-            );
-            const data = await res.json();
-            if (initial && typeof data.total === "number") {
-              totalCount = data.total;
-              updateCount();
+            const data = await request("GET", lastId ? "?after=" + lastId : "");
+            const list = Array.isArray(data) ? data : data.messages;
+            if (!Array.isArray(list)) {
+              const e = new Error("parse");
+              e.kind = "parse";
+              throw e;
             }
-            if (
-              initial &&
-              data.messages.length === 0 &&
-              messagesEl.children.length === 0
-            ) {
-              messagesEl.innerHTML =
-                '<p class="chat-empty">no messages yet — say hi 👋</p>';
-              return;
-            }
-            if (data.messages.length) {
-              const empty = messagesEl.querySelector(".chat-empty");
-              if (empty) empty.remove();
-              const nearBottom =
-                messagesEl.scrollHeight -
-                  messagesEl.scrollTop -
-                  messagesEl.clientHeight <
-                90;
-              data.messages.forEach((m) => addMessage(m, !initial));
-              if (!initial) {
-                totalCount += data.messages.length;
-                updateCount();
-              }
+            setConn("");
+            const fresh = list
+              .filter((m) => m && m.id != null && !seen.has(Number(m.id)))
+              .sort((a, b) => Number(a.id) - Number(b.id));
+            const nearBottom =
+              messagesEl.scrollHeight -
+                messagesEl.scrollTop -
+                messagesEl.clientHeight <
+              90;
+            if (fresh.length) {
+              clearStatus();
+              fresh.forEach((m) => addMessage(m, initialLoaded));
               trimMessages();
               updateTimes();
-              if (initial) scrollBottom();
-              else if (nearBottom) smoothScrollBottom();
+              if (!initialLoaded) scrollBottom();
+              else if (nearBottom) smoothScrollBottom(); // never yank a reader away
               requestAnimationFrame(updateFades);
+            } else if (!messagesEl.querySelector(".chat-item")) {
+              showStatus("no messages yet — say hi 👋", "empty");
             }
-          } catch (e) {}
+            totalCount =
+              !Array.isArray(data) && typeof data.total === "number"
+                ? Math.max(data.total, seen.size)
+                : seen.size;
+            initialLoaded = true;
+            updateCount();
+          } catch (e) {
+            const why = describeError(e);
+            if (!messagesEl.querySelector(".chat-item"))
+              showStatus("couldn't load messages — " + why, "error");
+            else setConn(why + " · retrying");
+          } finally {
+            loading = false;
+          }
+        }
+
+        function sendFailed(text) {
+          if (hintTimer) clearTimeout(hintTimer);
+          promptEl.classList.add("is-error");
+          promptEl.textContent = text;
+          hintTimer = setTimeout(messagePrompt, 5000);
         }
 
         async function send(e) {
           e.preventDefault();
+          if (sending) return; // one submission at a time
           const val = inputEl.value.trim();
-          if (!val) return;
+          if (!val) return; // empty / whitespace-only
 
           if (phase === "name") {
             if (containsLink(val)) {
@@ -552,48 +690,52 @@
             return;
           }
 
-          inputEl.value = "";
+          sending = true;
+          sendEl.setAttribute("aria-busy", "true");
           try {
-            const res = await fetch("/chat", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": CSRF,
-                Accept: "application/json",
-              },
-              body: JSON.stringify({
-                name: chatName,
-                message: val,
-                client_id: clientId,
-                location: myLocation,
-                device: myDevice,
-              }),
+            const data = await request("POST", "", {
+              name: chatName,
+              message: val,
+              client_id: clientId,
+              location: myLocation,
+              device: myDevice,
             });
-            if (res.ok) {
-              const data = await res.json();
-              const empty = messagesEl.querySelector(".chat-empty");
-              if (empty) empty.remove();
-              addMessage(data.message, true);
-              totalCount += 1;
-              updateCount();
-              trimMessages();
-              startCooldown();
-              smoothScrollBottom(); // always glide the user's own message into view
-              requestAnimationFrame(updateFades);
-              inputEl.focus();
-            } else if (res.status === 422) {
-              const d = await res.json().catch(() => ({})); // server-side backstop
-              if (d.reason === "link") {
-                linkHint();
-              } else {
+            const m = data && data.message;
+            if (!m || m.id == null) {
+              const pe = new Error("parse");
+              pe.kind = "parse";
+              throw pe;
+            }
+            // only now is it really saved: clear the field and show it
+            if (inputEl.value.trim() === val) inputEl.value = "";
+            clearStatus();
+            setConn("");
+            if (addMessage(m, true)) totalCount += 1;
+            totalCount = Math.max(totalCount, seen.size);
+            updateCount();
+            trimMessages();
+            startCooldown();
+            smoothScrollBottom(); // always glide the user's own message into view
+            requestAnimationFrame(updateFades);
+          } catch (err) {
+            if (err.kind === "http" && err.status === 422) {
+              // server-side moderation backstop
+              if (err.data && err.data.reason === "link") linkHint();
+              else {
+                inputEl.value = "";
                 blockedHint();
                 openKindnessTab();
               }
             } else {
-              inputEl.value = val; // other failure — let them retry
+              // keep the text so nothing is lost; say why it failed
+              sendFailed(
+                "couldn't send — " + describeError(err) + " · your message is still here",
+              );
             }
-          } catch (e3) {
-            inputEl.value = val;
+          } finally {
+            sending = false;
+            sendEl.removeAttribute("aria-busy");
+            inputEl.focus();
           }
         }
         form.addEventListener("submit", send);
@@ -607,11 +749,11 @@
           requestAnimationFrame(() => overlay.classList.add("is-open"));
           myDevice = detectDevice();
           collectLocation();
-          load(lastId === 0 && messagesEl.children.length === 0);
+          load();
           setPhase(chatName ? "message" : "name");
           setTimeout(() => inputEl.focus(), 90);
           if (pollTimer) clearInterval(pollTimer);
-          pollTimer = setInterval(() => load(false), 8000);
+          pollTimer = setInterval(load, 5000);
           if (timeTimer) clearInterval(timeTimer);
           timeTimer = setInterval(updateTimes, 20000);
         };
@@ -649,4 +791,13 @@
           if (e.key === "Escape" && overlay.classList.contains("is-visible"))
             closeChat();
         });
+        // catch up immediately when the connection or the tab comes back
+        const catchUp = () => {
+          if (overlay.classList.contains("is-visible")) load();
+        };
+        window.addEventListener("online", catchUp);
+        document.addEventListener("visibilitychange", () => {
+          if (!document.hidden) catchUp();
+        });
+        promptEl.setAttribute("aria-live", "polite");
       })();

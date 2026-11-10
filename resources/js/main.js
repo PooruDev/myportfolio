@@ -215,26 +215,53 @@
               );
             })
             .join("");
-        syncMarqueeSpeed(track, 60);
+        syncMarqueeSpeed(track, 60, projects.length);
       }
 
-      function syncMarqueeSpeed(track, pxPerSecond) {
-        if (!track) return;
-        var singleLapWidth = track.scrollWidth / 2;
-        if (!singleLapWidth) return;
-        track.style.animationDuration =
-          Math.max(singleLapWidth / pxPerSecond, 8) + "s";
+      // Seamless infinite marquee. The renderers build the item set twice; the
+      // loop distance must be exactly one set's pitch (set length + the gap
+      // that follows it). The old keyframes used -50% of the track, which is
+      // half a gap short, so every cycle ended with a visible snap-back.
+      // This measures the real pitch once (and on resize) and hands it to the
+      // CSS animation via --loop-end; the movement itself stays pure CSS.
+      function loopMarquee(track, vertical, pxPerSecond, setSize) {
+        if (!track || !track.parentElement || !setSize) return;
+        var host = track.parentElement;
+        var viewport = vertical ? host.clientHeight : host.clientWidth;
+        if (!viewport || track.children.length < setSize * 2) return; // hidden
+        var sets = Math.floor(track.children.length / setSize);
+        var first = track.children[0];
+        var next = track.children[setSize];
+        var a = first.getBoundingClientRect();
+        var b = next.getBoundingClientRect();
+        var pitch = vertical ? b.top - a.top : b.left - a.left;
+        if (!(pitch > 0)) return;
+        // after shifting by one pitch the strip must still cover the viewport
+        var need = Math.max(2, Math.ceil(viewport / pitch) + 1);
+        while (sets < need) {
+          for (var i = 0; i < setSize; i++) {
+            var c = track.children[i].cloneNode(true);
+            c.setAttribute("aria-hidden", "true");
+            track.appendChild(c);
+          }
+          sets++;
+        }
+        while (sets > need) {
+          for (var j = 0; j < setSize; j++) track.removeChild(track.lastElementChild);
+          sets--;
+        }
+        var end = -pitch + "px";
+        var dur = pitch / pxPerSecond + "s";
+        // write only on change so a no-op resize never restarts the animation
+        if (track.style.getPropertyValue("--loop-end") !== end)
+          track.style.setProperty("--loop-end", end);
+        if (track.style.animationDuration !== dur) track.style.animationDuration = dur;
       }
-
-      // Vertical equivalent used by the achievement scroll — same px/s pacing
-      // as syncMarqueeSpeed (used for the tech stack), but measured by track
-      // height instead of width.
-      function syncVerticalMarqueeSpeed(track, pxPerSecond) {
-        if (!track) return;
-        var singleLapHeight = track.scrollHeight / 2;
-        if (!singleLapHeight) return;
-        track.style.animationDuration =
-          Math.max(singleLapHeight / pxPerSecond, 8) + "s";
+      function syncMarqueeSpeed(track, pxPerSecond, setSize) {
+        loopMarquee(track, false, pxPerSecond, setSize);
+      }
+      function syncVerticalMarqueeSpeed(track, pxPerSecond, setSize) {
+        loopMarquee(track, true, pxPerSecond, setSize);
       }
 
       // Render tech marquee
@@ -255,7 +282,7 @@
               return '<span class="tech-item">' + t + "</span>";
             })
             .join("");
-        syncMarqueeSpeed(track, 50);
+        syncMarqueeSpeed(track, 50, techStack.length);
       }
 
       // Render achievement vertical scroll
@@ -284,7 +311,7 @@
           .join("");
         scrollTrack.innerHTML = html + html;
         hydrateIcons(scrollTrack);
-        syncVerticalMarqueeSpeed(scrollTrack, 50);
+        syncVerticalMarqueeSpeed(scrollTrack, 50, competitions.length);
       }
 
       // startAchievementMarquee - pause/resume on hover
@@ -757,19 +784,38 @@
       startAchievementMarquee();
       initGalleryPreview();
 
-      // Resize handler for marquees
-      var marqueeResizeTimer = null;
-      window.addEventListener("resize", function () {
-        clearTimeout(marqueeResizeTimer);
-        marqueeResizeTimer = setTimeout(function () {
-          syncMarqueeSpeed(document.getElementById("marqueeTrack"), 60);
-          syncMarqueeSpeed(document.getElementById("techMarqueeTrack"), 50);
-          syncVerticalMarqueeSpeed(
-            document.getElementById("achievementScrollTrack"),
-            50,
-          );
-        }, 200);
-      });
+      // Keep the loop distance correct whenever the carousels' size changes
+      // (viewport resize, expanded view closing, fonts/images settling).
+      function refreshMarquees() {
+        syncMarqueeSpeed(document.getElementById("marqueeTrack"), 60, projects.length);
+        syncMarqueeSpeed(document.getElementById("techMarqueeTrack"), 50, techStack.length);
+        syncVerticalMarqueeSpeed(
+          document.getElementById("achievementScrollTrack"),
+          50,
+          competitions.length,
+        );
+      }
+      var marqueeRefreshRaf = 0;
+      function scheduleMarqueeRefresh() {
+        if (marqueeRefreshRaf) return;
+        marqueeRefreshRaf = requestAnimationFrame(function () {
+          marqueeRefreshRaf = 0;
+          refreshMarquees();
+        });
+      }
+      window.addEventListener("resize", scheduleMarqueeRefresh);
+      window.addEventListener("load", scheduleMarqueeRefresh);
+      if (document.fonts && document.fonts.ready)
+        document.fonts.ready.then(scheduleMarqueeRefresh);
+      if (window.ResizeObserver) {
+        var marqueeRO = new ResizeObserver(scheduleMarqueeRefresh);
+        ["marqueeTrack", "techMarqueeTrack", "achievementScrollTrack"].forEach(
+          function (id) {
+            var t = document.getElementById(id);
+            if (t && t.parentElement) marqueeRO.observe(t.parentElement);
+          },
+        );
+      }
 
       // Background video play
       var bgVideo = document.getElementById("bgVideo");

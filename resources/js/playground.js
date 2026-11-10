@@ -70,6 +70,12 @@
             });
           }
 
+          // .complete is also true for an image that FAILED to load; drawing one
+          // throws and kills the game loop, so require real pixels.
+          function imgOk(img) {
+            return !!(img && img.complete && img.naturalWidth > 0);
+          }
+
           // ── placed furniture (footprint in tiles) + collision (in sub-cells) ──
           const FOOT = {
             desk: { w: 2, h: 1 },
@@ -481,13 +487,13 @@
               h = CELL * SCALE;
             a._dx = Math.round(a.pixelX + (STEP - w) / 2 - camX);
             a._dy = Math.round(a.pixelY + (STEP - h) / 2 - camY);
-            if (shadowImg.complete) {
+            if (imgOk(shadowImg)) {
               ctx.save();
               ctx.globalAlpha = isPlayer ? 0.9 : 0.45;
               drawFrame(shadowImg, f, a._dx, a._dy, w, h);
               ctx.restore();
             }
-            if (charImg.complete) {
+            if (imgOk(charImg)) {
               ctx.save();
               ctx.globalAlpha = isPlayer ? 1 : NPC_ALPHA;
               drawFrame(charImg, f, a._dx, a._dy, w, h);
@@ -527,7 +533,7 @@
               h = f.h * TILE;
             ctx.fillStyle = c.objShadow;
             ctx.fillRect(px + 2, py + 2, w, h);
-            if (img && img.complete) {
+            if (imgOk(img)) {
               ctx.drawImage(img, px, py, w, h);
             } else {
               // fallback furniture block before sprites arrive
@@ -537,7 +543,7 @@
               ctx.lineWidth = 1;
               ctx.strokeRect(px + 0.5, py + 0.5, w - 1, h - 1);
             }
-            if (o.computer && furn.computer && furn.computer.complete)
+            if (o.computer && imgOk(furn.computer))
               ctx.drawImage(furn.computer, px, py - TILE / 2, 2 * TILE, TILE);
           }
 
