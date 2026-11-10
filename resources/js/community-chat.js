@@ -1,8 +1,9 @@
-      // ── Community Chat: name → message phases, live polling, message
-      // handling, moderation, cooldowns, rendering — logic ported 1:1 from
-      // asdasd.html. Opening this overlay never collapses, hides, or navigates
-      // away from the Identity Expanded View — the expanded view stays open
-      // and active behind the chat (same pattern as the Ask / Typing overlays).
+      // ── Community Chat: name → message phases, realtime sync (Firebase Realtime
+      // Database + anonymous auth), message handling, moderation, cooldowns,
+      // rendering — logic ported 1:1 from asdasd.html. Opening this overlay
+      // never collapses, hides, or navigates away from the Identity Expanded
+      // View — the expanded view stays open and active behind the chat (same
+      // pattern as the Ask / Typing overlays).
       (function () {
         const overlay = document.getElementById("chatOverlay");
         if (!overlay) return;
@@ -12,27 +13,37 @@
         const inputEl = document.getElementById("chatInput");
         const promptEl = document.getElementById("chatPrompt");
         const sendEl = document.getElementById("chatSend");
-        // Chat API: GET {API}?after=ID and POST {API}. Defaults to /chat; point it
-        // at another origin with <meta name="chat-api" content="https://…/chat">
-        // or window.CHAT_API_URL. (The old build hard-coded a CSRF token from a
-        // different session, which every POST was rejected for.)
-        const metaApi = document.querySelector('meta[name="chat-api"]');
-        const API = String(
-          window.CHAT_API_URL || (metaApi && metaApi.content) || "/chat",
-        ).replace(/\/+$/, "");
-        function csrfHeaders() {
-          const meta = document.querySelector('meta[name="csrf-token"]');
-          if (meta && meta.content) return { "X-CSRF-TOKEN": meta.content };
-          const m = document.cookie.match(/(?:^|; )XSRF-TOKEN=([^;]*)/);
-          return m ? { "X-XSRF-TOKEN": decodeURIComponent(m[1]) } : {};
+        // Firebase adapter (resources/js/firebase-init.js). Loaded lazily with a
+        // dynamic import() the first time the chat is used, so nothing is
+        // downloaded or connected until a visitor opens it. Must be read here,
+        // while this script is still executing (document.currentScript).
+        const FB_MODULE =
+          document.currentScript && document.currentScript.src
+            ? new URL("firebase-init.js", document.currentScript.src).href
+            : new URL("resources/js/firebase-init.js", document.baseURI).href;
+        let fbPromise = null;
+        function getFirebase() {
+          if (!fbPromise) {
+            fbPromise = import(FB_MODULE)
+              .then((m) => m.loadChatFirebase())
+              .catch((err) => {
+                fbPromise = null; // allow a retry
+                if (err && !err.kind) err.kind = "load";
+                throw err;
+              });
+          }
+          return fbPromise;
         }
-        let lastId = 0;
-        const seen = new Set(); // message ids already rendered (de-dupe poll vs POST)
-        let sending = false; // true while a POST is in flight (no duplicate submits)
-        let loading = false; // true while a GET is in flight
+        const seen = new Set(); // message ids already rendered (de-dupe)
+        let sending = false; // true while a write is in flight (no duplicate submits)
         let initialLoaded = false;
         let connText = ""; // connection problem shown next to the message count
-        let pollTimer = null;
+        let unsub = null; // active realtime subscription (null while closed)
+        let attachSeq = 0; // bumped on every attach/detach to cancel stale async work
+        let attachInFlight = false;
+        let wasConnected = false;
+        let myUid = ""; // anonymous Firebase uid of this visitor
+        let pending = null; // { val, key } of a send that didn't confirm (retry-safe)
         let closeT1 = null,
           closeT2 = null;
         let phase = "name";
@@ -41,7 +52,7 @@
         let myDevice = "";
         let myLocation = "";
         const MAX_VISIBLE = 60; // keep a scrollable history in the DOM (bounded)
-        let totalCount = 0; // total messages (for the count label)
+        let totalCount = 0; // messages currently loaded (for the count label)
         const SEND_COOLDOWN = 3000; // min ms between a user's own messages (anti-spam)
         const KIND_URL = "https://en.wikipedia.org/wiki/Netiquette";
         const BAD_LOOSE = [
@@ -246,9 +257,12 @@
           hintTimer = setTimeout(messagePrompt, 1400);
         }
 
-        function timeAgo(iso) {
-          const then = iso ? new Date(iso).getTime() : NaN;
-          if (isNaN(then)) return "";
+        // `at` is a millisecond epoch (Firebase server timestamp); an ISO string
+        // is still accepted.
+        function timeAgo(at) {
+          const n = Number(at);
+          const then = at ? (isFinite(n) ? n : new Date(at).getTime()) : NaN;
+          if (isNaN(then) || then <= 0) return "";
           const s = Math.max(0, Math.floor((Date.now() - then) / 1000));
           if (s < 10) return "just now";
           if (s < 60) return s + "s ago";
@@ -331,6 +345,8 @@
         const COUNT_ICON =
           '<svg viewBox="0 0 24 24" fill="none"><path d="M4 5.5h16v10H10l-4.5 4v-4H4z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>';
         function updateCount() {
+          // count of the messages currently loaded in the chat window
+          totalCount = messagesEl.querySelectorAll(".chat-item").length;
           countEl.innerHTML =
             totalCount > 0
               ? COUNT_ICON +
@@ -371,64 +387,16 @@
               return "the server took too long to respond";
             case "network":
               return "couldn't reach the chat server";
-            case "parse":
-              return "the chat server sent an unexpected response";
-            case "http":
-              if (err.status === 404) return "chat server not found (404)";
-              if (err.status === 419) return "session expired, refresh the page";
-              if (err.status === 429) return "too many requests, slow down";
-              return "server error (" + err.status + ")";
+            case "load":
+              return "couldn't load the chat module";
+            case "config":
+              return "chat isn't configured yet";
+            case "auth":
+              return "couldn't sign in to chat";
+            case "denied":
+              return "the chat database refused the request";
           }
           return "something went wrong";
-        }
-        // One place for every network call: timeout, JSON check, typed errors.
-        async function request(method, query, body) {
-          const ctrl = new AbortController();
-          const to = setTimeout(() => ctrl.abort(), 10000);
-          let res;
-          try {
-            res = await fetch(API + (query || ""), {
-              method: method,
-              cache: "no-store",
-              signal: ctrl.signal,
-              headers: Object.assign(
-                { Accept: "application/json" },
-                body ? { "Content-Type": "application/json" } : {},
-                body ? csrfHeaders() : {},
-              ),
-              body: body ? JSON.stringify(body) : undefined,
-            });
-          } catch (err) {
-            const e = new Error("network");
-            e.kind =
-              navigator.onLine === false
-                ? "offline"
-                : err && err.name === "AbortError"
-                  ? "timeout"
-                  : "network";
-            throw e;
-          } finally {
-            clearTimeout(to);
-          }
-          let data = null;
-          if ((res.headers.get("content-type") || "").indexOf("json") !== -1) {
-            try {
-              data = await res.json();
-            } catch (e2) {}
-          }
-          if (!res.ok) {
-            const e = new Error("http");
-            e.kind = "http";
-            e.status = res.status;
-            e.data = data;
-            throw e;
-          }
-          if (data === null) {
-            const e = new Error("parse");
-            e.kind = "parse";
-            throw e;
-          }
-          return data;
         }
         messagesEl.addEventListener("scroll", updateFades, {
           passive: true,
@@ -497,12 +465,13 @@
         }
 
         function addMessage(m, animate) {
-          const id = Number(m.id);
-          if (!isFinite(id) || seen.has(id)) return false;
+          const id = m && m.id != null ? String(m.id) : "";
+          if (!id || seen.has(id)) return false; // Firebase push ids are strings
           seen.add(id);
           m = Object.assign({}, m, { id: id });
           const item = document.createElement("div");
           item.className = "chat-item";
+          item.dataset.id = id;
           const img = document.createElement("img");
           img.className = "chat-avatar";
           img.alt = "";
@@ -557,7 +526,6 @@
           item.appendChild(img);
           item.appendChild(body);
           messagesEl.appendChild(item);
-          lastId = Math.max(lastId, m.id);
           if (animate) animateIn(item);
           return true;
         }
@@ -594,52 +562,108 @@
           scrollAnim = requestAnimationFrame(step);
         }
 
-        async function load() {
-          if (loading) return;
-          loading = true;
-          if (!initialLoaded && !messagesEl.querySelector(".chat-item"))
-            showStatus("loading messages…", "loading");
-          try {
-            const data = await request("GET", lastId ? "?after=" + lastId : "");
-            const list = Array.isArray(data) ? data : data.messages;
-            if (!Array.isArray(list)) {
-              const e = new Error("parse");
-              e.kind = "parse";
-              throw e;
-            }
+        // ── Realtime handlers (called by the Firebase adapter) ──
+        function nearBottom() {
+          return (
+            messagesEl.scrollHeight -
+              messagesEl.scrollTop -
+              messagesEl.clientHeight <
+            90
+          );
+        }
+        // The listener is the single render path for every message, including
+        // the visitor's own (Firebase raises it locally right away), so a
+        // message can never be drawn twice.
+        function onAdded(m, isInitial) {
+          const wasNear = nearBottom();
+          clearStatus();
+          if (!addMessage(m, !isInitial)) return;
+          trimMessages();
+          updateCount();
+          if (isInitial) return; // history batch: scrolled once in onInitial()
+          if (m.uid === myUid || wasNear) smoothScrollBottom(); // never yank a reader away
+          requestAnimationFrame(updateFades);
+        }
+        function onRemoved(id) {
+          id = String(id);
+          seen.delete(id);
+          let el = null;
+          messagesEl.querySelectorAll(".chat-item").forEach((n) => {
+            if (n.dataset.id === id) el = n;
+          });
+          if (el) el.remove(); // also covers a write the rules rejected
+          updateCount();
+          updateFades();
+        }
+        function onInitial() {
+          initialLoaded = true;
+          clearStatus();
+          if (!messagesEl.querySelector(".chat-item"))
+            showStatus("no messages yet — say hi 👋", "empty");
+          else scrollBottom();
+          updateTimes();
+          updateCount();
+          requestAnimationFrame(updateFades);
+        }
+        function onConnection(ok) {
+          if (ok) {
+            wasConnected = true;
             setConn("");
-            const fresh = list
-              .filter((m) => m && m.id != null && !seen.has(Number(m.id)))
-              .sort((a, b) => Number(a.id) - Number(b.id));
-            const nearBottom =
-              messagesEl.scrollHeight -
-                messagesEl.scrollTop -
-                messagesEl.clientHeight <
-              90;
-            if (fresh.length) {
-              clearStatus();
-              fresh.forEach((m) => addMessage(m, initialLoaded));
-              trimMessages();
-              updateTimes();
-              if (!initialLoaded) scrollBottom();
-              else if (nearBottom) smoothScrollBottom(); // never yank a reader away
-              requestAnimationFrame(updateFades);
-            } else if (!messagesEl.querySelector(".chat-item")) {
-              showStatus("no messages yet — say hi 👋", "empty");
+          } else if (wasConnected) setConn("connection lost · reconnecting");
+        }
+        function onError(err) {
+          const why = describeError(err);
+          detach();
+          if (!messagesEl.querySelector(".chat-item"))
+            showStatus("couldn't load messages — " + why, "error");
+          else setConn(why);
+        }
+
+        // Attach the realtime listeners (after anonymous sign-in). Safe to call
+        // repeatedly: it is a no-op while attached or already attaching.
+        async function attach() {
+          if (unsub || attachInFlight) return;
+          attachInFlight = true;
+          const mySeq = ++attachSeq;
+          initialLoaded = false;
+          wasConnected = false;
+          setConn("");
+          messagesEl.querySelectorAll(".chat-item").forEach((n) => n.remove());
+          seen.clear(); // the history is replayed on attach
+          updateCount();
+          showStatus("loading messages…", "loading");
+          try {
+            if (navigator.onLine === false) {
+              const oe = new Error("offline");
+              oe.kind = "offline";
+              throw oe;
             }
-            totalCount =
-              !Array.isArray(data) && typeof data.total === "number"
-                ? Math.max(data.total, seen.size)
-                : seen.size;
-            initialLoaded = true;
-            updateCount();
+            const fb = await getFirebase();
+            const uid = await fb.ensureAuth();
+            if (mySeq !== attachSeq) return; // chat was closed meanwhile
+            myUid = uid;
+            unsub = fb.subscribe({
+              onAdded: onAdded,
+              onRemoved: onRemoved,
+              onInitial: onInitial,
+              onConnection: onConnection,
+              onError: onError,
+            });
           } catch (e) {
-            const why = describeError(e);
-            if (!messagesEl.querySelector(".chat-item"))
-              showStatus("couldn't load messages — " + why, "error");
-            else setConn(why + " · retrying");
+            if (mySeq !== attachSeq) return;
+            showStatus("couldn't load messages — " + describeError(e), "error");
           } finally {
-            loading = false;
+            if (mySeq === attachSeq) attachInFlight = false;
+          }
+        }
+        function detach() {
+          attachSeq++; // invalidates any attach still awaiting
+          attachInFlight = false;
+          if (unsub) {
+            try {
+              unsub();
+            } catch (e) {}
+            unsub = null;
           }
         }
 
@@ -693,39 +717,42 @@
           sending = true;
           sendEl.setAttribute("aria-busy", "true");
           try {
-            const data = await request("POST", "", {
-              name: chatName,
-              message: val,
-              client_id: clientId,
-              location: myLocation,
-              device: myDevice,
-            });
-            const m = data && data.message;
-            if (!m || m.id == null) {
-              const pe = new Error("parse");
-              pe.kind = "parse";
-              throw pe;
+            const fb = await getFirebase();
+            await fb.ensureAuth();
+            // A retry of text that didn't confirm reuses its push id, so a late
+            // first write and the retry can never produce two messages.
+            const retry = !!(pending && pending.val === val);
+            const key = retry ? pending.key : fb.newKey();
+            pending = { val: val, key: key };
+            try {
+              await fb.send(key, {
+                name: chatName,
+                message: val,
+                location: myLocation,
+                device: myDevice,
+              });
+            } catch (se) {
+              // "denied" on a retry usually means the earlier attempt landed
+              const landed =
+                retry &&
+                se &&
+                se.kind === "denied" &&
+                (await fb.exists(key).catch(() => false));
+              if (!landed) throw se;
             }
-            // only now is it really saved: clear the field and show it
+            pending = null;
+            // only now is it really saved: clear the field (the listener shows it)
             if (inputEl.value.trim() === val) inputEl.value = "";
-            clearStatus();
             setConn("");
-            if (addMessage(m, true)) totalCount += 1;
-            totalCount = Math.max(totalCount, seen.size);
-            updateCount();
-            trimMessages();
             startCooldown();
             smoothScrollBottom(); // always glide the user's own message into view
             requestAnimationFrame(updateFades);
           } catch (err) {
-            if (err.kind === "http" && err.status === 422) {
-              // server-side moderation backstop
-              if (err.data && err.data.reason === "link") linkHint();
-              else {
-                inputEl.value = "";
-                blockedHint();
-                openKindnessTab();
-              }
+            if (err && err.kind === "denied") {
+              pending = null; // the server said no: next try is a fresh message
+              sendFailed(
+                "couldn't send — rejected (too fast, or not allowed) · your message is still here",
+              );
             } else {
               // keep the text so nothing is lost; say why it failed
               sendFailed(
@@ -749,11 +776,9 @@
           requestAnimationFrame(() => overlay.classList.add("is-open"));
           myDevice = detectDevice();
           collectLocation();
-          load();
+          attach();
           setPhase(chatName ? "message" : "name");
           setTimeout(() => inputEl.focus(), 90);
-          if (pollTimer) clearInterval(pollTimer);
-          pollTimer = setInterval(load, 5000);
           if (timeTimer) clearInterval(timeTimer);
           timeTimer = setInterval(updateTimes, 20000);
         };
@@ -764,10 +789,7 @@
           )
             return;
           document.documentElement.style.overflow = "";
-          if (pollTimer) {
-            clearInterval(pollTimer);
-            pollTimer = null;
-          }
+          detach();
           if (timeTimer) {
             clearInterval(timeTimer);
             timeTimer = null;
@@ -791,9 +813,14 @@
           if (e.key === "Escape" && overlay.classList.contains("is-visible"))
             closeChat();
         });
-        // catch up immediately when the connection or the tab comes back
+        // re-attach when the connection or the tab comes back after a failed attach
         const catchUp = () => {
-          if (overlay.classList.contains("is-visible")) load();
+          if (
+            overlay.classList.contains("is-visible") &&
+            !overlay.classList.contains("is-closing") &&
+            !unsub
+          )
+            attach();
         };
         window.addEventListener("online", catchUp);
         document.addEventListener("visibilitychange", () => {
