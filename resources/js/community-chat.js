@@ -51,6 +51,8 @@
         let chatName = "";
         let myDevice = "";
         let myLocation = "";
+        let locationPromise = null;
+        let locationAttempted = false;
         const MAX_VISIBLE = 60; // keep a scrollable history in the DOM (bounded)
         let totalCount = 0; // messages currently loaded (for the count label)
         const SEND_COOLDOWN = 3000; // min ms between a user's own messages (anti-spam)
@@ -225,22 +227,47 @@
         }
 
         async function collectLocation() {
-          if (myLocation) return;
-          try {
+          if (myLocation || locationAttempted) return locationPromise;
+          locationAttempted = true;
+          locationPromise = (async () => {
             const ctrl = new AbortController();
             const to = setTimeout(() => ctrl.abort(), 3500);
-            const r = await fetch("https://ipwho.is/", {
-              signal: ctrl.signal,
-            });
-            clearTimeout(to);
-            const d = await r.json();
-            if (d && d.success !== false) {
-              myLocation =
-                [d.city, d.country_code].filter(Boolean).join(", ") ||
-                d.country ||
-                "";
+            try {
+              const url = "https://ipwho.is/";
+              const r = await fetch(url, {
+                signal: ctrl.signal,
+              });
+              if (!r.ok) {
+                console.warn("[chat] location unavailable; using Unknown", {
+                  url: r.url || url,
+                  status: r.status,
+                });
+                return;
+              }
+              const d = await r.json();
+              if (d && d.success !== false) {
+                myLocation =
+                  [d.city, d.country_code].filter(Boolean).join(", ") ||
+                  d.country ||
+                  "";
+              } else {
+                console.warn("[chat] location unavailable; using Unknown", {
+                  url: r.url || url,
+                  status: r.status,
+                });
+              }
+            } catch (e) {
+              console.warn("[chat] location unavailable; using Unknown", {
+                url: "https://ipwho.is/",
+                reason:
+                  e && e.name === "AbortError" ? "timeout" : "network",
+              });
+            } finally {
+              clearTimeout(to);
+              locationPromise = null;
             }
-          } catch (e) {}
+          })();
+          return locationPromise;
         }
 
         function messagePrompt() {
@@ -728,7 +755,7 @@
               await fb.send(key, {
                 name: chatName,
                 message: val,
-                location: myLocation,
+                location: myLocation || "Unknown",
                 device: myDevice,
               });
             } catch (se) {

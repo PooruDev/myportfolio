@@ -135,19 +135,22 @@ async function build() {
   let authPromise = null;
   function ensureAuth() {
     if (!authPromise) {
-      authPromise = withTimeout(
-        (async () => {
-          await auth.authStateReady();
-          if (!auth.currentUser) await signInAnonymously(auth);
-          return auth.currentUser.uid;
-        })(),
-        AUTH_TIMEOUT,
-      ).catch((e) => {
+      authPromise = (async () => {
+        await auth.authStateReady();
+        if (!auth.currentUser) await signInAnonymously(auth);
+        const user = auth.currentUser;
+        if (!user) throw fail("auth", "anonymous sign-in completed without a user");
+        return user.uid;
+      })().catch((e) => {
         authPromise = null; // let the caller retry
         throw classify(e);
       });
     }
-    return authPromise;
+    // Keep the underlying sign-in memoized if this caller times out; the SDK
+    // request itself is not cancellable and a second sign-in could be created.
+    return withTimeout(authPromise, AUTH_TIMEOUT).catch((e) => {
+      throw classify(e);
+    });
   }
 
   function newKey() {
@@ -176,18 +179,19 @@ async function build() {
     if (navigator.onLine === false || connected === false)
       throw fail("offline", "offline");
 
+    const stamp = serverTimestamp();
     const msg = {
       uid: user.uid,
       name: String(data.name).slice(0, 40),
       message: String(data.message).slice(0, 500),
-      at: serverTimestamp(),
+      at: stamp,
     };
     if (data.location) msg.location = String(data.location).slice(0, 60);
     if (data.device) msg.device = String(data.device).slice(0, 20);
 
     const updates = {};
     updates["messages/" + key] = msg;
-    updates["rateLimit/" + user.uid] = serverTimestamp();
+    updates["rateLimit/" + user.uid] = stamp;
 
     pendingWrites++;
     goOnline(db);
