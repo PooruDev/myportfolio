@@ -12,10 +12,10 @@
           ".validate": "newData.isString()"
         },
         "name": {
-          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 40 && !newData.val().matches(/.*([hH][tT][tT][pP][sS]?:\\/\\/|[wW][wW][wW]\\.).*/)"
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 40 && !newData.val().toLowerCase().contains('://') && !newData.val().toLowerCase().beginsWith('www.') && !newData.val().toLowerCase().contains(' www.')"
         },
         "message": {
-          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 500 && !newData.val().matches(/.*([hH][tT][tT][pP][sS]?:\\/\\/|[wW][wW][wW]\\.).*/)"
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 500 && !newData.val().toLowerCase().contains('://') && !newData.val().toLowerCase().beginsWith('www.') && !newData.val().toLowerCase().contains(' www.')"
         },
         "location": {
           ".validate": "newData.isString() && newData.val().length <= 60"
