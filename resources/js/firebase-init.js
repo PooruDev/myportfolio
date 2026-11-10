@@ -201,7 +201,21 @@ async function build() {
     try {
       await withTimeout(write, WRITE_TIMEOUT);
     } catch (e) {
-      throw classify(e);
+      const err = classify(e);
+      if (err.kind === "denied") {
+        // Firebase never says which rule refused a write, so log exactly what
+        // was sent to make a refusal diagnosable from the browser console.
+        console.warn("[chat] write refused by the database rules", {
+          signedInUid: user.uid,
+          paths: Object.keys(updates),
+          messageFields: Object.keys(msg),
+          nameLength: msg.name.length,
+          messageLength: msg.message.length,
+          locationLength: (msg.location || "").length,
+          deviceLength: (msg.device || "").length,
+        });
+      }
+      throw err;
     }
   }
 
